@@ -1,0 +1,51 @@
+import Link from 'next/link'
+import { createClient } from '@/lib/supabase-server'
+import { logoutStaff } from '@/lib/actions'
+
+export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  return (
+    <div className="min-h-screen flex flex-col" style={{ background: '#0d1b2a' }}>
+      {/* Top nav */}
+      <header className="border-b border-white/10 px-6 py-3 sticky top-0 z-10" style={{ background: '#0d1b2a' }}>
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-6">
+            <Link href="/dashboard" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
+              <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: '#c9a558' }}>
+                <span className="font-bold text-xs" style={{ color: '#0d1b2a' }}>W</span>
+              </div>
+              <span className="font-semibold text-sm" style={{ color: '#f5f7fa' }}>Walker Property Services</span>
+            </Link>
+            <span
+              className="text-xs px-2 py-0.5 rounded font-medium"
+              style={{ background: 'rgba(201,165,88,0.15)', color: '#c9a558' }}
+            >
+              Internal Dashboard
+            </span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {user && (
+              <span className="text-sm hidden sm:block" style={{ color: '#8a9bb0' }}>{user.email}</span>
+            )}
+            <form action={logoutStaff}>
+              <button
+                type="submit"
+                className="text-sm px-3 py-1.5 rounded border transition-colors hover:bg-white/5"
+                style={{ color: '#8a9bb0', borderColor: '#243d60' }}
+              >
+                Sign Out
+              </button>
+            </form>
+          </div>
+        </div>
+      </header>
+
+      <main className="flex-1 max-w-7xl mx-auto w-full px-6 py-8">
+        {children}
+      </main>
+    </div>
+  )
+}

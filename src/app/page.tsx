@@ -1,65 +1,82 @@
-import Image from "next/image";
+import Link from 'next/link'
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen flex flex-col" style={{ background: 'linear-gradient(160deg, #0d1b2a 0%, #1a2f4a 100%)' }}>
+      {/* Header */}
+      <header className="border-b border-white/10 px-6 py-4">
+        <div className="max-w-6xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: '#c9a558' }}>
+              <span className="font-bold text-sm" style={{ color: '#0d1b2a' }}>W</span>
+            </div>
+            <span className="font-semibold text-lg tracking-wide" style={{ color: '#f5f7fa' }}>
+              Walker Property Services
+            </span>
+          </div>
+          <Link
+            href="/dashboard/login"
+            className="text-sm px-3 py-1.5 rounded border transition-colors hover:bg-white/5"
+            style={{ color: '#8a9bb0', borderColor: '#243d60' }}
+          >
+            Staff Login
+          </Link>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+      </header>
+
+      {/* Hero */}
+      <main className="flex-1 flex flex-col items-center justify-center px-6 py-24 text-center">
+        <div
+          className="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase mb-6"
+          style={{ background: 'rgba(201,165,88,0.15)', color: '#c9a558', border: '1px solid rgba(201,165,88,0.3)' }}
+        >
+          Philadelphia &amp; Surrounding Areas
+        </div>
+
+        <h1 className="text-5xl font-bold leading-tight mb-4 max-w-2xl" style={{ color: '#f5f7fa' }}>
+          Property Services,{' '}
+          <span style={{ color: '#c9a558' }}>Done Right.</span>
+        </h1>
+
+        <p className="text-lg mb-12 max-w-xl" style={{ color: '#8a9bb0' }}>
+          Cleanouts, light demolition, turnover prep, and site preparation —
+          professional service with real-time job tracking.
+        </p>
+
+        <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
+          <Link
+            href="/submit"
+            className="flex-1 px-8 py-4 rounded-lg font-semibold text-center text-base transition-all hover:brightness-110 active:scale-95"
+            style={{ background: '#c9a558', color: '#0d1b2a' }}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Request a Job
+          </Link>
+          <Link
+            href="/track"
+            className="flex-1 px-8 py-4 rounded-lg font-semibold text-center text-base border transition-colors hover:bg-white/5"
+            style={{ color: '#c9a558', borderColor: '#c9a558' }}
           >
-            Documentation
-          </a>
+            Track My Job
+          </Link>
         </div>
       </main>
+
+      {/* Services strip */}
+      <section className="border-t border-white/10 px-6 py-10">
+        <div className="max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+          {[
+            { label: 'Cleanout',      desc: 'Full property cleanouts' },
+            { label: 'Light Demo',    desc: 'Interior demolition' },
+            { label: 'Turnover Prep', desc: 'Rental-ready preparation' },
+            { label: 'Site Prep',     desc: 'Pre-construction clearing' },
+          ].map(({ label, desc }) => (
+            <div key={label} className="flex flex-col gap-1">
+              <span className="font-semibold text-sm" style={{ color: '#c9a558' }}>{label}</span>
+              <span className="text-xs" style={{ color: '#8a9bb0' }}>{desc}</span>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
-  );
+  )
 }
