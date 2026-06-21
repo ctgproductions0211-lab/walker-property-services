@@ -19,6 +19,11 @@ function generateTrackingCode(): string {
 // ── Customer: Submit a new job request ────────────────────────────────────────
 
 export async function submitJob(prevState: { error?: string } | null, formData: FormData) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    console.error('[submitJob] Missing Supabase environment variables')
+    return { error: 'Server configuration error — missing environment variables. Please contact support.' }
+  }
+
   const supabase = await createClient()
 
   const customerName    = formData.get('customer_name') as string
