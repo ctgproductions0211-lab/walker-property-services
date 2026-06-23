@@ -7,9 +7,8 @@ export default function HomePage() {
       <header className="border-b border-white/10 px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: '#6B8C23' }}>
-              <span className="font-bold text-sm" style={{ color: '#ffffff' }}>W</span>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.jpg" alt="" aria-hidden="true" style={{ height: '40px', width: '40px', objectFit: 'contain', flexShrink: 0 }} />
             <span className="font-semibold text-lg tracking-wide" style={{ color: '#f0f0f0' }}>
               Walker Property Services
             </span>
@@ -31,6 +30,8 @@ export default function HomePage() {
 
       {/* Hero */}
       <main className="flex-1 flex flex-col items-center justify-center px-6 py-24 text-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.jpg" alt="Walker Property Services" style={{ height: '150px', width: '150px', objectFit: 'contain', marginBottom: '24px' }} />
         <div
           className="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase mb-6"
           style={{ background: 'rgba(107,140,35,0.15)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.3)' }}
