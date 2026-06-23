@@ -7,20 +7,20 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const { data: { user } } = await supabase.auth.getUser()
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#0d1b2a' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#111111' }}>
       {/* Top nav */}
-      <header className="border-b border-white/10 px-6 py-3 sticky top-0 z-10" style={{ background: '#0d1b2a' }}>
+      <header className="border-b border-white/10 px-6 py-3 sticky top-0 z-10" style={{ background: '#111111' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="/dashboard" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-              <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: '#c9a558' }}>
-                <span className="font-bold text-xs" style={{ color: '#0d1b2a' }}>W</span>
+              <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: '#6B8C23' }}>
+                <span className="font-bold text-xs" style={{ color: '#ffffff' }}>W</span>
               </div>
-              <span className="font-semibold text-sm" style={{ color: '#f5f7fa' }}>Walker Property Services</span>
+              <span className="font-semibold text-sm" style={{ color: '#f0f0f0' }}>Walker Property Services</span>
             </Link>
             <span
               className="text-xs px-2 py-0.5 rounded font-medium"
-              style={{ background: 'rgba(201,165,88,0.15)', color: '#c9a558' }}
+              style={{ background: 'rgba(107,140,35,0.15)', color: '#6B8C23' }}
             >
               Internal Dashboard
             </span>
@@ -28,13 +28,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
           <div className="flex items-center gap-4">
             {user && (
-              <span className="text-sm hidden sm:block" style={{ color: '#8a9bb0' }}>{user.email}</span>
+              <span className="text-sm hidden sm:block" style={{ color: '#888888' }}>{user.email}</span>
             )}
             <form action={logoutStaff}>
               <button
                 type="submit"
                 className="text-sm px-3 py-1.5 rounded border transition-colors hover:bg-white/5"
-                style={{ color: '#8a9bb0', borderColor: '#243d60' }}
+                style={{ color: '#888888', borderColor: '#2e2e2e' }}
               >
                 Sign Out
               </button>

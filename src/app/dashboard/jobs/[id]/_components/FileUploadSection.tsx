@@ -75,9 +75,9 @@ export default function FileUploadSection({ jobId, files, signedUrls }: Props) {
               onClick={() => setFileType(value)}
               className="px-3 py-1.5 rounded text-xs font-medium transition-all"
               style={{
-                background: fileType === value ? 'rgba(201,165,88,0.2)' : '#0d1b2a',
-                color:      fileType === value ? '#c9a558' : '#8a9bb0',
-                border:     fileType === value ? '1px solid rgba(201,165,88,0.4)' : '1px solid #243d60',
+                background: fileType === value ? 'rgba(107,140,35,0.2)' : '#111111',
+                color:      fileType === value ? '#6B8C23' : '#888888',
+                border:     fileType === value ? '1px solid rgba(107,140,35,0.4)' : '1px solid #2e2e2e',
               }}
             >
               {label}
@@ -87,15 +87,15 @@ export default function FileUploadSection({ jobId, files, signedUrls }: Props) {
 
         <div
           className="rounded-lg p-5 text-center cursor-pointer transition-colors"
-          style={{ background: '#0d1b2a', border: '2px dashed #243d60' }}
+          style={{ background: '#111111', border: '2px dashed #2e2e2e' }}
           onClick={() => fileRef.current?.click()}
         >
           {uploading ? (
-            <p className="text-sm" style={{ color: '#c9a558' }}>Uploading...</p>
+            <p className="text-sm" style={{ color: '#6B8C23' }}>Uploading...</p>
           ) : (
             <>
-              <p className="text-sm mb-0.5" style={{ color: '#f5f7fa' }}>Click to upload {FILE_TYPE_LABELS[fileType]}</p>
-              <p className="text-xs" style={{ color: '#8a9bb0' }}>
+              <p className="text-sm mb-0.5" style={{ color: '#f0f0f0' }}>Click to upload {FILE_TYPE_LABELS[fileType]}</p>
+              <p className="text-xs" style={{ color: '#888888' }}>
                 {fileType === 'readiness_report' ? 'PDF files' : 'JPG, PNG, HEIC'}
               </p>
             </>
@@ -117,7 +117,7 @@ export default function FileUploadSection({ jobId, files, signedUrls }: Props) {
       {/* Submission photos from customer */}
       {submissionPhotos.length > 0 && (
         <div>
-          <p className="text-xs uppercase tracking-wide font-semibold mb-2" style={{ color: '#8a9bb0' }}>
+          <p className="text-xs uppercase tracking-wide font-semibold mb-2" style={{ color: '#888888' }}>
             Customer Submission Photos
           </p>
           <div className="grid grid-cols-3 gap-2">
@@ -128,7 +128,7 @@ export default function FileUploadSection({ jobId, files, signedUrls }: Props) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block rounded-lg overflow-hidden aspect-square relative group"
-                style={{ background: '#0d1b2a', border: '1px solid #243d60' }}
+                style={{ background: '#111111', border: '1px solid #2e2e2e' }}
               >
                 {signedUrls[file.id] && (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -150,7 +150,7 @@ export default function FileUploadSection({ jobId, files, signedUrls }: Props) {
       {/* Staff-uploaded files */}
       {staffFiles.length > 0 && (
         <div>
-          <p className="text-xs uppercase tracking-wide font-semibold mb-2" style={{ color: '#8a9bb0' }}>
+          <p className="text-xs uppercase tracking-wide font-semibold mb-2" style={{ color: '#888888' }}>
             Team Uploads
           </p>
           <div className="flex flex-col gap-2">
@@ -158,11 +158,11 @@ export default function FileUploadSection({ jobId, files, signedUrls }: Props) {
               <div
                 key={file.id}
                 className="flex items-center justify-between p-3 rounded-lg"
-                style={{ background: '#0d1b2a', border: '1px solid #243d60' }}
+                style={{ background: '#111111', border: '1px solid #2e2e2e' }}
               >
                 <div className="min-w-0">
-                  <p className="text-sm font-medium truncate" style={{ color: '#f5f7fa' }}>{file.file_name}</p>
-                  <p className="text-xs" style={{ color: '#8a9bb0' }}>{FILE_TYPE_LABELS[file.file_type]}</p>
+                  <p className="text-sm font-medium truncate" style={{ color: '#f0f0f0' }}>{file.file_name}</p>
+                  <p className="text-xs" style={{ color: '#888888' }}>{FILE_TYPE_LABELS[file.file_type]}</p>
                 </div>
                 <div className="flex items-center gap-3 flex-shrink-0 ml-3">
                   {signedUrls[file.id] && (
@@ -171,7 +171,7 @@ export default function FileUploadSection({ jobId, files, signedUrls }: Props) {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-xs underline"
-                      style={{ color: '#c9a558' }}
+                      style={{ color: '#6B8C23' }}
                     >
                       View
                     </a>

@@ -24,9 +24,9 @@ export default function NotesForm({ jobId, currentNotes }: Props) {
         defaultValue={currentNotes}
         placeholder="Add internal notes about this job — crew notes, access info, material lists, etc."
         style={{
-          background: '#0d1b2a',
-          border: '1px solid #243d60',
-          color: '#f5f7fa',
+          background: '#111111',
+          border: '1px solid #2e2e2e',
+          color: '#f0f0f0',
           borderRadius: '8px',
           padding: '12px',
           width: '100%',
@@ -34,15 +34,15 @@ export default function NotesForm({ jobId, currentNotes }: Props) {
           resize: 'vertical',
           outline: 'none',
         }}
-        onFocus={e => (e.target.style.borderColor = '#c9a558')}
-        onBlur={e => (e.target.style.borderColor = '#243d60')}
+        onFocus={e => (e.target.style.borderColor = '#6B8C23')}
+        onBlur={e => (e.target.style.borderColor = '#2e2e2e')}
       />
 
       <button
         type="submit"
         disabled={pending}
         className="w-full py-2.5 rounded-lg font-semibold text-sm transition-all hover:brightness-110 disabled:opacity-50"
-        style={{ background: '#c9a558', color: '#0d1b2a' }}
+        style={{ background: '#6B8C23', color: '#ffffff' }}
       >
         {pending ? 'Saving...' : 'Save Notes'}
       </button>

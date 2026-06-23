@@ -7,7 +7,7 @@ const STATUS_STEPS = ['received', 'quoted', 'scheduled', 'in_progress', 'complet
 
 const STATUS_COLORS: Record<string, { bg: string; text: string; border: string }> = {
   received:    { bg: 'rgba(59,130,246,0.15)',   text: '#93c5fd', border: 'rgba(59,130,246,0.4)' },
-  quoted:      { bg: 'rgba(201,165,88,0.15)',   text: '#c9a558', border: 'rgba(201,165,88,0.4)' },
+  quoted:      { bg: 'rgba(107,140,35,0.15)',   text: '#6B8C23', border: 'rgba(107,140,35,0.4)' },
   scheduled:   { bg: 'rgba(139,92,246,0.15)',   text: '#c4b5fd', border: 'rgba(139,92,246,0.4)' },
   in_progress: { bg: 'rgba(249,115,22,0.15)',   text: '#fdba74', border: 'rgba(249,115,22,0.4)' },
   complete:    { bg: 'rgba(34,197,94,0.15)',    text: '#86efac', border: 'rgba(34,197,94,0.4)' },
@@ -30,7 +30,7 @@ export default async function TrackJobPage({ params }: Props) {
 
   if (!job) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#0d1b2a' }}>
+      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#111111' }}>
         <div className="max-w-md w-full text-center">
           <div
             className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
@@ -40,15 +40,15 @@ export default async function TrackJobPage({ params }: Props) {
               <circle cx="12" cy="12" r="10" /><path d="m15 9-6 6" /><path d="m9 9 6 6" />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold mb-2" style={{ color: '#f5f7fa' }}>Job Not Found</h1>
-          <p className="mb-6" style={{ color: '#8a9bb0' }}>
-            We couldn&apos;t find a job with tracking code <span style={{ color: '#c9a558', fontFamily: 'monospace' }}>{code.toUpperCase()}</span>.
+          <h1 className="text-2xl font-bold mb-2" style={{ color: '#f0f0f0' }}>Job Not Found</h1>
+          <p className="mb-6" style={{ color: '#888888' }}>
+            We couldn&apos;t find a job with tracking code <span style={{ color: '#6B8C23', fontFamily: 'monospace' }}>{code.toUpperCase()}</span>.
             Double-check the code and try again.
           </p>
           <Link
             href="/track"
             className="inline-block px-6 py-3 rounded-lg font-semibold transition-all hover:brightness-110"
-            style={{ background: '#c9a558', color: '#0d1b2a' }}
+            style={{ background: '#6B8C23', color: '#ffffff' }}
           >
             Try Again
           </Link>
@@ -61,16 +61,16 @@ export default async function TrackJobPage({ params }: Props) {
   const colors = STATUS_COLORS[job.status]
 
   return (
-    <div className="min-h-screen" style={{ background: '#0d1b2a' }}>
+    <div className="min-h-screen" style={{ background: '#111111' }}>
       <header className="border-b border-white/10 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: '#c9a558' }}>
-              <span className="font-bold text-sm" style={{ color: '#0d1b2a' }}>W</span>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: '#6B8C23' }}>
+              <span className="font-bold text-sm" style={{ color: '#ffffff' }}>W</span>
             </div>
-            <span className="font-semibold" style={{ color: '#f5f7fa' }}>Walker Property Services</span>
+            <span className="font-semibold" style={{ color: '#f0f0f0' }}>Walker Property Services</span>
           </Link>
-          <Link href="/track" className="text-sm" style={{ color: '#8a9bb0' }}>
+          <Link href="/track" className="text-sm" style={{ color: '#888888' }}>
             Track another
           </Link>
         </div>
@@ -85,18 +85,18 @@ export default async function TrackJobPage({ params }: Props) {
           >
             {JOB_STATUS_LABELS[job.status]}
           </div>
-          <h1 className="text-3xl font-bold mb-1" style={{ color: '#f5f7fa' }}>
+          <h1 className="text-3xl font-bold mb-1" style={{ color: '#f0f0f0' }}>
             {JOB_TYPE_LABELS[job.job_type]}
           </h1>
-          <p style={{ color: '#8a9bb0' }}>{job.property_address}</p>
+          <p style={{ color: '#888888' }}>{job.property_address}</p>
         </div>
 
         {/* Progress tracker */}
         <div
           className="rounded-xl p-6 mb-6"
-          style={{ background: '#1a2f4a', border: '1px solid #243d60' }}
+          style={{ background: '#1c1c1c', border: '1px solid #2e2e2e' }}
         >
-          <p className="text-xs uppercase tracking-widest font-semibold mb-4" style={{ color: '#8a9bb0' }}>
+          <p className="text-xs uppercase tracking-widest font-semibold mb-4" style={{ color: '#888888' }}>
             Job Progress
           </p>
           <div className="relative">
@@ -106,7 +106,7 @@ export default async function TrackJobPage({ params }: Props) {
               style={{
                 left: '10%',
                 right: '10%',
-                background: '#243d60',
+                background: '#2e2e2e',
               }}
             />
             <div
@@ -114,7 +114,7 @@ export default async function TrackJobPage({ params }: Props) {
               style={{
                 left: '10%',
                 width: `${(currentStepIndex / (STATUS_STEPS.length - 1)) * 80}%`,
-                background: '#c9a558',
+                background: '#6B8C23',
               }}
             />
 
@@ -128,10 +128,10 @@ export default async function TrackJobPage({ params }: Props) {
                     <div
                       className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold z-10 transition-all"
                       style={{
-                        background: isDone ? '#c9a558' : '#243d60',
-                        color:      isDone ? '#0d1b2a' : '#8a9bb0',
-                        border:     isCurrent ? '2px solid #e8c97a' : '2px solid transparent',
-                        boxShadow:  isCurrent ? '0 0 12px rgba(201,165,88,0.4)' : 'none',
+                        background: isDone ? '#6B8C23' : '#2e2e2e',
+                        color:      isDone ? '#ffffff' : '#888888',
+                        border:     isCurrent ? '2px solid #7FA027' : '2px solid transparent',
+                        boxShadow:  isCurrent ? '0 0 12px rgba(107,140,35,0.4)' : 'none',
                       }}
                     >
                       {i < currentStepIndex ? (
@@ -144,7 +144,7 @@ export default async function TrackJobPage({ params }: Props) {
                     </div>
                     <span
                       className="text-xs text-center leading-tight"
-                      style={{ color: isDone ? '#c9a558' : '#8a9bb0', fontWeight: isCurrent ? '600' : '400' }}
+                      style={{ color: isDone ? '#6B8C23' : '#888888', fontWeight: isCurrent ? '600' : '400' }}
                     >
                       {JOB_STATUS_LABELS[step]}
                     </span>
@@ -158,9 +158,9 @@ export default async function TrackJobPage({ params }: Props) {
         {/* Job details */}
         <div
           className="rounded-xl p-6 mb-6"
-          style={{ background: '#1a2f4a', border: '1px solid #243d60' }}
+          style={{ background: '#1c1c1c', border: '1px solid #2e2e2e' }}
         >
-          <p className="text-xs uppercase tracking-widest font-semibold mb-4" style={{ color: '#8a9bb0' }}>
+          <p className="text-xs uppercase tracking-widest font-semibold mb-4" style={{ color: '#888888' }}>
             Job Details
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -178,15 +178,15 @@ export default async function TrackJobPage({ params }: Props) {
         {job.quote_amount !== null && (
           <div
             className="rounded-xl p-6 mb-6"
-            style={{ background: 'rgba(201,165,88,0.08)', border: '1px solid rgba(201,165,88,0.25)' }}
+            style={{ background: 'rgba(107,140,35,0.08)', border: '1px solid rgba(107,140,35,0.25)' }}
           >
-            <p className="text-xs uppercase tracking-widest font-semibold mb-1" style={{ color: '#8a9bb0' }}>
+            <p className="text-xs uppercase tracking-widest font-semibold mb-1" style={{ color: '#888888' }}>
               Your Quote
             </p>
-            <p className="text-4xl font-bold" style={{ color: '#c9a558' }}>
+            <p className="text-4xl font-bold" style={{ color: '#6B8C23' }}>
               ${job.quote_amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </p>
-            <p className="text-sm mt-1" style={{ color: '#8a9bb0' }}>Contact us to approve and schedule your job.</p>
+            <p className="text-sm mt-1" style={{ color: '#888888' }}>Contact us to approve and schedule your job.</p>
           </div>
         )}
 
@@ -194,14 +194,14 @@ export default async function TrackJobPage({ params }: Props) {
           <Link
             href="/submit"
             className="flex-1 py-3 rounded-lg font-semibold text-center border transition-colors hover:bg-white/5"
-            style={{ color: '#c9a558', borderColor: '#c9a558' }}
+            style={{ color: '#6B8C23', borderColor: '#6B8C23' }}
           >
             Submit Another Job
           </Link>
           <Link
             href="/"
             className="flex-1 py-3 rounded-lg font-semibold text-center transition-colors hover:bg-white/5"
-            style={{ color: '#8a9bb0', border: '1px solid #243d60' }}
+            style={{ color: '#888888', border: '1px solid #2e2e2e' }}
           >
             Back to Home
           </Link>
@@ -214,8 +214,8 @@ export default async function TrackJobPage({ params }: Props) {
 function Detail({ label, value, mono }: { label: string; value: string; mono?: boolean }) {
   return (
     <div>
-      <p className="text-xs uppercase tracking-wide mb-0.5" style={{ color: '#8a9bb0' }}>{label}</p>
-      <p className="font-medium" style={{ color: '#f5f7fa', fontFamily: mono ? 'monospace' : 'inherit' }}>
+      <p className="text-xs uppercase tracking-wide mb-0.5" style={{ color: '#888888' }}>{label}</p>
+      <p className="font-medium" style={{ color: '#f0f0f0', fontFamily: mono ? 'monospace' : 'inherit' }}>
         {value}
       </p>
     </div>

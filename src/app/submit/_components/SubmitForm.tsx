@@ -4,9 +4,9 @@ import { useActionState, useRef } from 'react'
 import { submitJob } from '@/lib/actions'
 
 const inputStyle = {
-  background: '#1a2f4a',
-  border: '1px solid #243d60',
-  color: '#f5f7fa',
+  background: '#1c1c1c',
+  border: '1px solid #2e2e2e',
+  color: '#f0f0f0',
   borderRadius: '8px',
   padding: '12px 14px',
   width: '100%',
@@ -19,7 +19,7 @@ const labelStyle = {
   marginBottom: '6px',
   fontSize: '14px',
   fontWeight: '500',
-  color: '#c9a558',
+  color: '#6B8C23',
 } as const
 
 export default function SubmitForm() {
@@ -43,8 +43,8 @@ export default function SubmitForm() {
             required
             placeholder="Jane Smith"
             style={inputStyle}
-            onFocus={e => (e.target.style.borderColor = '#c9a558')}
-            onBlur={e => (e.target.style.borderColor = '#243d60')}
+            onFocus={e => (e.target.style.borderColor = '#6B8C23')}
+            onBlur={e => (e.target.style.borderColor = '#2e2e2e')}
           />
         </div>
         <div>
@@ -54,8 +54,8 @@ export default function SubmitForm() {
             type="email"
             placeholder="jane@example.com"
             style={inputStyle}
-            onFocus={e => (e.target.style.borderColor = '#c9a558')}
-            onBlur={e => (e.target.style.borderColor = '#243d60')}
+            onFocus={e => (e.target.style.borderColor = '#6B8C23')}
+            onBlur={e => (e.target.style.borderColor = '#2e2e2e')}
           />
         </div>
       </div>
@@ -68,8 +68,8 @@ export default function SubmitForm() {
           type="tel"
           placeholder="(215) 555-1234"
           style={inputStyle}
-          onFocus={e => (e.target.style.borderColor = '#c9a558')}
-          onBlur={e => (e.target.style.borderColor = '#243d60')}
+          onFocus={e => (e.target.style.borderColor = '#6B8C23')}
+          onBlur={e => (e.target.style.borderColor = '#2e2e2e')}
         />
       </div>
 
@@ -81,8 +81,8 @@ export default function SubmitForm() {
           required
           placeholder="1234 Main St, Philadelphia, PA 19103"
           style={inputStyle}
-          onFocus={e => (e.target.style.borderColor = '#c9a558')}
-          onBlur={e => (e.target.style.borderColor = '#243d60')}
+          onFocus={e => (e.target.style.borderColor = '#6B8C23')}
+          onBlur={e => (e.target.style.borderColor = '#2e2e2e')}
         />
       </div>
 
@@ -93,8 +93,8 @@ export default function SubmitForm() {
           name="job_type"
           required
           style={{ ...inputStyle, cursor: 'pointer' }}
-          onFocus={e => (e.target.style.borderColor = '#c9a558')}
-          onBlur={e => (e.target.style.borderColor = '#243d60')}
+          onFocus={e => (e.target.style.borderColor = '#6B8C23')}
+          onBlur={e => (e.target.style.borderColor = '#2e2e2e')}
         >
           <option value="">Select a service...</option>
           <option value="cleanout">Cleanout</option>
@@ -108,24 +108,24 @@ export default function SubmitForm() {
       <div>
         <label style={labelStyle}>
           Describe the Job
-          <span style={{ color: '#8a9bb0', fontWeight: 400, marginLeft: '6px' }}>(optional)</span>
+          <span style={{ color: '#888888', fontWeight: 400, marginLeft: '6px' }}>(optional)</span>
         </label>
         <textarea
           name="customer_notes"
           rows={4}
           placeholder="What needs to be removed or done? How many rooms? Any stairs, large appliances, or heavy debris? The more detail you give, the more accurate your estimate."
           style={{ ...inputStyle, resize: 'vertical' }}
-          onFocus={e => (e.target.style.borderColor = '#c9a558')}
-          onBlur={e => (e.target.style.borderColor = '#243d60')}
+          onFocus={e => (e.target.style.borderColor = '#6B8C23')}
+          onBlur={e => (e.target.style.borderColor = '#2e2e2e')}
         />
       </div>
 
       {/* Estimate tip */}
       <div
         className="rounded-lg px-4 py-3 text-sm"
-        style={{ background: 'rgba(201,165,88,0.08)', border: '1px solid rgba(201,165,88,0.2)', color: '#8a9bb0' }}
+        style={{ background: 'rgba(107,140,35,0.08)', border: '1px solid rgba(107,140,35,0.2)', color: '#888888' }}
       >
-        <span style={{ color: '#c9a558', fontWeight: 600 }}>Get an instant estimate —</span>{' '}
+        <span style={{ color: '#6B8C23', fontWeight: 600 }}>Get an instant estimate —</span>{' '}
         add a written description, upload photos, or both. Either one works. The more you share, the more accurate your quote.
       </div>
 
@@ -133,16 +133,16 @@ export default function SubmitForm() {
       <div>
         <label style={labelStyle}>
           Property Photos
-          <span style={{ color: '#8a9bb0', fontWeight: 400, marginLeft: '6px' }}>(optional)</span>
+          <span style={{ color: '#888888', fontWeight: 400, marginLeft: '6px' }}>(optional)</span>
         </label>
         <div
           className="rounded-lg p-6 text-center cursor-pointer transition-colors"
-          style={{ background: '#1a2f4a', border: '2px dashed #243d60' }}
+          style={{ background: '#1c1c1c', border: '2px dashed #2e2e2e' }}
           onClick={() => fileRef.current?.click()}
         >
           <div className="text-3xl mb-2">📷</div>
-          <p className="text-sm mb-1" style={{ color: '#f5f7fa' }}>Click to upload photos</p>
-          <p className="text-xs" style={{ color: '#8a9bb0' }}>JPG, PNG, HEIC — up to 5 photos (10 MB each)</p>
+          <p className="text-sm mb-1" style={{ color: '#f0f0f0' }}>Click to upload photos</p>
+          <p className="text-xs" style={{ color: '#888888' }}>JPG, PNG, HEIC — up to 5 photos (10 MB each)</p>
           <input
             ref={fileRef}
             name="photos"
@@ -164,12 +164,12 @@ export default function SubmitForm() {
         type="submit"
         disabled={pending}
         className="w-full py-4 rounded-lg font-semibold text-base transition-all hover:brightness-110 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
-        style={{ background: '#c9a558', color: '#0d1b2a' }}
+        style={{ background: '#6B8C23', color: '#ffffff' }}
       >
         {pending ? 'Submitting...' : 'Submit Job Request'}
       </button>
 
-      <p className="text-center text-sm" style={{ color: '#8a9bb0' }}>
+      <p className="text-center text-sm" style={{ color: '#888888' }}>
         After submitting, you&apos;ll receive a tracking code to check your job&apos;s status anytime.
       </p>
     </form>

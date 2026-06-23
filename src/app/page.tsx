@@ -2,22 +2,22 @@ import Link from 'next/link'
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'linear-gradient(160deg, #0d1b2a 0%, #1a2f4a 100%)' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: 'linear-gradient(160deg, #111111 0%, #1c1c1c 100%)' }}>
       {/* Header */}
       <header className="border-b border-white/10 px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: '#c9a558' }}>
-              <span className="font-bold text-sm" style={{ color: '#0d1b2a' }}>W</span>
+            <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: '#6B8C23' }}>
+              <span className="font-bold text-sm" style={{ color: '#ffffff' }}>W</span>
             </div>
-            <span className="font-semibold text-lg tracking-wide" style={{ color: '#f5f7fa' }}>
+            <span className="font-semibold text-lg tracking-wide" style={{ color: '#f0f0f0' }}>
               Walker Property Services
             </span>
           </div>
           <Link
             href="/dashboard/login"
             className="text-sm px-3 py-1.5 rounded border transition-colors hover:bg-white/5"
-            style={{ color: '#8a9bb0', borderColor: '#243d60' }}
+            style={{ color: '#888888', borderColor: '#2e2e2e' }}
           >
             Staff Login
           </Link>
@@ -28,17 +28,17 @@ export default function HomePage() {
       <main className="flex-1 flex flex-col items-center justify-center px-6 py-24 text-center">
         <div
           className="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase mb-6"
-          style={{ background: 'rgba(201,165,88,0.15)', color: '#c9a558', border: '1px solid rgba(201,165,88,0.3)' }}
+          style={{ background: 'rgba(107,140,35,0.15)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.3)' }}
         >
           Philadelphia &amp; Surrounding Areas
         </div>
 
-        <h1 className="text-5xl font-bold leading-tight mb-4 max-w-2xl" style={{ color: '#f5f7fa' }}>
+        <h1 className="text-5xl font-bold leading-tight mb-4 max-w-2xl" style={{ color: '#f0f0f0' }}>
           Property Services,{' '}
-          <span style={{ color: '#c9a558' }}>Done Right.</span>
+          <span style={{ color: '#6B8C23' }}>Done Right.</span>
         </h1>
 
-        <p className="text-lg mb-12 max-w-xl" style={{ color: '#8a9bb0' }}>
+        <p className="text-lg mb-12 max-w-xl" style={{ color: '#888888' }}>
           Cleanouts, light demolition, turnover prep, and site preparation —
           professional service with real-time job tracking.
         </p>
@@ -47,14 +47,14 @@ export default function HomePage() {
           <Link
             href="/submit"
             className="flex-1 px-8 py-4 rounded-lg font-semibold text-center text-base transition-all hover:brightness-110 active:scale-95"
-            style={{ background: '#c9a558', color: '#0d1b2a' }}
+            style={{ background: '#6B8C23', color: '#ffffff' }}
           >
             Request a Job
           </Link>
           <Link
             href="/track"
             className="flex-1 px-8 py-4 rounded-lg font-semibold text-center text-base border transition-colors hover:bg-white/5"
-            style={{ color: '#c9a558', borderColor: '#c9a558' }}
+            style={{ color: '#6B8C23', borderColor: '#6B8C23' }}
           >
             Track My Job
           </Link>
@@ -71,8 +71,8 @@ export default function HomePage() {
             { label: 'Site Prep',     desc: 'Pre-construction clearing' },
           ].map(({ label, desc }) => (
             <div key={label} className="flex flex-col gap-1">
-              <span className="font-semibold text-sm" style={{ color: '#c9a558' }}>{label}</span>
-              <span className="text-xs" style={{ color: '#8a9bb0' }}>{desc}</span>
+              <span className="font-semibold text-sm" style={{ color: '#6B8C23' }}>{label}</span>
+              <span className="text-xs" style={{ color: '#888888' }}>{desc}</span>
             </div>
           ))}
         </div>

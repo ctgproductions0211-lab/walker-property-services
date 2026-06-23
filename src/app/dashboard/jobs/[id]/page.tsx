@@ -10,7 +10,7 @@ import FileUploadSection from './_components/FileUploadSection'
 
 const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
   received:    { bg: 'rgba(59,130,246,0.15)',  text: '#93c5fd' },
-  quoted:      { bg: 'rgba(201,165,88,0.15)',  text: '#c9a558' },
+  quoted:      { bg: 'rgba(107,140,35,0.15)',  text: '#6B8C23' },
   scheduled:   { bg: 'rgba(139,92,246,0.15)',  text: '#c4b5fd' },
   in_progress: { bg: 'rgba(249,115,22,0.15)',  text: '#fdba74' },
   complete:    { bg: 'rgba(34,197,94,0.15)',   text: '#86efac' },
@@ -49,8 +49,8 @@ export default async function JobDetailPage({ params }: Props) {
   return (
     <div>
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm mb-6" style={{ color: '#8a9bb0' }}>
-        <Link href="/dashboard" className="hover:underline" style={{ color: '#c9a558' }}>Jobs</Link>
+      <div className="flex items-center gap-2 text-sm mb-6" style={{ color: '#888888' }}>
+        <Link href="/dashboard" className="hover:underline" style={{ color: '#6B8C23' }}>Jobs</Link>
         <span>/</span>
         <span>{job.customer_name}</span>
       </div>
@@ -59,7 +59,7 @@ export default async function JobDetailPage({ params }: Props) {
       <div className="flex flex-wrap items-start justify-between gap-4 mb-8">
         <div>
           <div className="flex items-center gap-3 mb-1">
-            <h1 className="text-2xl font-bold" style={{ color: '#f5f7fa' }}>{job.customer_name}</h1>
+            <h1 className="text-2xl font-bold" style={{ color: '#f0f0f0' }}>{job.customer_name}</h1>
             <span
               className="px-2 py-0.5 rounded-full text-xs font-semibold"
               style={{ background: colors.bg, color: colors.text }}
@@ -67,11 +67,11 @@ export default async function JobDetailPage({ params }: Props) {
               {JOB_STATUS_LABELS[job.status]}
             </span>
           </div>
-          <p style={{ color: '#8a9bb0' }}>{job.property_address}</p>
+          <p style={{ color: '#888888' }}>{job.property_address}</p>
         </div>
         <div className="text-right">
-          <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: '#8a9bb0' }}>Tracking Code</p>
-          <p className="font-bold font-mono text-lg" style={{ color: '#c9a558' }}>{job.tracking_code}</p>
+          <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: '#888888' }}>Tracking Code</p>
+          <p className="font-bold font-mono text-lg" style={{ color: '#6B8C23' }}>{job.tracking_code}</p>
         </div>
       </div>
 
@@ -91,8 +91,8 @@ export default async function JobDetailPage({ params }: Props) {
               </div>
               {job.customer_notes && (
                 <div className="col-span-2">
-                  <p className="text-xs uppercase tracking-wide mb-1" style={{ color: '#8a9bb0' }}>Customer Notes</p>
-                  <p className="text-sm leading-relaxed p-3 rounded-lg" style={{ background: '#0d1b2a', color: '#f5f7fa' }}>
+                  <p className="text-xs uppercase tracking-wide mb-1" style={{ color: '#888888' }}>Customer Notes</p>
+                  <p className="text-sm leading-relaxed p-3 rounded-lg" style={{ background: '#111111', color: '#f0f0f0' }}>
                     {job.customer_notes}
                   </p>
                 </div>
@@ -131,8 +131,8 @@ export default async function JobDetailPage({ params }: Props) {
             <Card title="AI Estimate">
               {/* Quote range */}
               <div className="mb-4">
-                <p className="text-xs uppercase tracking-wide mb-1" style={{ color: '#8a9bb0' }}>Estimated Range</p>
-                <p className="text-2xl font-bold" style={{ color: '#c9a558' }}>
+                <p className="text-xs uppercase tracking-wide mb-1" style={{ color: '#888888' }}>Estimated Range</p>
+                <p className="text-2xl font-bold" style={{ color: '#6B8C23' }}>
                   ${job.ai_quote_low.toLocaleString()} – ${job.ai_quote_high.toLocaleString()}
                 </p>
               </div>
@@ -140,12 +140,12 @@ export default async function JobDetailPage({ params }: Props) {
               {/* Classification details */}
               <div className="flex flex-col gap-2 mb-4 text-sm">
                 <div className="flex justify-between">
-                  <span style={{ color: '#8a9bb0' }}>Volume</span>
-                  <span className="capitalize" style={{ color: '#f5f7fa' }}>{job.ai_analysis.volume}</span>
+                  <span style={{ color: '#888888' }}>Volume</span>
+                  <span className="capitalize" style={{ color: '#f0f0f0' }}>{job.ai_analysis.volume}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span style={{ color: '#8a9bb0' }}>Load Size</span>
-                  <span style={{ color: '#f5f7fa' }}>
+                  <span style={{ color: '#888888' }}>Load Size</span>
+                  <span style={{ color: '#f0f0f0' }}>
                     {job.ai_analysis.load_size === 'quarter'       ? '¼ Load' :
                      job.ai_analysis.load_size === 'half'          ? '½ Load' :
                      job.ai_analysis.load_size === 'three_quarter' ? '¾ Load' :
@@ -154,50 +154,50 @@ export default async function JobDetailPage({ params }: Props) {
                 </div>
                 {job.ai_analysis.add_ons.stairs !== 'none' && (
                   <div className="flex justify-between">
-                    <span style={{ color: '#8a9bb0' }}>Stairs</span>
-                    <span style={{ color: '#f5f7fa' }}>
+                    <span style={{ color: '#888888' }}>Stairs</span>
+                    <span style={{ color: '#f0f0f0' }}>
                       {job.ai_analysis.add_ons.stairs === 'one_flight' ? '1 flight' : '2-3 flights'}
                     </span>
                   </div>
                 )}
                 {job.ai_analysis.add_ons.large_items && (
                   <div className="flex justify-between">
-                    <span style={{ color: '#8a9bb0' }}>Large Items</span>
-                    <span style={{ color: '#f5f7fa' }}>Yes</span>
+                    <span style={{ color: '#888888' }}>Large Items</span>
+                    <span style={{ color: '#f0f0f0' }}>Yes</span>
                   </div>
                 )}
                 {job.ai_analysis.add_ons.appliances > 0 && (
                   <div className="flex justify-between">
-                    <span style={{ color: '#8a9bb0' }}>Appliances</span>
-                    <span style={{ color: '#f5f7fa' }}>{job.ai_analysis.add_ons.appliances}</span>
+                    <span style={{ color: '#888888' }}>Appliances</span>
+                    <span style={{ color: '#f0f0f0' }}>{job.ai_analysis.add_ons.appliances}</span>
                   </div>
                 )}
                 {job.ai_analysis.add_ons.heavy_debris && (
                   <div className="flex justify-between">
-                    <span style={{ color: '#8a9bb0' }}>Heavy Debris</span>
-                    <span style={{ color: '#f5f7fa' }}>Yes</span>
+                    <span style={{ color: '#888888' }}>Heavy Debris</span>
+                    <span style={{ color: '#f0f0f0' }}>Yes</span>
                   </div>
                 )}
               </div>
 
               {/* Reasoning */}
-              <p className="text-xs leading-relaxed mb-3" style={{ color: '#8a9bb0' }}>
+              <p className="text-xs leading-relaxed mb-3" style={{ color: '#888888' }}>
                 {job.ai_analysis.reasoning}
               </p>
 
               {/* Confidence badge */}
               <div className="flex items-center gap-2">
-                <span className="text-xs" style={{ color: '#8a9bb0' }}>Confidence:</span>
+                <span className="text-xs" style={{ color: '#888888' }}>Confidence:</span>
                 <span
                   className="px-2 py-0.5 rounded-full text-xs font-semibold uppercase"
                   style={{
                     background:
                       job.ai_confidence === 'high'   ? 'rgba(34,197,94,0.15)'  :
-                      job.ai_confidence === 'medium' ? 'rgba(201,165,88,0.15)' :
+                      job.ai_confidence === 'medium' ? 'rgba(107,140,35,0.15)' :
                                                        'rgba(248,113,113,0.15)',
                     color:
                       job.ai_confidence === 'high'   ? '#86efac' :
-                      job.ai_confidence === 'medium' ? '#c9a558' :
+                      job.ai_confidence === 'medium' ? '#6B8C23' :
                                                        '#f87171',
                   }}
                 >
@@ -214,8 +214,8 @@ export default async function JobDetailPage({ params }: Props) {
                 {jobFiles.map((file) => (
                   <div key={file.id} className="flex items-center justify-between gap-2">
                     <div className="min-w-0">
-                      <p className="text-xs font-medium truncate" style={{ color: '#f5f7fa' }}>{file.file_name}</p>
-                      <p className="text-xs" style={{ color: '#8a9bb0' }}>{FILE_TYPE_LABELS[file.file_type]}</p>
+                      <p className="text-xs font-medium truncate" style={{ color: '#f0f0f0' }}>{file.file_name}</p>
+                      <p className="text-xs" style={{ color: '#888888' }}>{FILE_TYPE_LABELS[file.file_type]}</p>
                     </div>
                     {signedUrls[file.id] && (
                       <a
@@ -223,7 +223,7 @@ export default async function JobDetailPage({ params }: Props) {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-xs flex-shrink-0 underline"
-                        style={{ color: '#c9a558' }}
+                        style={{ color: '#6B8C23' }}
                       >
                         View
                       </a>
@@ -241,8 +241,8 @@ export default async function JobDetailPage({ params }: Props) {
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-xl p-5" style={{ background: '#1a2f4a', border: '1px solid #243d60' }}>
-      <h2 className="text-xs uppercase tracking-widest font-semibold mb-4" style={{ color: '#8a9bb0' }}>{title}</h2>
+    <div className="rounded-xl p-5" style={{ background: '#1c1c1c', border: '1px solid #2e2e2e' }}>
+      <h2 className="text-xs uppercase tracking-widest font-semibold mb-4" style={{ color: '#888888' }}>{title}</h2>
       {children}
     </div>
   )
@@ -251,8 +251,8 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
 function Detail({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs uppercase tracking-wide mb-0.5" style={{ color: '#8a9bb0' }}>{label}</p>
-      <p className="text-sm font-medium" style={{ color: '#f5f7fa' }}>{value}</p>
+      <p className="text-xs uppercase tracking-wide mb-0.5" style={{ color: '#888888' }}>{label}</p>
+      <p className="text-sm font-medium" style={{ color: '#f0f0f0' }}>{value}</p>
     </div>
   )
 }

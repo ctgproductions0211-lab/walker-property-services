@@ -5,7 +5,7 @@ import type { Job, JobStatus } from '@/types'
 
 const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
   received:    { bg: 'rgba(59,130,246,0.15)',  text: '#93c5fd' },
-  quoted:      { bg: 'rgba(201,165,88,0.15)',  text: '#c9a558' },
+  quoted:      { bg: 'rgba(107,140,35,0.15)',  text: '#6B8C23' },
   scheduled:   { bg: 'rgba(139,92,246,0.15)',  text: '#c4b5fd' },
   in_progress: { bg: 'rgba(249,115,22,0.15)',  text: '#fdba74' },
   complete:    { bg: 'rgba(34,197,94,0.15)',   text: '#86efac' },
@@ -52,8 +52,8 @@ export default async function DashboardPage({ searchParams }: Props) {
       {/* Page header */}
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-2xl font-bold" style={{ color: '#f5f7fa' }}>Job Requests</h1>
-          <p className="text-sm mt-0.5" style={{ color: '#8a9bb0' }}>
+          <h1 className="text-2xl font-bold" style={{ color: '#f0f0f0' }}>Job Requests</h1>
+          <p className="text-sm mt-0.5" style={{ color: '#888888' }}>
             {allJobs.length} job{allJobs.length !== 1 ? 's' : ''} {status ? `with status "${JOB_STATUS_LABELS[status as JobStatus]}"` : 'total'}
           </p>
         </div>
@@ -70,9 +70,9 @@ export default async function DashboardPage({ searchParams }: Props) {
               href={key ? `?status=${key}` : '/dashboard'}
               className="px-3 py-1.5 rounded-lg text-sm font-medium transition-all"
               style={{
-                background: isActive ? '#c9a558' : '#1a2f4a',
-                color:      isActive ? '#0d1b2a' : '#8a9bb0',
-                border:     isActive ? '1px solid #c9a558' : '1px solid #243d60',
+                background: isActive ? '#6B8C23' : '#1c1c1c',
+                color:      isActive ? '#ffffff' : '#888888',
+                border:     isActive ? '1px solid #6B8C23' : '1px solid #2e2e2e',
               }}
             >
               {label} {count > 0 && <span className="ml-1 opacity-70">{count}</span>}
@@ -85,23 +85,23 @@ export default async function DashboardPage({ searchParams }: Props) {
       {allJobs.length === 0 ? (
         <div
           className="rounded-xl p-16 text-center"
-          style={{ background: '#1a2f4a', border: '1px solid #243d60' }}
+          style={{ background: '#1c1c1c', border: '1px solid #2e2e2e' }}
         >
-          <p className="text-lg font-medium mb-1" style={{ color: '#f5f7fa' }}>No jobs found</p>
-          <p style={{ color: '#8a9bb0' }}>
+          <p className="text-lg font-medium mb-1" style={{ color: '#f0f0f0' }}>No jobs found</p>
+          <p style={{ color: '#888888' }}>
             {status ? 'No jobs match this filter.' : 'Job requests will appear here once customers submit them.'}
           </p>
         </div>
       ) : (
-        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #243d60' }}>
+        <div className="rounded-xl overflow-hidden" style={{ border: '1px solid #2e2e2e' }}>
           <table className="w-full">
             <thead>
-              <tr style={{ background: '#1a2f4a', borderBottom: '1px solid #243d60' }}>
+              <tr style={{ background: '#1c1c1c', borderBottom: '1px solid #2e2e2e' }}>
                 {['Customer', 'Address', 'Service', 'Status', 'Quote', 'Submitted'].map(col => (
                   <th
                     key={col}
                     className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider"
-                    style={{ color: '#8a9bb0' }}
+                    style={{ color: '#888888' }}
                   >
                     {col}
                   </th>
@@ -115,23 +115,23 @@ export default async function DashboardPage({ searchParams }: Props) {
                   <tr
                     key={job.id}
                     style={{
-                      background:   i % 2 === 0 ? '#0d1b2a' : 'rgba(26,47,74,0.4)',
-                      borderBottom: '1px solid #243d60',
+                      background:   i % 2 === 0 ? '#111111' : 'rgba(28,28,28,0.4)',
+                      borderBottom: '1px solid #2e2e2e',
                     }}
                     className="hover:bg-white/5 transition-colors"
                   >
                     <td className="px-4 py-3">
-                      <Link href={`/dashboard/jobs/${job.id}`} className="block hover:underline font-medium" style={{ color: '#f5f7fa' }}>
+                      <Link href={`/dashboard/jobs/${job.id}`} className="block hover:underline font-medium" style={{ color: '#f0f0f0' }}>
                         {job.customer_name}
                       </Link>
                       {job.customer_email && (
-                        <span className="text-xs" style={{ color: '#8a9bb0' }}>{job.customer_email}</span>
+                        <span className="text-xs" style={{ color: '#888888' }}>{job.customer_email}</span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-sm max-w-xs truncate" style={{ color: '#8a9bb0' }}>
+                    <td className="px-4 py-3 text-sm max-w-xs truncate" style={{ color: '#888888' }}>
                       {job.property_address}
                     </td>
-                    <td className="px-4 py-3 text-sm" style={{ color: '#f5f7fa' }}>
+                    <td className="px-4 py-3 text-sm" style={{ color: '#f0f0f0' }}>
                       {JOB_TYPE_LABELS[job.job_type]}
                     </td>
                     <td className="px-4 py-3">
@@ -142,10 +142,10 @@ export default async function DashboardPage({ searchParams }: Props) {
                         {JOB_STATUS_LABELS[job.status]}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-sm font-medium" style={{ color: job.quote_amount ? '#c9a558' : '#8a9bb0' }}>
+                    <td className="px-4 py-3 text-sm font-medium" style={{ color: job.quote_amount ? '#6B8C23' : '#888888' }}>
                       {job.quote_amount ? `$${job.quote_amount.toLocaleString()}` : '—'}
                     </td>
-                    <td className="px-4 py-3 text-sm" style={{ color: '#8a9bb0' }}>
+                    <td className="px-4 py-3 text-sm" style={{ color: '#888888' }}>
                       {new Date(job.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     </td>
                   </tr>
