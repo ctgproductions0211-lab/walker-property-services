@@ -17,6 +17,9 @@ export default function HomePage() {
             <Link href="/services" className="text-sm" style={{ color: '#888888' }}>
               Services
             </Link>
+            <Link href="/about" className="text-sm" style={{ color: '#888888' }}>
+              About
+            </Link>
             <Link
               href="/dashboard/login"
               className="text-sm px-3 py-1.5 rounded border transition-colors hover:bg-white/5"
@@ -39,14 +42,13 @@ export default function HomePage() {
           Philadelphia &amp; Surrounding Areas
         </div>
 
-        <h1 className="text-5xl font-bold leading-tight mb-4 max-w-2xl" style={{ color: '#f0f0f0' }}>
-          Property Services,{' '}
-          <span style={{ color: '#6B8C23' }}>Done Right.</span>
+        <h1 className="text-5xl font-bold leading-tight mb-4 max-w-3xl" style={{ color: '#f0f0f0' }}>
+          Property Turnovers, Cleanouts &amp; Demolition{' '}
+          <span style={{ color: '#6B8C23' }}>in Philadelphia.</span>
         </h1>
 
-        <p className="text-lg mb-12 max-w-xl" style={{ color: '#888888' }}>
-          Cleanouts, light demolition, turnover prep, and site preparation —
-          professional service with real-time job tracking.
+        <p className="text-xl font-semibold mb-12 max-w-md" style={{ color: '#f0f0f0' }}>
+          One call. One invoice. One vendor.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 w-full max-w-sm">
@@ -66,6 +68,45 @@ export default function HomePage() {
           </Link>
         </div>
       </main>
+
+      {/* Who We Serve */}
+      <section className="border-t border-white/10 px-6 py-12">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-xs uppercase tracking-widest font-semibold mb-6 text-center" style={{ color: '#888888' }}>
+            Who We Serve
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              {
+                title: 'Property Managers',
+                desc: 'Recurring turnover partner with documented before/after reporting and fast scheduling.',
+                href: '/property-managers',
+              },
+              {
+                title: 'Real Estate Developers',
+                desc: 'Site prep, interior demolition, and debris removal across every phase of development.',
+                href: '/developers',
+              },
+              {
+                title: 'Landlords & Realtors',
+                desc: 'Fast cleanouts, turnover prep, and painting between tenants and listings.',
+                href: '/about',
+              },
+            ].map(({ title, desc, href }) => (
+              <Link
+                key={title}
+                href={href}
+                className="rounded-xl p-5 flex flex-col gap-2 transition-all hover:brightness-110"
+                style={{ background: '#1c1c1c', border: '1px solid #2e2e2e' }}
+              >
+                <span className="font-semibold text-sm" style={{ color: '#6B8C23' }}>{title}</span>
+                <span className="text-xs leading-relaxed" style={{ color: '#888888' }}>{desc}</span>
+                <span className="text-xs mt-2" style={{ color: '#6B8C23' }}>Learn more →</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Services strip */}
       <section className="border-t border-white/10 px-6 py-10">
