@@ -8,7 +8,7 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="text-center mb-10">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.jpg" alt="Walker Property Services" style={{ height: '120px', width: '120px', objectFit: 'contain', margin: '0 auto 16px' }} />
+          <img src="/logo.jpg" alt="Walker Property Services" style={{ height: '120px', width: '120px', objectFit: 'contain', margin: '0 auto 16px', mixBlendMode: 'screen' }} />
           <h1 className="text-2xl font-bold" style={{ color: '#f0f0f0' }}>Walker Property Services</h1>
           <p className="text-sm mt-1" style={{ color: '#888888' }}>Staff Portal</p>
         </div>

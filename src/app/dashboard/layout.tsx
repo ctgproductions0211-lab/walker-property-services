@@ -14,7 +14,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           <div className="flex items-center gap-6">
             <Link href="/dashboard" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.jpg" alt="" aria-hidden="true" style={{ height: '36px', width: '36px', objectFit: 'contain', flexShrink: 0 }} />
+              <img src="/logo.jpg" alt="" aria-hidden="true" style={{ height: '36px', width: '36px', objectFit: 'contain', flexShrink: 0, mixBlendMode: 'screen' }} />
               <span className="font-semibold text-sm" style={{ color: '#f0f0f0' }}>Walker Property Services</span>
             </Link>
             <span
