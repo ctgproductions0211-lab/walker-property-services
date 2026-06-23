@@ -14,13 +14,18 @@ export default function HomePage() {
               Walker Property Services
             </span>
           </div>
-          <Link
-            href="/dashboard/login"
-            className="text-sm px-3 py-1.5 rounded border transition-colors hover:bg-white/5"
-            style={{ color: '#888888', borderColor: '#2e2e2e' }}
-          >
-            Staff Login
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link href="/services" className="text-sm" style={{ color: '#888888' }}>
+              Services
+            </Link>
+            <Link
+              href="/dashboard/login"
+              className="text-sm px-3 py-1.5 rounded border transition-colors hover:bg-white/5"
+              style={{ color: '#888888', borderColor: '#2e2e2e' }}
+            >
+              Staff Login
+            </Link>
+          </div>
         </div>
       </header>
 
