@@ -97,6 +97,28 @@ export default async function JobDetailPage({ params }: Props) {
                   </p>
                 </div>
               )}
+              {(job.utm_source || job.utm_medium || job.utm_campaign) && (
+                <div className="col-span-2 pt-3 border-t" style={{ borderColor: '#2e2e2e' }}>
+                  <p className="text-xs uppercase tracking-wide mb-2" style={{ color: '#888888' }}>Lead Source</p>
+                  <div className="flex flex-wrap gap-2">
+                    {job.utm_source && (
+                      <span className="text-xs px-2 py-1 rounded font-mono" style={{ background: 'rgba(107,140,35,0.12)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.25)' }}>
+                        source: {job.utm_source}
+                      </span>
+                    )}
+                    {job.utm_medium && (
+                      <span className="text-xs px-2 py-1 rounded font-mono" style={{ background: '#1a1a1a', color: '#888888', border: '1px solid #2e2e2e' }}>
+                        medium: {job.utm_medium}
+                      </span>
+                    )}
+                    {job.utm_campaign && (
+                      <span className="text-xs px-2 py-1 rounded font-mono" style={{ background: '#1a1a1a', color: '#888888', border: '1px solid #2e2e2e' }}>
+                        campaign: {job.utm_campaign}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </Card>
 

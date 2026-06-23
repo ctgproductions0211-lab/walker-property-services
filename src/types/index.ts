@@ -34,6 +34,9 @@ export interface Job {
   ai_quote_high: number | null
   ai_analysis: AIAnalysis | null
   ai_confidence: 'low' | 'medium' | 'high' | null
+  utm_source: string | null
+  utm_medium: string | null
+  utm_campaign: string | null
 }
 
 export interface JobFile {

@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import Link from 'next/link'
 import SubmitForm from './_components/SubmitForm'
 
@@ -26,7 +27,9 @@ export default function SubmitPage() {
           </p>
         </div>
 
-        <SubmitForm />
+        <Suspense fallback={null}>
+          <SubmitForm />
+        </Suspense>
       </main>
     </div>
   )

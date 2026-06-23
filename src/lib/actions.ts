@@ -33,6 +33,9 @@ export async function submitJob(prevState: { error?: string } | null, formData: 
   const jobType         = formData.get('job_type') as string
   const customerNotes   = formData.get('customer_notes') as string
   const photos          = formData.getAll('photos') as File[]
+  const utmSource       = (formData.get('utm_source')   as string) || null
+  const utmMedium       = (formData.get('utm_medium')   as string) || null
+  const utmCampaign     = (formData.get('utm_campaign') as string) || null
 
   if (!customerName || !propertyAddress || !jobType) {
     return { error: 'Please fill in all required fields.' }
@@ -78,6 +81,9 @@ export async function submitJob(prevState: { error?: string } | null, formData: 
       ai_quote_high:    aiResult?.quoteHigh  ?? null,
       ai_analysis:      aiResult?.analysis   ?? null,
       ai_confidence:    aiResult?.analysis?.confidence ?? null,
+      utm_source:       utmSource,
+      utm_medium:       utmMedium,
+      utm_campaign:     utmCampaign,
     })
     .select()
     .single()

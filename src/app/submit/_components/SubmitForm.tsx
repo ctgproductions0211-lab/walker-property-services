@@ -1,6 +1,7 @@
 'use client'
 
 import { useActionState, useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { submitJob } from '@/lib/actions'
 
 const inputStyle = {
@@ -25,9 +26,17 @@ const labelStyle = {
 export default function SubmitForm() {
   const [state, action, pending] = useActionState(submitJob, null)
   const fileRef = useRef<HTMLInputElement>(null)
+  const searchParams = useSearchParams()
+
+  const utmSource   = searchParams.get('utm_source')   ?? ''
+  const utmMedium   = searchParams.get('utm_medium')   ?? ''
+  const utmCampaign = searchParams.get('utm_campaign') ?? ''
 
   return (
     <form action={action} className="flex flex-col gap-5">
+      <input type="hidden" name="utm_source"   value={utmSource} />
+      <input type="hidden" name="utm_medium"   value={utmMedium} />
+      <input type="hidden" name="utm_campaign" value={utmCampaign} />
       {state?.error && (
         <div className="p-4 rounded-lg text-sm" style={{ background: 'rgba(220,38,38,0.15)', color: '#fca5a5', border: '1px solid rgba(220,38,38,0.3)' }}>
           {state.error}
