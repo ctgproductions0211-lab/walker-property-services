@@ -246,7 +246,12 @@ export default function PropertyManagersPage() {
       </main>
 
       <footer className="border-t border-white/10 px-6 py-6 text-center">
-        <p className="text-sm" style={{ color: '#888888' }}>
+        <div className="flex items-center justify-center gap-4 mb-2">
+          <Link href="/faq" className="text-xs hover:underline" style={{ color: '#888888' }}>FAQ</Link>
+          <Link href="/services" className="text-xs hover:underline" style={{ color: '#888888' }}>Services</Link>
+          <Link href="/submit" className="text-xs hover:underline" style={{ color: '#888888' }}>Request a Quote</Link>
+        </div>
+        <p className="text-xs" style={{ color: '#888888' }}>
           © {new Date().getFullYear()} Walker Property Services · Philadelphia &amp; Tri-State Area
         </p>
       </footer>

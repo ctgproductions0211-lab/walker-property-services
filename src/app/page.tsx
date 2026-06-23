@@ -20,6 +20,9 @@ export default function HomePage() {
             <Link href="/about" className="text-sm" style={{ color: '#888888' }}>
               About
             </Link>
+            <Link href="/faq" className="text-sm" style={{ color: '#888888' }}>
+              FAQ
+            </Link>
             <Link
               href="/dashboard/login"
               className="text-sm px-3 py-1.5 rounded border transition-colors hover:bg-white/5"
