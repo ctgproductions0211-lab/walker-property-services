@@ -36,11 +36,16 @@ export default function Footer() {
 
         {/* Site links */}
         <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1">
-          <Link href="/services" className="text-xs hover:underline" style={{ color: '#888888' }}>Services</Link>
-          <Link href="/about"    className="text-xs hover:underline" style={{ color: '#888888' }}>About</Link>
-          <Link href="/faq"      className="text-xs hover:underline" style={{ color: '#888888' }}>FAQ</Link>
-          <Link href="/submit"   className="text-xs hover:underline" style={{ color: '#888888' }}>Request a Quote</Link>
+          <Link href="/services"  className="text-xs hover:underline" style={{ color: '#888888' }}>Services</Link>
+          <Link href="/about"     className="text-xs hover:underline" style={{ color: '#888888' }}>About</Link>
+          <Link href="/locations" className="text-xs hover:underline" style={{ color: '#888888' }}>Locations</Link>
+          <Link href="/faq"       className="text-xs hover:underline" style={{ color: '#888888' }}>FAQ</Link>
+          <Link href="/submit"    className="text-xs hover:underline" style={{ color: '#888888' }}>Request a Quote</Link>
         </div>
+
+        <p className="text-xs text-center max-w-lg" style={{ color: '#888888' }}>
+          Walker Property Services proudly serves Philadelphia and the Main Line, with extended service throughout the Pennsylvania, New Jersey, and Delaware tri-state area.
+        </p>
 
         <p className="text-xs" style={{ color: '#888888' }}>
           © {new Date().getFullYear()} Walker Property Services · Philadelphia &amp; Tri-State Area
