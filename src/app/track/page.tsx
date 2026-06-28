@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import Footer from '@/components/Footer'
 
 async function handleLookup(formData: FormData) {
   'use server'
@@ -20,7 +21,7 @@ export default function TrackPage() {
         </div>
       </header>
 
-      <main className="flex-1 flex items-center justify-center px-6 py-12">
+      <main className="flex-1 flex items-center justify-center px-6 py-8">
         <div className="max-w-md w-full">
           <div className="text-center mb-8">
             <div
@@ -72,6 +73,7 @@ export default function TrackPage() {
           </p>
         </div>
       </main>
+      <Footer />
     </div>
   )
 }

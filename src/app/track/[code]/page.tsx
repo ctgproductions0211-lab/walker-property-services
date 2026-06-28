@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase-server'
 import { JOB_TYPE_LABELS, JOB_STATUS_LABELS } from '@/types'
 import type { Job } from '@/types'
+import Footer from '@/components/Footer'
 
 const STATUS_STEPS = ['received', 'quoted', 'scheduled', 'in_progress', 'complete'] as const
 
@@ -206,6 +207,7 @@ export default async function TrackJobPage({ params }: Props) {
           </Link>
         </div>
       </main>
+      <Footer />
     </div>
   )
 }

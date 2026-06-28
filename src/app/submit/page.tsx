@@ -1,6 +1,7 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
 import SubmitForm from './_components/SubmitForm'
+import Footer from '@/components/Footer'
 
 export default function SubmitPage() {
   return (
@@ -31,6 +32,7 @@ export default function SubmitPage() {
           <SubmitForm />
         </Suspense>
       </main>
+      <Footer />
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { SERVICE_CATEGORIES } from '@/lib/services'
+import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'Services — Walker Property Services',
@@ -114,12 +115,7 @@ export default function ServicesPage() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-white/10 px-6 py-6 text-center">
-        <p className="text-sm" style={{ color: '#888888' }}>
-          © {new Date().getFullYear()} Walker Property Services · Philadelphia &amp; Tri-State Area
-        </p>
-      </footer>
+      <Footer />
     </div>
   )
 }

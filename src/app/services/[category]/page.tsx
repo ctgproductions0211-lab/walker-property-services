@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { SERVICE_CATEGORIES, getCategoryBySlug } from '@/lib/services'
+import Footer from '@/components/Footer'
 
 interface Props {
   params: Promise<{ category: string }>
@@ -143,12 +144,7 @@ export default async function CategoryPage({ params }: Props) {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-white/10 px-6 py-6 text-center">
-        <p className="text-sm" style={{ color: '#888888' }}>
-          © {new Date().getFullYear()} Walker Property Services · Philadelphia &amp; Tri-State Area
-        </p>
-      </footer>
+      <Footer />
     </div>
   )
 }

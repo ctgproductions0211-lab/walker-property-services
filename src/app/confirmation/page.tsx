@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase-server'
 import type { Job } from '@/types'
+import Footer from '@/components/Footer'
 
 interface Props {
   searchParams: Promise<{ code?: string }>
@@ -28,7 +29,8 @@ export default async function ConfirmationPage({ searchParams }: Props) {
   const hasAIQuote = job?.ai_quote_low && job?.ai_quote_high
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-6 py-12" style={{ background: '#111111' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#111111' }}>
+      <div className="flex-1 flex items-center justify-center px-6 py-12">
       <div className="max-w-md w-full text-center">
         {/* Checkmark */}
         <div
@@ -108,6 +110,8 @@ export default async function ConfirmationPage({ searchParams }: Props) {
           </Link>
         </div>
       </div>
+      </div>
+      <Footer />
     </div>
   )
 }
