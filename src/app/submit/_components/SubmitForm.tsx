@@ -1,6 +1,7 @@
 'use client'
 
-import { useActionState, useRef } from 'react'
+import { useActionState, useRef, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { submitJob } from '@/lib/actions'
 
 const inputStyle = {
@@ -22,12 +23,44 @@ const labelStyle = {
   color: '#6B8C23',
 } as const
 
+type ServicePath = 'dumpster' | 'truck' | null
+
+const DUMPSTER_OPTIONS = [
+  { value: '10yd', label: '10 Yard' },
+  { value: '15yd', label: '15 Yard' },
+  { value: '20yd', label: '20 Yard' },
+  { value: '30yd', label: '30 Yard' },
+]
+
+const TRUCK_OPTIONS = [
+  { value: 'half', label: 'Half Load' },
+  { value: 'full', label: 'Full Load' },
+]
+
 export default function SubmitForm() {
   const [state, action, pending] = useActionState(submitJob, null)
   const fileRef = useRef<HTMLInputElement>(null)
+  const searchParams = useSearchParams()
+  const [servicePath, setServicePath] = useState<ServicePath>(null)
+  const [serviceDetail, setServiceDetail] = useState<string | null>(null)
+
+  const utmSource   = searchParams.get('utm_source')   ?? ''
+  const utmMedium   = searchParams.get('utm_medium')   ?? ''
+  const utmCampaign = searchParams.get('utm_campaign') ?? ''
+
+  function handlePathChange(path: ServicePath) {
+    setServicePath(path)
+    setServiceDetail(null)
+  }
+
+  const serviceSelectionValue = servicePath && serviceDetail ? `${servicePath}_${serviceDetail}` : ''
 
   return (
     <form action={action} className="flex flex-col gap-5">
+      <input type="hidden" name="utm_source"   value={utmSource} />
+      <input type="hidden" name="utm_medium"   value={utmMedium} />
+      <input type="hidden" name="utm_campaign" value={utmCampaign} />
+      <input type="hidden" name="service_selection" value={serviceSelectionValue} />
       {state?.error && (
         <div className="p-4 rounded-lg text-sm" style={{ background: 'rgba(220,38,38,0.15)', color: '#fca5a5', border: '1px solid rgba(220,38,38,0.3)' }}>
           {state.error}
@@ -102,6 +135,81 @@ export default function SubmitForm() {
           <option value="turnover_prep">Turnover Prep</option>
           <option value="site_prep">Site Prep</option>
         </select>
+      </div>
+
+      {/* Service selection */}
+      <div className="flex flex-col gap-3">
+        <label style={labelStyle}>Service Type</label>
+        <p className="text-xs -mt-2" style={{ color: '#888888' }}>
+          This helps us understand your project size — we&apos;ll follow up with a tailored quote.
+        </p>
+
+        {/* Path buttons */}
+        <div className="grid grid-cols-2 gap-3">
+          {[
+            { path: 'dumpster' as const, label: 'Dumpster Rental', icon: '🗑️' },
+            { path: 'truck' as const,    label: 'Truck Removal',   icon: '🚚' },
+          ].map(({ path, label, icon }) => (
+            <button
+              key={path}
+              type="button"
+              onClick={() => handlePathChange(path)}
+              className="rounded-lg p-4 text-center transition-all"
+              style={{
+                background: servicePath === path ? 'rgba(107,140,35,0.15)' : '#1c1c1c',
+                border: servicePath === path ? '1px solid #6B8C23' : '1px solid #2e2e2e',
+                color: servicePath === path ? '#6B8C23' : '#888888',
+                cursor: 'pointer',
+              }}
+            >
+              <div className="text-2xl mb-1">{icon}</div>
+              <div className="text-xs font-semibold">{label}</div>
+            </button>
+          ))}
+        </div>
+
+        {/* Sub-options */}
+        {servicePath === 'dumpster' && (
+          <div className="grid grid-cols-4 gap-2">
+            {DUMPSTER_OPTIONS.map(({ value, label }) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setServiceDetail(value)}
+                className="rounded-lg py-2.5 text-xs font-semibold transition-all"
+                style={{
+                  background: serviceDetail === value ? 'rgba(107,140,35,0.15)' : '#1c1c1c',
+                  border: serviceDetail === value ? '1px solid #6B8C23' : '1px solid #2e2e2e',
+                  color: serviceDetail === value ? '#6B8C23' : '#888888',
+                  cursor: 'pointer',
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {servicePath === 'truck' && (
+          <div className="grid grid-cols-2 gap-2">
+            {TRUCK_OPTIONS.map(({ value, label }) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => setServiceDetail(value)}
+                className="rounded-lg py-2.5 text-xs font-semibold transition-all"
+                style={{
+                  background: serviceDetail === value ? 'rgba(107,140,35,0.15)' : '#1c1c1c',
+                  border: serviceDetail === value ? '1px solid #6B8C23' : '1px solid #2e2e2e',
+                  color: serviceDetail === value ? '#6B8C23' : '#888888',
+                  cursor: 'pointer',
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Description */}

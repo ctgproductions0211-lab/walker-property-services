@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase-server'
-import { JOB_TYPE_LABELS, JOB_STATUS_LABELS, FILE_TYPE_LABELS } from '@/types'
+import { JOB_TYPE_LABELS, JOB_STATUS_LABELS, FILE_TYPE_LABELS, SERVICE_SELECTION_LABELS } from '@/types'
 import type { Job, JobFile } from '@/types'
 import StatusForm from './_components/StatusForm'
 import QuoteForm from './_components/QuoteForm'
@@ -84,6 +84,17 @@ export default async function JobDetailPage({ params }: Props) {
             <div className="grid grid-cols-2 gap-4">
               <Detail label="Service Type" value={JOB_TYPE_LABELS[job.job_type]} />
               <Detail label="Submitted" value={new Date(job.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} />
+              {job.service_selection && (
+                <div className="col-span-2">
+                  <p className="text-xs uppercase tracking-wide mb-0.5" style={{ color: '#888888' }}>Customer Service Selection</p>
+                  <span
+                    className="inline-block text-xs font-semibold px-2.5 py-1 rounded"
+                    style={{ background: 'rgba(107,140,35,0.12)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.25)' }}
+                  >
+                    {SERVICE_SELECTION_LABELS[job.service_selection] ?? job.service_selection}
+                  </span>
+                </div>
+              )}
               {job.customer_email && <Detail label="Email" value={job.customer_email} />}
               {job.customer_phone && <Detail label="Phone" value={job.customer_phone} />}
               <div className="col-span-2">

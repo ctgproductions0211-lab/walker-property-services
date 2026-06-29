@@ -34,6 +34,19 @@ export interface Job {
   ai_quote_high: number | null
   ai_analysis: AIAnalysis | null
   ai_confidence: 'low' | 'medium' | 'high' | null
+  utm_source: string | null
+  utm_medium: string | null
+  utm_campaign: string | null
+  service_selection: string | null
+}
+
+export const SERVICE_SELECTION_LABELS: Record<string, string> = {
+  'dumpster_10yd': 'Dumpster Rental — 10 Yard',
+  'dumpster_15yd': 'Dumpster Rental — 15 Yard',
+  'dumpster_20yd': 'Dumpster Rental — 20 Yard',
+  'dumpster_30yd': 'Dumpster Rental — 30 Yard',
+  'truck_half':    'Crew Removal — Half Load',
+  'truck_full':    'Crew Removal — Full Load',
 }
 
 export interface JobFile {

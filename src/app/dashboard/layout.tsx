@@ -24,6 +24,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
             >
               Internal Dashboard
             </span>
+            <Link
+              href="/dashboard/pricing"
+              className="text-xs hover:underline hidden sm:block"
+              style={{ color: '#888888' }}
+            >
+              Pricing Ref
+            </Link>
           </div>
 
           <div className="flex items-center gap-4">
