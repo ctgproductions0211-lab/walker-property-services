@@ -13,9 +13,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="/dashboard" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
-              <div className="w-7 h-7 rounded-full flex items-center justify-center" style={{ background: '#6B8C23' }}>
-                <span className="font-bold text-xs" style={{ color: '#ffffff' }}>W</span>
-              </div>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.jpg" alt="" aria-hidden="true" style={{ height: '36px', width: '36px', objectFit: 'contain', flexShrink: 0, mixBlendMode: 'screen' }} />
               <span className="font-semibold text-sm" style={{ color: '#f0f0f0' }}>Walker Property Services</span>
             </Link>
             <span
