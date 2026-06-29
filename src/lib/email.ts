@@ -2,8 +2,6 @@ import { Resend } from 'resend'
 import { JOB_TYPE_LABELS } from '@/types'
 import type { JobType, AIAnalysis } from '@/types'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
 const NOTIFY_EMAIL = 'ctgproductions0211@gmail.com'
 const FROM_EMAIL   = 'Walker Property Services <onboarding@resend.dev>'
 
@@ -22,6 +20,7 @@ interface JobNotificationParams {
 }
 
 export async function sendJobNotificationEmail(params: JobNotificationParams) {
+  const resend = new Resend(process.env.RESEND_API_KEY)
   const {
     customerName,
     customerEmail,
