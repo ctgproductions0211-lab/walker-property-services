@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
 
@@ -75,8 +76,7 @@ export default function FAQPage() {
         <header className="border-b border-white/10 px-6 py-4">
           <div className="max-w-3xl mx-auto flex items-center justify-between">
             <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.jpg" alt="" aria-hidden="true" style={{ height: '40px', width: '40px', objectFit: 'contain', flexShrink: 0, mixBlendMode: 'screen' }} />
+                <Image src="/logo.jpg" alt="" aria-hidden={true} width={40} height={40} style={{ objectFit: 'contain', flexShrink: 0, mixBlendMode: 'screen' }} />
               <span className="font-semibold" style={{ color: '#f0f0f0' }}>Walker Property Services</span>
             </Link>
             <div className="flex items-center gap-4">
