@@ -7,9 +7,40 @@ export const metadata: Metadata = {
   description: 'Junk removal, property cleanouts, demolition, and dumpster rentals across Philadelphia and the tri-state area. Free estimates — fast response for landlords, investors, and homeowners.',
 }
 
+const localBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HomeAndConstructionBusiness',
+  name: 'Walker Property Services',
+  description:
+    'Property cleanout and demolition company serving Philadelphia and the tri-state area. Services include junk removal, interior demolition, estate cleanouts, property turnovers, and dumpster rentals.',
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://walkerpropservices.com',
+  email: 'Edward@walkerpropservices.com',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Philadelphia',
+    addressRegion: 'PA',
+    addressCountry: 'US',
+  },
+  areaServed: [
+    { '@type': 'City',                name: 'Philadelphia' },
+    { '@type': 'AdministrativeArea',  name: 'Delaware County, PA' },
+    { '@type': 'AdministrativeArea',  name: 'Montgomery County, PA' },
+    { '@type': 'AdministrativeArea',  name: 'Bucks County, PA' },
+    { '@type': 'AdministrativeArea',  name: 'Camden County, NJ' },
+    { '@type': 'AdministrativeArea',  name: 'New Castle County, DE' },
+  ],
+  sameAs: ['https://www.instagram.com/walker_a.n.d/'],
+  priceRange: '$$',
+}
+
 export default function HomePage() {
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'linear-gradient(160deg, #111111 0%, #1c1c1c 100%)' }}>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
+      <div className="min-h-screen flex flex-col" style={{ background: 'linear-gradient(160deg, #111111 0%, #1c1c1c 100%)' }}>
       {/* Header */}
       <header className="border-b border-white/10 px-6 py-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -137,5 +168,6 @@ export default function HomePage() {
 
       <Footer />
     </div>
+    </>
   )
 }
