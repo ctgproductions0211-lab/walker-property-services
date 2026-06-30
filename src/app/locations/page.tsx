@@ -1,63 +1,12 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
+import { LOCATION_REGIONS } from '@/lib/locations'
 
 export const metadata: Metadata = {
-  title: 'Service Areas — Walker Property Services',
-  description: 'Walker Property Services proudly serves Philadelphia and the Main Line, with extended service throughout the Pennsylvania, New Jersey, and Delaware tri-state area.',
+  title: 'Service Areas | Philadelphia & Tri-State | Walker Property Services',
+  description: 'Walker Property Services covers Philadelphia, the Main Line, Delaware County, Montgomery County, Bucks County, South Jersey, and Delaware.',
 }
-
-const AREAS = [
-  {
-    region: 'Philadelphia',
-    locations: [
-      'Center City', 'North Philadelphia', 'South Philadelphia', 'West Philadelphia',
-      'Northeast Philadelphia', 'Germantown', 'Kensington', 'Fishtown',
-      'Manayunk', 'Chestnut Hill', 'Roxborough',
-    ],
-  },
-  {
-    region: 'The Main Line',
-    locations: [
-      'Ardmore', 'Haverford', 'Bryn Mawr', 'Wayne', 'Paoli',
-      'Malvern', 'Berwyn', 'Devon', 'Radnor', 'Villanova',
-    ],
-  },
-  {
-    region: 'Delaware County',
-    locations: [
-      'Media', 'Upper Darby', 'Chester', 'Springfield', 'Ridley Park',
-      'Drexel Hill', 'Swarthmore', 'Brookhaven',
-    ],
-  },
-  {
-    region: 'Montgomery County',
-    locations: [
-      'Norristown', 'King of Prussia', 'Lansdale', 'Horsham', 'Ambler',
-      'Jenkintown', 'Abington', 'Conshohocken', 'Plymouth Meeting',
-    ],
-  },
-  {
-    region: 'Bucks County',
-    locations: [
-      'Doylestown', 'Bensalem', 'Bristol', 'Levittown', 'Langhorne',
-      'Newtown', 'Yardley', 'Warminster',
-    ],
-  },
-  {
-    region: 'South Jersey',
-    locations: [
-      'Camden', 'Cherry Hill', 'Voorhees', 'Moorestown', 'Mount Laurel',
-      'Marlton', 'Haddonfield', 'Collingswood',
-    ],
-  },
-  {
-    region: 'Delaware',
-    locations: [
-      'Wilmington', 'Newark', 'New Castle', 'Middletown',
-    ],
-  },
-]
 
 export default function LocationsPage() {
   return (
@@ -96,13 +45,14 @@ export default function LocationsPage() {
             Where We Work
           </h1>
           <p className="text-lg leading-relaxed max-w-2xl" style={{ color: '#888888' }}>
-            Walker Property Services proudly serves Philadelphia and the Main Line, with extended service throughout the Pennsylvania, New Jersey, and Delaware tri-state area.
+            Walker Property Services proudly serves Philadelphia and the Main Line, with extended
+            service throughout the Pennsylvania, New Jersey, and Delaware tri-state area.
           </p>
         </div>
 
         {/* Area grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-16">
-          {AREAS.map(({ region, locations }) => (
+          {LOCATION_REGIONS.map(({ region, locations }) => (
             <div
               key={region}
               className="rounded-xl p-5 flex flex-col gap-3"
@@ -110,13 +60,19 @@ export default function LocationsPage() {
             >
               <h2 className="font-bold text-sm" style={{ color: '#6B8C23' }}>{region}</h2>
               <ul className="flex flex-col gap-1.5">
-                {locations.map(loc => (
-                  <li key={loc} className="flex items-center gap-2">
+                {locations.map(({ name, slug }) => (
+                  <li key={slug} className="flex items-center gap-2">
                     <span
                       className="w-1 h-1 rounded-full flex-shrink-0"
                       style={{ background: '#6B8C23' }}
                     />
-                    <span className="text-xs" style={{ color: '#888888' }}>{loc}</span>
+                    <Link
+                      href={`/locations/${slug}`}
+                      className="text-xs hover:underline"
+                      style={{ color: '#888888' }}
+                    >
+                      {name}
+                    </Link>
                   </li>
                 ))}
               </ul>
