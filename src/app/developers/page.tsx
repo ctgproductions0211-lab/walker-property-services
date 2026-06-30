@@ -3,8 +3,8 @@ import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'For Developers — Walker Property Services',
-  description: 'Walker Property Services provides site prep, interior demolition, and debris removal for real estate developers across Philadelphia and the tri-state area.',
+  title: 'For Real Estate Developers | Walker Property Services',
+  description: 'Site prep, interior demolition, and debris removal for developers across Philadelphia and the tri-state area. Fast, reliable crews ready for your next project.',
 }
 
 const SERVICES = [

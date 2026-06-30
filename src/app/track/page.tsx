@@ -1,6 +1,13 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
+import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
+
+export const metadata: Metadata = {
+  title: 'Track Your Job | Walker Property Services',
+  description: 'Look up the status of your Walker Property Services job request using your tracking code.',
+  robots: { index: false, follow: false },
+}
 
 async function handleLookup(formData: FormData) {
   'use server'

@@ -1,5 +1,11 @@
+import type { Metadata } from 'next'
 import { loginStaff } from '@/lib/actions'
 import LoginForm from './_components/LoginForm'
+
+export const metadata: Metadata = {
+  title: 'Staff Login | Walker Property Services',
+  robots: { index: false, follow: false },
+}
 
 export default function LoginPage() {
   return (

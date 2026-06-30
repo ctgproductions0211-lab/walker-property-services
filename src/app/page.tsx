@@ -1,5 +1,11 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
+
+export const metadata: Metadata = {
+  title: 'Walker Property Services | Philadelphia Junk Removal & Property Cleanouts',
+  description: 'Junk removal, property cleanouts, demolition, and dumpster rentals across Philadelphia and the tri-state area. Free estimates — fast response for landlords, investors, and homeowners.',
+}
 
 export default function HomePage() {
   return (

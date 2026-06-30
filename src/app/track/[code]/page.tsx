@@ -1,8 +1,22 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase-server'
 import { JOB_TYPE_LABELS, JOB_STATUS_LABELS } from '@/types'
 import type { Job } from '@/types'
 import Footer from '@/components/Footer'
+
+interface Props {
+  params: Promise<{ code: string }>
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { code } = await params
+  return {
+    title: `Job ${code.toUpperCase()} Status | Walker Property Services`,
+    description: 'Track your job request status with Walker Property Services.',
+    robots: { index: false, follow: false },
+  }
+}
 
 const STATUS_STEPS = ['received', 'quoted', 'scheduled', 'in_progress', 'complete'] as const
 
@@ -12,10 +26,6 @@ const STATUS_COLORS: Record<string, { bg: string; text: string; border: string }
   scheduled:   { bg: 'rgba(139,92,246,0.15)',   text: '#c4b5fd', border: 'rgba(139,92,246,0.4)' },
   in_progress: { bg: 'rgba(249,115,22,0.15)',   text: '#fdba74', border: 'rgba(249,115,22,0.4)' },
   complete:    { bg: 'rgba(34,197,94,0.15)',    text: '#86efac', border: 'rgba(34,197,94,0.4)' },
-}
-
-interface Props {
-  params: Promise<{ code: string }>
 }
 
 export default async function TrackJobPage({ params }: Props) {

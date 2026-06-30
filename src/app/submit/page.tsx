@@ -1,7 +1,13 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import SubmitForm from './_components/SubmitForm'
 import Footer from '@/components/Footer'
+
+export const metadata: Metadata = {
+  title: 'Request a Free Quote | Walker Property Services',
+  description: 'Get a fast, free estimate for property cleanouts, demolition, and turnovers in Philadelphia. Submit photos and details for a personalized quote.',
+}
 
 export default function SubmitPage() {
   return (

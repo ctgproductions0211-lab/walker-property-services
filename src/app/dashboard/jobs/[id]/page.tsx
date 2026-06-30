@@ -1,8 +1,16 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase-server'
 import { JOB_TYPE_LABELS, JOB_STATUS_LABELS, FILE_TYPE_LABELS, SERVICE_SELECTION_LABELS } from '@/types'
 import type { Job, JobFile } from '@/types'
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Job Details | Walker Property Services',
+    robots: { index: false, follow: false },
+  }
+}
 import StatusForm from './_components/StatusForm'
 import QuoteForm from './_components/QuoteForm'
 import NotesForm from './_components/NotesForm'

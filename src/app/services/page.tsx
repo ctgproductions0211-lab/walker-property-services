@@ -4,8 +4,8 @@ import { SERVICE_CATEGORIES } from '@/lib/services'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
-  title: 'Services — Walker Property Services',
-  description: 'Junk removal, demolition, cleanouts, painting, and property preparation across Philadelphia and the tri-state area.',
+  title: 'Services | Walker Property Services',
+  description: 'Junk removal, interior demolition, property cleanouts, dumpster rentals, and painting in Philadelphia and the tri-state area. Free estimates.',
 }
 
 const CATEGORY_ICONS: Record<string, string> = {

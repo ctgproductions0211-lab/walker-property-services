@@ -1,7 +1,13 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase-server'
 import { JOB_TYPE_LABELS, JOB_STATUS_LABELS } from '@/types'
 import type { Job, JobStatus } from '@/types'
+
+export const metadata: Metadata = {
+  title: 'Dashboard | Walker Property Services',
+  robots: { index: false, follow: false },
+}
 
 const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
   received:    { bg: 'rgba(59,130,246,0.15)',  text: '#93c5fd' },

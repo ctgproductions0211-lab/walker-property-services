@@ -1,7 +1,14 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase-server'
+import type { Metadata } from 'next'
 import type { Job } from '@/types'
 import Footer from '@/components/Footer'
+
+export const metadata: Metadata = {
+  title: 'Request Received | Walker Property Services',
+  description: "Your job request has been submitted. We'll follow up with a free estimate shortly.",
+  robots: { index: false, follow: false },
+}
 
 interface Props {
   searchParams: Promise<{ code?: string }>
