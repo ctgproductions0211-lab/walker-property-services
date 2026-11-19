@@ -19,12 +19,19 @@ function generateTrackingCode(): string {
 // ── Customer: Submit a new job request ────────────────────────────────────────
 
 export async function submitJob(prevState: { error?: string } | null, formData: FormData) {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim()) {
     console.error('[submitJob] Missing Supabase environment variables')
     return { error: 'Server configuration error — missing environment variables. Please contact support.' }
   }
 
-  const supabase = await createClient()
+  const supabase = await createClient().catch((clientErr: unknown) => {
+    const cause = clientErr instanceof Error ? (clientErr as NodeJS.ErrnoException).cause : undefined
+    console.error('[submitJob] Supabase client init failed:', clientErr instanceof Error ? clientErr.message : clientErr, cause ? `(cause: ${String(cause)})` : '')
+    return null
+  })
+  if (!supabase) {
+    return { error: 'Unable to connect to the database. Please try again or contact us directly.' }
+  }
 
   const customerName    = formData.get('customer_name') as string
   const customerEmail   = formData.get('customer_email') as string
@@ -95,34 +102,41 @@ export async function submitJob(prevState: { error?: string } | null, formData: 
     return { error: `Something went wrong submitting your request. Please try again. (${insertError?.message ?? 'no job returned'})` }
   }
 
-  // Upload any photos the customer attached
+  // Upload any photos the customer attached — non-fatal; don't block confirmed submission
   const uploadedFiles: { name: string; path: string }[] = []
+  try {
+    for (const photo of validPhotos) {
+      const ext = photo.name.split('.').pop()
+      const filePath = `${job.id}/submission/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+      const { error: uploadError } = await supabase.storage
+        .from('job-files')
+        .upload(filePath, photo)
 
-  for (const photo of validPhotos) {
-    const ext = photo.name.split('.').pop()
-    const filePath = `${job.id}/submission/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-    const { error: uploadError } = await supabase.storage
-      .from('job-files')
-      .upload(filePath, photo)
-
-    if (!uploadError) {
-      await supabase.from('job_files').insert({
-        job_id:    job.id,
-        file_path: filePath,
-        file_name: photo.name,
-        file_type: 'submission_photo',
-      })
-      uploadedFiles.push({ name: photo.name, path: filePath })
+      if (!uploadError) {
+        await supabase.from('job_files').insert({
+          job_id:    job.id,
+          file_path: filePath,
+          file_name: photo.name,
+          file_type: 'submission_photo',
+        })
+        uploadedFiles.push({ name: photo.name, path: filePath })
+      }
     }
+  } catch (uploadErr) {
+    console.error('[submitJob] Photo upload failed (non-fatal):', uploadErr)
   }
 
-  // Generate 7-day signed URLs for the email
+  // Generate 7-day signed URLs for the email — non-fatal
   const photoLinks: { name: string; url: string }[] = []
-  for (const file of uploadedFiles) {
-    const { data } = await supabase.storage
-      .from('job-files')
-      .createSignedUrl(file.path, 60 * 60 * 24 * 7)
-    if (data) photoLinks.push({ name: file.name, url: data.signedUrl })
+  try {
+    for (const file of uploadedFiles) {
+      const { data } = await supabase.storage
+        .from('job-files')
+        .createSignedUrl(file.path, 60 * 60 * 24 * 7)
+      if (data) photoLinks.push({ name: file.name, url: data.signedUrl })
+    }
+  } catch (signErr) {
+    console.error('[submitJob] Signed URL generation failed (non-fatal):', signErr)
   }
 
   // Send notification email — don't let a failure block the submission
