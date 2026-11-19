@@ -33,6 +33,9 @@ export async function submitJob(prevState: { error?: string } | null, formData: 
     return { error: 'Unable to connect to the database. Please try again or contact us directly.' }
   }
 
+  const _urlDebug = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? '').trim()
+  console.log('[submitJob] Supabase URL:', _urlDebug.slice(0, 50), '| raw len:', process.env.NEXT_PUBLIC_SUPABASE_URL?.length, '| trimmed len:', _urlDebug.length)
+
   const customerName    = formData.get('customer_name') as string
   const customerEmail   = formData.get('customer_email') as string
   const customerPhone   = formData.get('customer_phone') as string
@@ -98,7 +101,7 @@ export async function submitJob(prevState: { error?: string } | null, formData: 
     .single()
 
   if (insertError || !job) {
-    console.error('[submitJob] Insert failed:', insertError?.message, insertError?.code, insertError?.details)
+    console.error('[submitJob] Insert failed — message:', insertError?.message, '| code:', insertError?.code, '| details:', insertError?.details, '| hint:', (insertError as any)?.hint)
     return { error: `Something went wrong submitting your request. Please try again. (${insertError?.message ?? 'no job returned'})` }
   }
 
