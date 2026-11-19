@@ -67,32 +67,42 @@ export async function submitJob(prevState: { error?: string } | null, formData: 
     console.error('[submitJob] AI quote generation failed (non-fatal):', aiErr)
   }
 
-  const { data: job, error: insertError } = await supabase
+  const baseInsertData = {
+    customer_name:    customerName,
+    customer_email:   customerEmail || null,
+    customer_phone:   customerPhone || null,
+    property_address: propertyAddress,
+    job_type:         jobType,
+    customer_notes:   customerNotes || null,
+    tracking_code:    trackingCode,
+    status:           'received',
+    ai_quote_low:     aiResult?.quoteLow   ?? null,
+    ai_quote_high:    aiResult?.quoteHigh  ?? null,
+    ai_analysis:      aiResult?.analysis   ?? null,
+    ai_confidence:    aiResult?.analysis?.confidence ?? null,
+    utm_source:       utmSource,
+    utm_medium:       utmMedium,
+    utm_campaign:     utmCampaign,
+  }
+
+  let { data: job, error: insertError } = await supabase
     .from('jobs')
-    .insert({
-      customer_name:    customerName,
-      customer_email:   customerEmail || null,
-      customer_phone:   customerPhone || null,
-      property_address: propertyAddress,
-      job_type:         jobType,
-      customer_notes:   customerNotes || null,
-      tracking_code:    trackingCode,
-      status:           'received',
-      ai_quote_low:     aiResult?.quoteLow   ?? null,
-      ai_quote_high:    aiResult?.quoteHigh  ?? null,
-      ai_analysis:      aiResult?.analysis   ?? null,
-      ai_confidence:    aiResult?.analysis?.confidence ?? null,
-      utm_source:         utmSource,
-      utm_medium:         utmMedium,
-      utm_campaign:       utmCampaign,
-      service_selection:  serviceSelection,
-    })
+    .insert({ ...baseInsertData, service_selection: serviceSelection })
     .select()
     .single()
 
+  // If service_selection column doesn't exist in DB yet, retry without it
+  // Fix: run in Supabase SQL editor: ALTER TABLE public.jobs ADD COLUMN IF NOT EXISTS service_selection text;
+  if (insertError?.code === '42703' || insertError?.message?.includes('service_selection')) {
+    console.warn('[submitJob] service_selection column missing — retrying without it. Apply migration: ALTER TABLE public.jobs ADD COLUMN IF NOT EXISTS service_selection text;')
+    const retry = await supabase.from('jobs').insert(baseInsertData).select().single()
+    job = retry.data
+    insertError = retry.error
+  }
+
   if (insertError || !job) {
     console.error('[submitJob] Insert failed:', insertError?.message, insertError?.code, insertError?.details)
-    return { error: `Something went wrong submitting your request. Please try again. (${insertError?.message ?? 'no job returned'})` }
+    return { error: 'Something went wrong submitting your request. Please try again or contact us directly.' }
   }
 
   // Upload any photos the customer attached
