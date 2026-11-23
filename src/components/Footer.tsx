@@ -41,6 +41,7 @@ export default function Footer() {
           <Link href="/locations" className="text-xs hover:underline" style={{ color: '#888888' }}>Locations</Link>
           <Link href="/faq"       className="text-xs hover:underline" style={{ color: '#888888' }}>FAQ</Link>
           <Link href="/submit"    className="text-xs hover:underline" style={{ color: '#888888' }}>Request a Quote</Link>
+          <Link href="/dashboard/login" className="text-xs hover:underline" style={{ color: '#888888' }}>Staff Login</Link>
         </div>
 
         <p className="text-xs text-center max-w-lg" style={{ color: '#888888' }}>

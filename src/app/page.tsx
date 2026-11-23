@@ -80,6 +80,13 @@ export default function HomePage() {
 
             <div className="flex items-center gap-2 flex-shrink-0">
               <Link
+                href="/dashboard/login"
+                className="hidden lg:block text-sm px-3 py-2 rounded-lg border transition-colors hover:bg-white/5"
+                style={{ color: '#c8c8c8', borderColor: '#2e2e2e' }}
+              >
+                Staff Login
+              </Link>
+              <Link
                 href="/submit"
                 className="text-sm px-4 py-2 rounded-lg font-semibold transition-all hover:brightness-110"
                 style={{ background: GREEN, color: '#fff' }}
