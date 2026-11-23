@@ -1,9 +1,9 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import type { Metadata } from 'next'
 import { getPublicJob } from '@/lib/public-job'
 import { JOB_TYPE_LABELS, JOB_STATUS_LABELS } from '@/types'
 import Footer from '@/components/Footer'
+import SiteHeader from '@/components/SiteHeader'
 
 interface Props {
   params: Promise<{ code: string }>
@@ -66,17 +66,7 @@ export default async function TrackJobPage({ params }: Props) {
 
   return (
     <div className="min-h-screen" style={{ background: '#111111' }}>
-      <header className="border-b border-white/10 px-6 py-4">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <Image src="/logo.jpg" alt="" aria-hidden={true} width={40} height={40} style={{ objectFit: 'contain', flexShrink: 0, mixBlendMode: 'screen' }} />
-            <span className="font-semibold" style={{ color: '#f0f0f0' }}>Walker Property Services</span>
-          </Link>
-          <Link href="/track" className="text-sm" style={{ color: '#888888' }}>
-            Track another
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="max-w-3xl mx-auto px-6 py-12">
         {/* Status badge + heading */}

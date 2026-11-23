@@ -39,7 +39,7 @@ export function locationFaqs(name: string): { q: string; a: string }[] {
     },
     {
       q: `How much does a cleanout cost in ${name}?`,
-      a: 'Pricing depends on how much needs to go and how hard it is to remove. Typical truck loads range from about $150 for a few items to $600 for a full load, with larger multi-load jobs quoted individually. Sending photos gets you an instant estimate range.',
+      a: 'Pricing depends on how much needs to go and how hard it is to remove. Typical truck loads range from about $150 for a few items to $600 for a full load, with larger multi-load jobs quoted individually. Sending photos with your request gets you the fastest, most accurate quote.',
     },
     {
       q: `Do you do demolition in ${name}?`,

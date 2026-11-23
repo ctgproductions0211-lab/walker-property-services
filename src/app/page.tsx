@@ -2,10 +2,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
+import SiteHeader from '@/components/SiteHeader'
 import JunkTruckAnimation from '@/components/JunkTruckAnimation'
 import { SERVICE_CATEGORIES } from '@/lib/services'
 import { LOCATION_REGIONS } from '@/lib/locations'
 import { businessJsonLd, NORTHEAST_PHILLY } from '@/lib/seo'
+import { AI_ESTIMATES_ENABLED } from '@/lib/features'
 
 export const metadata: Metadata = {
   title: 'Walker Property Services | Philadelphia Junk Removal & Property Cleanouts',
@@ -25,17 +27,9 @@ const localBusinessSchema = {
 const GREEN = '#6B8C23'
 const GREEN_LIGHT = '#9cc23a'
 
-const NAV = [
-  { href: '/services',  label: 'Services' },
-  { href: '/locations', label: 'Service Areas' },
-  { href: '/about',     label: 'About' },
-  { href: '/faq',       label: 'FAQ' },
-  { href: '/track',     label: 'Track a Job' },
-]
-
 const STEPS = [
   { title: 'Tell us about the job', desc: 'Send the address, a quick description, and a few photos. Takes about two minutes.' },
-  { title: 'Get your quote fast',   desc: 'Photos get you an instant estimate range, then we confirm a firm price with you.' },
+  { title: 'Get your quote fast',   desc: 'Photos let us price the job accurately and fast, then we confirm a firm price with you.' },
   { title: 'We clear it out',       desc: 'Our crew shows up, does the work, and leaves the space clean. Track progress online anytime.' },
 ]
 
@@ -61,64 +55,7 @@ export default function HomePage() {
       />
       <div className="min-h-screen flex flex-col overflow-x-hidden" style={{ background: '#0d0d0d' }}>
 
-        {/* Header */}
-        <header className="sticky top-0 z-30 border-b border-white/10 backdrop-blur" style={{ background: 'rgba(13,13,13,0.85)' }}>
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
-            <Link href="/" className="flex items-center gap-2.5 min-w-0">
-              <Image src="/logo.jpg" alt="" aria-hidden={true} width={40} height={40} priority style={{ objectFit: 'contain', flexShrink: 0, mixBlendMode: 'screen' }} />
-              <span className="font-semibold tracking-wide truncate text-sm sm:text-base" style={{ color: '#f0f0f0' }}>
-                Walker Property Services
-              </span>
-            </Link>
-
-            <nav className="hidden lg:flex items-center gap-6">
-              {NAV.map(({ href, label }) => (
-                <Link key={href} href={href} className="text-sm transition-colors hover:text-white" style={{ color: '#a0a0a0' }}>
-                  {label}
-                </Link>
-              ))}
-            </nav>
-
-            <div className="flex items-center gap-2 flex-shrink-0">
-              <Link
-                href="/dashboard/login"
-                className="hidden lg:block text-sm px-3 py-2 rounded-lg border transition-colors hover:bg-white/5"
-                style={{ color: '#c8c8c8', borderColor: '#2e2e2e' }}
-              >
-                Staff Login
-              </Link>
-              <Link
-                href="/submit"
-                className="text-sm px-4 py-2 rounded-lg font-semibold transition-all hover:brightness-110"
-                style={{ background: GREEN, color: '#fff' }}
-              >
-                Free Quote
-              </Link>
-              <details className="lg:hidden relative">
-                <summary
-                  className="list-none cursor-pointer p-2 rounded-lg border [&::-webkit-details-marker]:hidden"
-                  style={{ borderColor: '#2e2e2e', color: '#f0f0f0' }}
-                  aria-label="Open menu"
-                >
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
-                    <path d="M4 6h16M4 12h16M4 18h16" />
-                  </svg>
-                </summary>
-                <div className="absolute right-0 mt-2 w-56 rounded-xl p-2 shadow-2xl" style={{ background: '#161616', border: '1px solid #2e2e2e' }}>
-                  {NAV.map(({ href, label }) => (
-                    <Link key={href} href={href} className="block px-3 py-2.5 rounded-lg text-sm hover:bg-white/5" style={{ color: '#e0e0e0' }}>
-                      {label}
-                    </Link>
-                  ))}
-                  <div className="my-1 border-t" style={{ borderColor: '#2e2e2e' }} />
-                  <Link href="/dashboard/login" className="block px-3 py-2.5 rounded-lg text-sm hover:bg-white/5" style={{ color: '#888888' }}>
-                    Staff Login
-                  </Link>
-                </div>
-              </details>
-            </div>
-          </div>
-        </header>
+        <SiteHeader />
 
         {/* Hero */}
         <section className="relative px-4 sm:px-6 pt-6 pb-8 lg:py-8 overflow-hidden lg:min-h-[calc(100svh-65px)] lg:flex lg:items-center">
@@ -165,7 +102,7 @@ export default function HomePage() {
               </div>
 
               <ul className="hidden sm:grid mt-5 lg:mt-6 grid-cols-2 gap-x-4 gap-y-1.5 text-sm max-w-md mx-auto lg:mx-0 text-left" style={{ color: '#a0a0a0' }}>
-                {['Free estimates', 'Instant photo quotes', 'Before & after photos', 'Track your job online'].map((t) => (
+                {['Free estimates', AI_ESTIMATES_ENABLED ? 'Instant photo quotes' : 'Quotes from photos', 'Before & after photos', 'Track your job online'].map((t) => (
                   <li key={t} className="flex items-center gap-2">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={GREEN_LIGHT} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="flex-shrink-0">
                       <polyline points="20 6 9 17 4 12" />

@@ -1,22 +1,15 @@
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { createClient } from '@/lib/supabase-server'
-import { JOB_TYPE_LABELS, JOB_STATUS_LABELS, SERVICE_SELECTION_LABELS } from '@/types'
-import type { Job, JobStatus } from '@/types'
+import { JOB_TYPE_LABELS, SERVICE_SELECTION_LABELS } from '@/types'
+import type { Job } from '@/types'
+import StatusSelect from './_components/StatusSelect'
+import AutoRefresh from './_components/AutoRefresh'
 
 export const metadata: Metadata = {
   title: 'Dashboard | Walker Property Services',
   robots: { index: false, follow: false },
 }
-
-const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
-  received:    { bg: 'rgba(59,130,246,0.15)',  text: '#93c5fd' },
-  quoted:      { bg: 'rgba(107,140,35,0.18)',  text: '#9cc23a' },
-  scheduled:   { bg: 'rgba(139,92,246,0.15)',  text: '#c4b5fd' },
-  in_progress: { bg: 'rgba(249,115,22,0.15)',  text: '#fdba74' },
-  complete:    { bg: 'rgba(34,197,94,0.15)',   text: '#86efac' },
-}
-const FALLBACK_COLORS = { bg: 'rgba(136,136,136,0.15)', text: '#c8c8c8' }
 
 const FILTERS: { key: string; label: string }[] = [
   { key: '',            label: 'All' },
@@ -118,9 +111,15 @@ export default async function DashboardPage({ searchParams }: Props) {
             Every “Request a Job” form submission lands here.
           </p>
         </div>
-        <Link href={filterHref(status)} className="text-xs px-3 py-2 rounded-md border hover:bg-white/5" style={{ color: '#c8c8c8', borderColor: '#2e2e2e' }}>
-          ↻ Refresh
-        </Link>
+        <div className="flex gap-2">
+          <a href="/dashboard/export" className="text-xs px-3 py-2 rounded-md border hover:bg-white/5" style={{ color: '#c8c8c8', borderColor: '#2e2e2e' }}>
+            ⤓ Export CSV
+          </a>
+          <Link href={filterHref(status)} className="text-xs px-3 py-2 rounded-md border hover:bg-white/5" style={{ color: '#c8c8c8', borderColor: '#2e2e2e' }}>
+            ↻ Refresh
+          </Link>
+        </div>
+        <AutoRefresh />
       </div>
 
       {loadError && (
@@ -201,7 +200,6 @@ export default async function DashboardPage({ searchParams }: Props) {
               </thead>
               <tbody>
                 {visible.map((job) => {
-                  const colors = STATUS_COLORS[job.status] ?? FALLBACK_COLORS
                   const quote = quoteCell(job)
                   return (
                     <tr key={job.id} className="hover:bg-white/[0.03] transition-colors" style={{ borderBottom: '1px solid #222' }}>
@@ -227,9 +225,7 @@ export default async function DashboardPage({ searchParams }: Props) {
                         )}
                       </td>
                       <td className="px-4 py-3.5">
-                        <span className="px-2 py-0.5 rounded-full text-xs font-semibold whitespace-nowrap" style={{ background: colors.bg, color: colors.text }}>
-                          {JOB_STATUS_LABELS[job.status as JobStatus] ?? job.status}
-                        </span>
+                        <StatusSelect jobId={job.id} status={job.status} />
                       </td>
                       <td className="px-4 py-3.5 text-sm whitespace-nowrap">
                         <div style={{ color: quote.strong ? '#9cc23a' : '#b0b0b0', fontWeight: quote.strong ? 600 : 400 }}>{quote.text}</div>
@@ -248,7 +244,6 @@ export default async function DashboardPage({ searchParams }: Props) {
           {/* Mobile cards */}
           <div className="md:hidden flex flex-col gap-3">
             {visible.map((job) => {
-              const colors = STATUS_COLORS[job.status] ?? FALLBACK_COLORS
               const quote = quoteCell(job)
               return (
                 <div key={job.id} className="rounded-xl p-4" style={{ background: '#161616', border: '1px solid #2e2e2e' }}>
@@ -258,9 +253,9 @@ export default async function DashboardPage({ searchParams }: Props) {
                         {isFresh(job) && <span className="w-2 h-2 rounded-full" style={{ background: '#3b82f6' }} />}
                         {job.customer_name}
                       </span>
-                      <span className="px-2 py-0.5 rounded-full text-xs font-semibold whitespace-nowrap" style={{ background: colors.bg, color: colors.text }}>
-                        {JOB_STATUS_LABELS[job.status as JobStatus] ?? job.status}
-                      </span>
+                      {isFresh(job) && (
+                        <span className="px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider" style={{ background: 'rgba(59,130,246,0.2)', color: '#93c5fd' }}>New</span>
+                      )}
                     </div>
                     <p className="text-sm mb-2" style={{ color: '#b0b0b0' }}>{job.property_address}</p>
                     <div className="flex items-center justify-between text-xs" style={{ color: '#888888' }}>
@@ -268,8 +263,12 @@ export default async function DashboardPage({ searchParams }: Props) {
                       <span style={{ color: quote.strong ? '#9cc23a' : '#b0b0b0', fontWeight: quote.strong ? 600 : 400 }}>{quote.text}</span>
                     </div>
                   </Link>
+                  <div className="flex items-center justify-between gap-2 mt-3 pt-3" style={{ borderTop: '1px solid #2e2e2e' }}>
+                    <StatusSelect jobId={job.id} status={job.status} />
+                    <span className="text-xs font-mono" style={{ color: '#666' }}>{job.tracking_code}</span>
+                  </div>
                   {(job.customer_phone || job.customer_email) && (
-                    <div className="flex gap-2 mt-3 pt-3" style={{ borderTop: '1px solid #2e2e2e' }}>
+                    <div className="flex gap-2 mt-3">
                       {job.customer_phone && (
                         <a href={`tel:${job.customer_phone}`} className="flex-1 text-center text-sm py-2 rounded-lg font-medium" style={{ background: 'rgba(107,140,35,0.15)', color: '#9cc23a' }}>Call</a>
                       )}

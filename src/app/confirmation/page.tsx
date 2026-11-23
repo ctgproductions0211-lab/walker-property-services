@@ -2,6 +2,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getPublicJob } from '@/lib/public-job'
 import Footer from '@/components/Footer'
+import SiteHeader from '@/components/SiteHeader'
 
 export const metadata: Metadata = {
   title: 'Request Received | Walker Property Services',
@@ -32,6 +33,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#111111' }}>
+      <SiteHeader />
       <div className="flex-1 flex items-center justify-center px-6 py-12">
       <div className="max-w-md w-full text-center">
         {/* Checkmark */}

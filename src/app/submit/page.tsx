@@ -1,9 +1,9 @@
 import { Suspense } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
 import type { Metadata } from 'next'
 import SubmitForm from './_components/SubmitForm'
+import { AI_ESTIMATES_ENABLED } from '@/lib/features'
 import Footer from '@/components/Footer'
+import SiteHeader from '@/components/SiteHeader'
 
 export const metadata: Metadata = {
   title: 'Request a Free Quote | Walker Property Services',
@@ -13,18 +13,7 @@ export const metadata: Metadata = {
 export default function SubmitPage() {
   return (
     <div className="min-h-screen" style={{ background: '#111111' }}>
-      {/* Header */}
-      <header className="border-b border-white/10 px-6 py-4">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <Image src="/logo.jpg" alt="" aria-hidden={true} width={40} height={40} style={{ objectFit: 'contain', flexShrink: 0, mixBlendMode: 'screen' }} />
-            <span className="font-semibold" style={{ color: '#f0f0f0' }}>Walker Property Services</span>
-          </Link>
-          <Link href="/track" className="text-sm" style={{ color: '#888888' }}>
-            Track a job
-          </Link>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="max-w-3xl mx-auto px-6 py-12">
         <div className="mb-8">
@@ -35,7 +24,7 @@ export default function SubmitPage() {
         </div>
 
         <Suspense fallback={null}>
-          <SubmitForm />
+          <SubmitForm instantEstimates={AI_ESTIMATES_ENABLED} />
         </Suspense>
       </main>
       <Footer />

@@ -1,8 +1,9 @@
 import Link from 'next/link'
+import MobileQuoteBar from '@/components/MobileQuoteBar'
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/10 px-6 py-8">
+    <footer className="border-t border-white/10 px-6 pt-8 pb-28 sm:pb-8">
       <div className="max-w-5xl mx-auto flex flex-col items-center gap-4">
 
         {/* Contact & social */}
@@ -52,6 +53,7 @@ export default function Footer() {
           {`© ${new Date().getFullYear()} Walker Property Services · Philadelphia & Tri-State Area`}
         </p>
       </div>
+      <MobileQuoteBar />
     </footer>
   )
 }

@@ -1,7 +1,7 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
+import SiteHeader from '@/components/SiteHeader'
 
 export const metadata: Metadata = {
   title: 'About | Walker Property Services',
@@ -68,24 +68,7 @@ const DIFFERENTIATORS = [
 export default function AboutPage() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#111111' }}>
-      <header className="border-b border-white/10 px-6 py-4">
-        <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <Image src="/logo.jpg" alt="" aria-hidden={true} width={40} height={40} style={{ objectFit: 'contain', flexShrink: 0, mixBlendMode: 'screen' }} />
-            <span className="font-semibold" style={{ color: '#f0f0f0' }}>Walker Property Services</span>
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link href="/services" className="text-sm" style={{ color: '#888888' }}>Services</Link>
-            <Link
-              href="/submit"
-              className="text-sm px-4 py-2 rounded-lg font-semibold transition-all hover:brightness-110"
-              style={{ background: '#6B8C23', color: '#ffffff' }}
-            >
-              Get a Quote
-            </Link>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-16">
 

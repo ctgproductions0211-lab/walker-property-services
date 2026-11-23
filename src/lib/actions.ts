@@ -222,8 +222,10 @@ export async function updateJobStatus(jobId: string, status: string) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) throw new Error('Unauthorized')
+  if (!['received', 'quoted', 'scheduled', 'in_progress', 'complete'].includes(status)) throw new Error('Invalid status')
 
-  await supabase.from('jobs').update({ status }).eq('id', jobId)
+  const { error } = await supabase.from('jobs').update({ status }).eq('id', jobId)
+  if (error) throw new Error('Failed to update status.')
   revalidatePath(`/dashboard/jobs/${jobId}`)
   revalidatePath('/dashboard')
 }
@@ -323,4 +325,22 @@ export async function deleteFileRecord(fileId: string, filePath: string, jobId: 
   await supabase.from('job_files').delete().eq('id', fileId)
 
   revalidatePath(`/dashboard/jobs/${jobId}`)
+}
+
+// ── Staff: Delete a job and its files ─────────────────────────────────────────
+
+export async function deleteJob(jobId: string) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('Unauthorized')
+
+  const { data: files } = await supabase.from('job_files').select('file_path').eq('job_id', jobId)
+  const paths = (files ?? []).map((f) => f.file_path as string)
+  if (paths.length > 0) await supabase.storage.from('job-files').remove(paths)
+
+  const { error } = await supabase.from('jobs').delete().eq('id', jobId)
+  if (error) throw new Error('Failed to delete job.')
+
+  revalidatePath('/dashboard')
+  redirect('/dashboard')
 }

@@ -15,6 +15,7 @@ import StatusForm from './_components/StatusForm'
 import QuoteForm from './_components/QuoteForm'
 import NotesForm from './_components/NotesForm'
 import FileUploadSection from './_components/FileUploadSection'
+import DeleteJobButton from '../../_components/DeleteJobButton'
 
 const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
   received:    { bg: 'rgba(59,130,246,0.15)',  text: '#93c5fd' },
@@ -92,9 +93,12 @@ export default async function JobDetailPage({ params }: Props) {
             </div>
           )}
         </div>
-        <div className="text-right">
-          <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: '#888888' }}>Tracking Code</p>
-          <p className="font-bold font-mono text-lg" style={{ color: '#6B8C23' }}>{job.tracking_code}</p>
+        <div className="text-left sm:text-right flex flex-col sm:items-end gap-3">
+          <div>
+            <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: '#888888' }}>Tracking Code</p>
+            <p className="font-bold font-mono text-lg" style={{ color: '#6B8C23' }}>{job.tracking_code}</p>
+          </div>
+          <DeleteJobButton jobId={job.id} />
         </div>
       </div>
 

@@ -58,7 +58,7 @@ const TRUCK_OPTIONS = [
   { value: 'full', label: 'Full Load' },
 ]
 
-export default function SubmitForm() {
+export default function SubmitForm({ instantEstimates = false }: { instantEstimates?: boolean }) {
   const [state, dispatch, pending] = useActionState(submitJob, null)
   const fileRef = useRef<HTMLInputElement>(null)
   const [photos, setPhotos] = useState<File[]>([])
@@ -297,7 +297,7 @@ export default function SubmitForm() {
         className="rounded-lg px-4 py-3 text-sm"
         style={{ background: 'rgba(107,140,35,0.08)', border: '1px solid rgba(107,140,35,0.2)', color: '#888888' }}
       >
-        <span style={{ color: '#6B8C23', fontWeight: 600 }}>Get an instant estimate —</span>{' '}
+        <span style={{ color: '#6B8C23', fontWeight: 600 }}>{instantEstimates ? 'Get an instant estimate —' : 'Get a faster, more accurate quote —'}</span>{' '}
         add a written description, upload photos, or both. Either one works. The more you share, the more accurate your quote.
       </div>
 

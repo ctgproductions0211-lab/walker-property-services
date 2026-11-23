@@ -7,17 +7,18 @@ async function getSession() {
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
-    if (!user) return { user: null, admin: 'no' as const }
+    if (!user) return { user: null, newCount: 0, admin: 'no' as const }
     const { data, error } = await supabase.rpc('is_admin')
+    const { count } = await supabase.from('jobs').select('id', { count: 'exact', head: true }).eq('status', 'received')
     // is_admin() missing means supabase/setup.sql has not been run yet
-    return { user, admin: error ? ('unknown' as const) : data ? ('yes' as const) : ('no' as const) }
+    return { user, newCount: count ?? 0, admin: error ? ('unknown' as const) : data ? ('yes' as const) : ('no' as const) }
   } catch {
-    return { user: null, admin: 'no' as const }
+    return { user: null, newCount: 0, admin: 'no' as const }
   }
 }
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { user, admin } = await getSession()
+  const { user, admin, newCount } = await getSession()
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#0d0d0d' }}>
@@ -32,7 +33,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
                 </span>
               </Link>
               <nav className="flex items-center gap-1">
-                <Link href="/dashboard" className="text-xs px-2.5 py-1.5 rounded-md hover:bg-white/5" style={{ color: '#c8c8c8' }}>Jobs</Link>
+                <Link href="/dashboard" className="text-xs px-2.5 py-1.5 rounded-md hover:bg-white/5 flex items-center gap-1.5" style={{ color: '#c8c8c8' }}>
+                  Jobs
+                  {newCount > 0 && (
+                    <span className="min-w-[18px] h-[18px] px-1 rounded-full text-[10px] font-bold flex items-center justify-center" style={{ background: '#3b82f6', color: '#fff' }}>
+                      {newCount}
+                    </span>
+                  )}
+                </Link>
                 <Link href="/dashboard/pricing" className="text-xs px-2.5 py-1.5 rounded-md hover:bg-white/5" style={{ color: '#c8c8c8' }}>Pricing</Link>
                 <Link href="/" target="_blank" className="hidden sm:block text-xs px-2.5 py-1.5 rounded-md hover:bg-white/5" style={{ color: '#888888' }}>View site ↗</Link>
               </nav>
