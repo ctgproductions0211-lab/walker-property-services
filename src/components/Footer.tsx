@@ -1,5 +1,15 @@
 import Link from 'next/link'
 import MobileQuoteBar from '@/components/MobileQuoteBar'
+import { SERVICE_CATEGORIES } from '@/lib/services'
+
+const POPULAR_AREAS = [
+  { name: 'Northeast Philadelphia', slug: 'northeast-philadelphia' },
+  { name: 'Center City', slug: 'center-city' },
+  { name: 'South Philadelphia', slug: 'south-philadelphia' },
+  { name: 'Fishtown', slug: 'fishtown' },
+  { name: 'Upper Darby', slug: 'upper-darby' },
+  { name: 'Cherry Hill, NJ', slug: 'cherry-hill' },
+]
 
 export default function Footer() {
   return (
@@ -33,6 +43,30 @@ export default function Footer() {
             </svg>
             @walker_a.n.d
           </a>
+        </div>
+
+        {/* Service and area links */}
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-3xl text-center sm:text-left mb-2">
+          <div>
+            <p className="text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: '#a0a0a0' }}>Services</p>
+            <ul className="flex flex-col gap-1">
+              {SERVICE_CATEGORIES.map((c) => (
+                <li key={c.slug}>
+                  <Link href={`/services/${c.slug}`} className="text-xs hover:underline" style={{ color: '#888888' }}>{c.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: '#a0a0a0' }}>Popular Areas</p>
+            <ul className="flex flex-col gap-1">
+              {POPULAR_AREAS.map((a) => (
+                <li key={a.slug}>
+                  <Link href={`/locations/${a.slug}`} className="text-xs hover:underline" style={{ color: '#888888' }}>{`Junk Removal ${a.name}`}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* Site links */}

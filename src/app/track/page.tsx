@@ -60,14 +60,14 @@ export default function TrackPage() {
             <button
               type="submit"
               className="w-full py-4 rounded-lg font-semibold text-base transition-all hover:brightness-110"
-              style={{ background: '#6B8C23', color: '#ffffff' }}
+              style={{ background: '#5f7d1f', color: '#ffffff' }}
             >
               Look Up Job
             </button>
           </form>
 
           <p className="text-center text-sm mt-6">
-            <Link href="/submit" style={{ color: '#6B8C23' }} className="underline">
+            <Link href="/submit" style={{ color: '#7a9e28' }} className="underline">
               Submit a new job request
             </Link>
           </p>

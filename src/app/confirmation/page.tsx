@@ -22,7 +22,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
       <div className="min-h-screen flex items-center justify-center" style={{ background: '#111111' }}>
         <div className="text-center">
           <p style={{ color: '#888888' }}>No confirmation code found.</p>
-          <Link href="/submit" className="underline mt-4 block" style={{ color: '#6B8C23' }}>Submit a job</Link>
+          <Link href="/submit" className="underline mt-4 block" style={{ color: '#7a9e28' }}>Submit a job</Link>
         </div>
       </div>
     )
@@ -62,7 +62,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
           </p>
           <div
             className="text-4xl font-bold tracking-widest py-3 px-6 rounded-lg inline-block"
-            style={{ background: 'rgba(107,140,35,0.1)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.3)', fontFamily: 'monospace' }}
+            style={{ background: 'rgba(107,140,35,0.1)', color: '#7a9e28', border: '1px solid rgba(107,140,35,0.3)', fontFamily: 'monospace' }}
           >
             {code}
           </div>
@@ -81,7 +81,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
               Estimated Quote Range
             </p>
             <div className="flex items-baseline gap-2 mb-3">
-              <span className="text-3xl font-bold" style={{ color: '#6B8C23' }}>
+              <span className="text-3xl font-bold" style={{ color: '#7a9e28' }}>
                 ${job!.ai_quote_low!.toLocaleString()} – ${job!.ai_quote_high!.toLocaleString()}
               </span>
             </div>
@@ -102,7 +102,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
             <Link
               href={`/track/${code}`}
               className="w-full py-3 rounded-lg font-semibold text-center transition-all hover:brightness-110"
-              style={{ background: '#6B8C23', color: '#ffffff' }}
+              style={{ background: '#5f7d1f', color: '#ffffff' }}
             >
               Track This Job
             </Link>
@@ -110,7 +110,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
           <Link
             href="/"
             className="w-full py-3 rounded-lg font-semibold text-center border transition-colors hover:bg-white/5"
-            style={{ color: '#6B8C23', borderColor: '#6B8C23' }}
+            style={{ color: '#7a9e28', borderColor: '#6B8C23' }}
           >
             Back to Home
           </Link>

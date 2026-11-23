@@ -2,10 +2,14 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
 import SiteHeader from '@/components/SiteHeader'
+import JsonLd from '@/components/JsonLd'
+import { getSiteUrl } from '@/lib/site-url'
+import { breadcrumbJsonLd, pageJsonLd, businessJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'About | Walker Property Services',
-  description: "Philadelphia's property cleanout and demolition crew — serving landlords, property managers, developers, and investors across the tri-state area. Free estimates.",
+  title: 'About Walker Property Services | Philadelphia Cleanout Crew',
+  description: "Philadelphia's cleanout and demolition crew serving landlords, property managers, developers, and homeowners across the tri-state area.",
+  alternates: { canonical: '/about' },
 }
 
 const SERVICES = [
@@ -69,6 +73,10 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#111111' }}>
       <SiteHeader />
+      <JsonLd data={pageJsonLd([
+    breadcrumbJsonLd([{ name: 'About', path: '/about' }]),
+    { '@type': 'AboutPage', name: 'About Walker Property Services', url: `${getSiteUrl()}/about`, about: businessJsonLd(['Philadelphia', 'Northeast Philadelphia', 'The Main Line', 'South Jersey', 'Delaware']) },
+  ])} />
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-16">
 
@@ -76,13 +84,13 @@ export default function AboutPage() {
         <div className="mb-16">
           <div
             className="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase mb-4"
-            style={{ background: 'rgba(107,140,35,0.15)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.3)' }}
+            style={{ background: 'rgba(107,140,35,0.15)', color: '#7a9e28', border: '1px solid rgba(107,140,35,0.3)' }}
           >
             Philadelphia &amp; Tri-State Area
           </div>
           <h1 className="text-4xl font-bold mb-5 max-w-2xl leading-snug" style={{ color: '#f0f0f0' }}>
             Philadelphia&apos;s Property Turnover &amp;{' '}
-            <span style={{ color: '#6B8C23' }}>Readiness Company</span>
+            <span style={{ color: '#7a9e28' }}>Readiness Company</span>
           </h1>
           <p className="text-lg leading-relaxed max-w-2xl" style={{ color: '#888888' }}>
             Walker Property Services handles the hardest part of property transitions — cleanouts, demolition,
@@ -103,13 +111,13 @@ export default function AboutPage() {
                 className="rounded-xl p-6 flex flex-col gap-3"
                 style={{ background: '#1c1c1c', border: '1px solid #2e2e2e' }}
               >
-                <h2 className="font-bold text-base" style={{ color: '#6B8C23' }}>{title}</h2>
+                <h2 className="font-bold text-base" style={{ color: '#7a9e28' }}>{title}</h2>
                 <p className="text-sm leading-relaxed" style={{ color: '#888888' }}>{desc}</p>
               </div>
             ))}
           </div>
           <p className="mt-4 text-sm">
-            <Link href="/services" className="underline" style={{ color: '#6B8C23' }}>
+            <Link href="/services" className="underline" style={{ color: '#7a9e28' }}>
               View all services →
             </Link>
           </p>
@@ -130,7 +138,7 @@ export default function AboutPage() {
               >
                 <h2 className="font-bold text-base" style={{ color: '#f0f0f0' }}>{title}</h2>
                 <p className="text-sm leading-relaxed flex-1" style={{ color: '#888888' }}>{desc}</p>
-                <span className="text-sm font-medium" style={{ color: '#6B8C23' }}>{cta}</span>
+                <span className="text-sm font-medium" style={{ color: '#7a9e28' }}>{cta}</span>
               </Link>
             ))}
           </div>
@@ -150,7 +158,7 @@ export default function AboutPage() {
               >
                 <div
                   className="w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center font-bold text-sm"
-                  style={{ background: 'rgba(107,140,35,0.15)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.3)' }}
+                  style={{ background: 'rgba(107,140,35,0.15)', color: '#7a9e28', border: '1px solid rgba(107,140,35,0.3)' }}
                 >
                   {i + 1}
                 </div>
@@ -177,7 +185,7 @@ export default function AboutPage() {
           <Link
             href="/submit"
             className="inline-block px-8 py-4 rounded-lg font-semibold transition-all hover:brightness-110 active:scale-95"
-            style={{ background: '#6B8C23', color: '#ffffff' }}
+            style={{ background: '#5f7d1f', color: '#ffffff' }}
           >
             Request a Free Quote
           </Link>

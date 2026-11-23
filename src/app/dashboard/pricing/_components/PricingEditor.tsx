@@ -49,7 +49,7 @@ export default function PricingEditor({ initialContent }: { initialContent: stri
           onClick={handleSave}
           disabled={isPending}
           className="px-5 py-2.5 rounded-lg text-sm font-semibold transition-all hover:brightness-110 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
-          style={{ background: '#6B8C23', color: '#ffffff' }}
+          style={{ background: '#5f7d1f', color: '#ffffff' }}
         >
           {isPending ? 'Saving...' : 'Save Notes'}
         </button>

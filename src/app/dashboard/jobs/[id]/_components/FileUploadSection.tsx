@@ -76,7 +76,7 @@ export default function FileUploadSection({ jobId, files, signedUrls }: Props) {
               className="px-3 py-1.5 rounded text-xs font-medium transition-all"
               style={{
                 background: fileType === value ? 'rgba(107,140,35,0.2)' : '#111111',
-                color:      fileType === value ? '#6B8C23' : '#888888',
+                color:      fileType === value ? '#7a9e28' : '#888888',
                 border:     fileType === value ? '1px solid rgba(107,140,35,0.4)' : '1px solid #2e2e2e',
               }}
             >
@@ -91,7 +91,7 @@ export default function FileUploadSection({ jobId, files, signedUrls }: Props) {
           onClick={() => fileRef.current?.click()}
         >
           {uploading ? (
-            <p className="text-sm" style={{ color: '#6B8C23' }}>Uploading...</p>
+            <p className="text-sm" style={{ color: '#7a9e28' }}>Uploading...</p>
           ) : (
             <>
               <p className="text-sm mb-0.5" style={{ color: '#f0f0f0' }}>Click to upload {FILE_TYPE_LABELS[fileType]}</p>
@@ -171,7 +171,7 @@ export default function FileUploadSection({ jobId, files, signedUrls }: Props) {
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-xs underline"
-                      style={{ color: '#6B8C23' }}
+                      style={{ color: '#7a9e28' }}
                     >
                       View
                     </a>

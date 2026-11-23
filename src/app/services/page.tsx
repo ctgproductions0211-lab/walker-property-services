@@ -3,10 +3,14 @@ import type { Metadata } from 'next'
 import { SERVICE_CATEGORIES } from '@/lib/services'
 import Footer from '@/components/Footer'
 import SiteHeader from '@/components/SiteHeader'
+import JsonLd from '@/components/JsonLd'
+import { getSiteUrl } from '@/lib/site-url'
+import { breadcrumbJsonLd, pageJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'Services | Walker Property Services',
-  description: 'Junk removal, interior demolition, property cleanouts, dumpster rentals, and painting in Philadelphia and the tri-state area. Free estimates.',
+  title: 'Junk Removal, Demolition & Cleanout Services | Walker',
+  description: 'Junk removal, property cleanouts, interior demolition, dumpster rentals, painting, and property prep in Philadelphia and the tri-state area. Free estimates.',
+  alternates: { canonical: '/services' },
 }
 
 const CATEGORY_ICONS: Record<string, string> = {
@@ -22,13 +26,17 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#111111' }}>
       <SiteHeader />
+      <JsonLd data={pageJsonLd([
+    breadcrumbJsonLd([{ name: 'Services', path: '/services' }]),
+    { '@type': 'ItemList', name: 'Walker Property Services services', itemListElement: SERVICE_CATEGORIES.map((c, i) => ({ '@type': 'ListItem', position: i + 1, name: c.title, url: `${getSiteUrl()}/services/${c.slug}` })) },
+  ])} />
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-16">
         {/* Page heading */}
         <div className="mb-12">
           <div
             className="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase mb-4"
-            style={{ background: 'rgba(107,140,35,0.15)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.3)' }}
+            style={{ background: 'rgba(107,140,35,0.15)', color: '#7a9e28', border: '1px solid rgba(107,140,35,0.3)' }}
           >
             Philadelphia &amp; Tri-State Area
           </div>
@@ -52,7 +60,7 @@ export default function ServicesPage() {
                 <span className="text-3xl">{CATEGORY_ICONS[category.slug]}</span>
                 <span
                   className="text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity"
-                  style={{ color: '#6B8C23' }}
+                  style={{ color: '#7a9e28' }}
                 >
                   View services →
                 </span>
@@ -68,7 +76,7 @@ export default function ServicesPage() {
               </div>
 
               <div className="mt-auto pt-2 border-t" style={{ borderColor: '#2e2e2e' }}>
-                <p className="text-xs" style={{ color: '#6B8C23' }}>
+                <p className="text-xs" style={{ color: '#7a9e28' }}>
                   {category.items.length} service{category.items.length !== 1 ? 's' : ''}
                 </p>
               </div>
@@ -90,7 +98,7 @@ export default function ServicesPage() {
           <Link
             href="/submit"
             className="inline-block px-8 py-4 rounded-lg font-semibold transition-all hover:brightness-110 active:scale-95"
-            style={{ background: '#6B8C23', color: '#ffffff' }}
+            style={{ background: '#5f7d1f', color: '#ffffff' }}
           >
             Request a Free Quote
           </Link>

@@ -2,10 +2,14 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
 import SiteHeader from '@/components/SiteHeader'
+import JsonLd from '@/components/JsonLd'
+import { getSiteUrl } from '@/lib/site-url'
+import { breadcrumbJsonLd, pageJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'For Real Estate Developers | Walker Property Services',
-  description: 'Site prep, interior demolition, and debris removal for developers across Philadelphia and the tri-state area. Fast, reliable crews ready for your next project.',
+  title: 'Demolition & Site Prep for Developers in Philadelphia | Walker',
+  description: 'Interior demolition, site prep, and debris removal for real estate developers across Philadelphia and the tri-state area. Free project quotes.',
+  alternates: { canonical: '/developers' },
 }
 
 const SERVICES = [
@@ -58,6 +62,10 @@ export default function DevelopersPage() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#111111' }}>
       <SiteHeader />
+      <JsonLd data={pageJsonLd([
+    breadcrumbJsonLd([{ name: 'Developers', path: '/developers' }]),
+    { '@type': 'Service', name: 'Demolition, site prep and debris removal for developers', serviceType: 'Interior demolition and site preparation', audience: { '@type': 'BusinessAudience', name: 'Real estate developers' }, provider: { '@id': `${getSiteUrl()}/#business`, '@type': 'HomeAndConstructionBusiness', name: 'Walker Property Services' }, areaServed: 'Philadelphia and the tri-state area', url: `${getSiteUrl()}/developers` },
+  ])} />
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-16">
 
@@ -65,13 +73,13 @@ export default function DevelopersPage() {
         <div className="mb-16 max-w-3xl">
           <div
             className="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase mb-4"
-            style={{ background: 'rgba(107,140,35,0.15)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.3)' }}
+            style={{ background: 'rgba(107,140,35,0.15)', color: '#7a9e28', border: '1px solid rgba(107,140,35,0.3)' }}
           >
             For Real Estate Developers
           </div>
           <h1 className="text-4xl font-bold mb-5 leading-snug" style={{ color: '#f0f0f0' }}>
             Site Prep &amp; Demo for{' '}
-            <span style={{ color: '#6B8C23' }}>Philadelphia Development Projects</span>
+            <span style={{ color: '#7a9e28' }}>Philadelphia Development Projects</span>
           </h1>
           <p className="text-lg leading-relaxed" style={{ color: '#888888' }}>
             Walker Property Services handles the pre-construction heavy work — interior demolition,
@@ -108,7 +116,7 @@ export default function DevelopersPage() {
             ))}
           </div>
           <p className="mt-4 text-sm">
-            <Link href="/services" className="underline" style={{ color: '#6B8C23' }}>
+            <Link href="/services" className="underline" style={{ color: '#7a9e28' }}>
               View full services list →
             </Link>
           </p>
@@ -137,7 +145,7 @@ export default function DevelopersPage() {
                 className="rounded-lg p-4 flex flex-col gap-1"
                 style={{ background: '#111111', border: '1px solid #2e2e2e' }}
               >
-                <span className="text-xs font-bold" style={{ color: '#6B8C23' }}>{phase}</span>
+                <span className="text-xs font-bold" style={{ color: '#7a9e28' }}>{phase}</span>
                 <span className="text-xs leading-snug" style={{ color: '#888888' }}>{detail}</span>
               </div>
             ))}
@@ -202,14 +210,14 @@ export default function DevelopersPage() {
             <Link
               href="/submit"
               className="px-8 py-4 rounded-lg font-semibold transition-all hover:brightness-110 active:scale-95"
-              style={{ background: '#6B8C23', color: '#ffffff' }}
+              style={{ background: '#5f7d1f', color: '#ffffff' }}
             >
               Submit a Job Request
             </Link>
             <Link
               href="/services"
               className="px-8 py-4 rounded-lg font-semibold border transition-colors hover:bg-white/5"
-              style={{ color: '#6B8C23', borderColor: '#6B8C23' }}
+              style={{ color: '#7a9e28', borderColor: '#6B8C23' }}
             >
               View All Services
             </Link>

@@ -2,17 +2,26 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
 import SiteHeader from '@/components/SiteHeader'
+import JsonLd from '@/components/JsonLd'
+import { getSiteUrl } from '@/lib/site-url'
+import { breadcrumbJsonLd, pageJsonLd } from '@/lib/seo'
+import { ALL_LOCATIONS } from '@/lib/locations'
 import { LOCATION_REGIONS } from '@/lib/locations'
 
 export const metadata: Metadata = {
-  title: 'Service Areas | Philadelphia & Tri-State | Walker Property Services',
-  description: 'Walker Property Services covers Philadelphia, the Main Line, Delaware County, Montgomery County, Bucks County, South Jersey, and Delaware.',
+  title: 'Service Areas: Philadelphia & Tri-State | Walker Property',
+  description: 'Junk removal and cleanouts across Philadelphia, Northeast Philly, the Main Line, Delaware, Montgomery & Bucks Counties, South Jersey, and Delaware.',
+  alternates: { canonical: '/locations' },
 }
 
 export default function LocationsPage() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#111111' }}>
       <SiteHeader />
+      <JsonLd data={pageJsonLd([
+    breadcrumbJsonLd([{ name: 'Service Areas', path: '/locations' }]),
+    { '@type': 'ItemList', name: 'Walker Property Services service areas', itemListElement: ALL_LOCATIONS.map((l, i) => ({ '@type': 'ListItem', position: i + 1, name: l.name, url: `${getSiteUrl()}/locations/${l.slug}` })) },
+  ])} />
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-16">
 
@@ -20,7 +29,7 @@ export default function LocationsPage() {
         <div className="mb-12">
           <div
             className="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase mb-4"
-            style={{ background: 'rgba(107,140,35,0.15)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.3)' }}
+            style={{ background: 'rgba(107,140,35,0.15)', color: '#7a9e28', border: '1px solid rgba(107,140,35,0.3)' }}
           >
             Service Areas
           </div>
@@ -41,13 +50,13 @@ export default function LocationsPage() {
               className="rounded-xl p-5 flex flex-col gap-3"
               style={{ background: '#1c1c1c', border: '1px solid #2e2e2e' }}
             >
-              <h2 className="font-bold text-sm" style={{ color: '#6B8C23' }}>{region}</h2>
+              <h2 className="font-bold text-sm" style={{ color: '#7a9e28' }}>{region}</h2>
               <ul className="flex flex-col gap-1.5">
                 {locations.map(({ name, slug }) => (
                   <li key={slug} className="flex items-center gap-2">
                     <span
                       className="w-1 h-1 rounded-full flex-shrink-0"
-                      style={{ background: '#6B8C23' }}
+                      style={{ background: '#5f7d1f' }}
                     />
                     <Link
                       href={`/locations/${slug}`}
@@ -75,7 +84,7 @@ export default function LocationsPage() {
           <Link
             href="/submit"
             className="inline-block text-sm underline"
-            style={{ color: '#6B8C23' }}
+            style={{ color: '#7a9e28' }}
           >
             Submit a job request →
           </Link>
@@ -95,7 +104,7 @@ export default function LocationsPage() {
           <Link
             href="/submit"
             className="inline-block px-8 py-4 rounded-lg font-semibold transition-all hover:brightness-110 active:scale-95"
-            style={{ background: '#6B8C23', color: '#ffffff' }}
+            style={{ background: '#5f7d1f', color: '#ffffff' }}
           >
             Request a Free Quote
           </Link>

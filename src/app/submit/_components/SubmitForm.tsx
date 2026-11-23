@@ -41,7 +41,7 @@ const labelStyle = {
   marginBottom: '6px',
   fontSize: '14px',
   fontWeight: '500',
-  color: '#6B8C23',
+  color: '#7a9e28',
 } as const
 
 type ServicePath = 'dumpster' | 'truck' | null
@@ -120,9 +120,9 @@ export default function SubmitForm({ instantEstimates = false }: { instantEstima
       {/* Name + Email */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label style={labelStyle}>Full Name <span style={{ color: '#fca5a5' }}>*</span></label>
+          <label htmlFor="customer_name" style={labelStyle}>Full Name <span style={{ color: '#fca5a5' }}>*</span></label>
           <input
-            name="customer_name"
+            id="customer_name" name="customer_name"
             required
             autoComplete="name"
             defaultValue={fields.customer_name}
@@ -133,9 +133,9 @@ export default function SubmitForm({ instantEstimates = false }: { instantEstima
           />
         </div>
         <div>
-          <label style={labelStyle}>Email Address</label>
+          <label htmlFor="customer_email" style={labelStyle}>Email Address</label>
           <input
-            name="customer_email"
+            id="customer_email" name="customer_email"
             type="email"
             autoComplete="email"
             defaultValue={fields.customer_email}
@@ -149,12 +149,12 @@ export default function SubmitForm({ instantEstimates = false }: { instantEstima
 
       {/* Phone */}
       <div>
-        <label style={labelStyle}>
+        <label htmlFor="customer_phone" style={labelStyle}>
           Phone Number
           <span style={{ color: '#888888', fontWeight: 400, marginLeft: '6px' }}>(phone or email required)</span>
         </label>
         <input
-          name="customer_phone"
+          id="customer_phone" name="customer_phone"
           type="tel"
           autoComplete="tel"
           defaultValue={fields.customer_phone}
@@ -167,9 +167,9 @@ export default function SubmitForm({ instantEstimates = false }: { instantEstima
 
       {/* Address */}
       <div>
-        <label style={labelStyle}>Property Address <span style={{ color: '#fca5a5' }}>*</span></label>
+        <label htmlFor="property_address" style={labelStyle}>Property Address <span style={{ color: '#fca5a5' }}>*</span></label>
         <input
-          name="property_address"
+          id="property_address" name="property_address"
           required
           autoComplete="street-address"
           defaultValue={fields.property_address}
@@ -182,9 +182,9 @@ export default function SubmitForm({ instantEstimates = false }: { instantEstima
 
       {/* Job Type */}
       <div>
-        <label style={labelStyle}>Job Type <span style={{ color: '#fca5a5' }}>*</span></label>
+        <label htmlFor="job_type" style={labelStyle}>Job Type <span style={{ color: '#fca5a5' }}>*</span></label>
         <select
-          name="job_type"
+          id="job_type" name="job_type"
           required
           key={fields.job_type ?? 'job_type'}
           defaultValue={fields.job_type ?? ''}
@@ -202,7 +202,7 @@ export default function SubmitForm({ instantEstimates = false }: { instantEstima
 
       {/* Service selection */}
       <div className="flex flex-col gap-3">
-        <label style={labelStyle}>Service Type</label>
+        <p id="service-type-label" style={labelStyle}>Service Type</p>
         <p className="text-xs -mt-2" style={{ color: '#888888' }}>
           This helps us understand your project size — we&apos;ll follow up with a tailored quote.
         </p>
@@ -221,7 +221,7 @@ export default function SubmitForm({ instantEstimates = false }: { instantEstima
               style={{
                 background: servicePath === path ? 'rgba(107,140,35,0.15)' : '#1c1c1c',
                 border: servicePath === path ? '1px solid #6B8C23' : '1px solid #2e2e2e',
-                color: servicePath === path ? '#6B8C23' : '#888888',
+                color: servicePath === path ? '#7a9e28' : '#888888',
                 cursor: 'pointer',
               }}
             >
@@ -243,7 +243,7 @@ export default function SubmitForm({ instantEstimates = false }: { instantEstima
                 style={{
                   background: serviceDetail === value ? 'rgba(107,140,35,0.15)' : '#1c1c1c',
                   border: serviceDetail === value ? '1px solid #6B8C23' : '1px solid #2e2e2e',
-                  color: serviceDetail === value ? '#6B8C23' : '#888888',
+                  color: serviceDetail === value ? '#7a9e28' : '#888888',
                   cursor: 'pointer',
                 }}
               >
@@ -264,7 +264,7 @@ export default function SubmitForm({ instantEstimates = false }: { instantEstima
                 style={{
                   background: serviceDetail === value ? 'rgba(107,140,35,0.15)' : '#1c1c1c',
                   border: serviceDetail === value ? '1px solid #6B8C23' : '1px solid #2e2e2e',
-                  color: serviceDetail === value ? '#6B8C23' : '#888888',
+                  color: serviceDetail === value ? '#7a9e28' : '#888888',
                   cursor: 'pointer',
                 }}
               >
@@ -277,12 +277,12 @@ export default function SubmitForm({ instantEstimates = false }: { instantEstima
 
       {/* Description */}
       <div>
-        <label style={labelStyle}>
+        <label htmlFor="customer_notes" style={labelStyle}>
           Describe the Job
           <span style={{ color: '#888888', fontWeight: 400, marginLeft: '6px' }}>(optional)</span>
         </label>
         <textarea
-          name="customer_notes"
+          id="customer_notes" name="customer_notes"
           rows={4}
           defaultValue={fields.customer_notes}
           placeholder="What needs to be removed or done? How many rooms? Any stairs, large appliances, or heavy debris? The more detail you give, the more accurate your estimate."
@@ -297,13 +297,13 @@ export default function SubmitForm({ instantEstimates = false }: { instantEstima
         className="rounded-lg px-4 py-3 text-sm"
         style={{ background: 'rgba(107,140,35,0.08)', border: '1px solid rgba(107,140,35,0.2)', color: '#888888' }}
       >
-        <span style={{ color: '#6B8C23', fontWeight: 600 }}>{instantEstimates ? 'Get an instant estimate —' : 'Get a faster, more accurate quote —'}</span>{' '}
+        <span style={{ color: '#7a9e28', fontWeight: 600 }}>{instantEstimates ? 'Get an instant estimate —' : 'Get a faster, more accurate quote —'}</span>{' '}
         add a written description, upload photos, or both. Either one works. The more you share, the more accurate your quote.
       </div>
 
       {/* Photos */}
       <div>
-        <label style={labelStyle}>
+        <label htmlFor="photos-input" style={labelStyle}>
           Property Photos
           <span style={{ color: '#888888', fontWeight: 400, marginLeft: '6px' }}>(optional)</span>
         </label>
@@ -322,6 +322,7 @@ export default function SubmitForm({ instantEstimates = false }: { instantEstima
           <p className="text-xs" style={{ color: '#888888' }}>Up to {MAX_PHOTOS} photos — we shrink them automatically</p>
           <input
             ref={fileRef}
+            id="photos-input"
             type="file"
             multiple
             accept="image/*"
@@ -346,7 +347,7 @@ export default function SubmitForm({ instantEstimates = false }: { instantEstima
         type="submit"
         disabled={pending || processing}
         className="w-full py-4 rounded-lg font-semibold text-base transition-all hover:brightness-110 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
-        style={{ background: '#6B8C23', color: '#ffffff' }}
+        style={{ background: '#5f7d1f', color: '#ffffff' }}
       >
         {pending ? 'Submitting...' : 'Submit Job Request'}
       </button>

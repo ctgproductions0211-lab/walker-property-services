@@ -53,7 +53,7 @@ export default function QuoteForm({ jobId, currentAmount }: Props) {
         type="submit"
         disabled={pending}
         className="w-full py-2.5 rounded-lg font-semibold text-sm transition-all hover:brightness-110 disabled:opacity-50"
-        style={{ background: '#6B8C23', color: '#ffffff' }}
+        style={{ background: '#5f7d1f', color: '#ffffff' }}
       >
         {pending ? 'Saving...' : 'Save Quote'}
       </button>

@@ -2,10 +2,14 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
 import SiteHeader from '@/components/SiteHeader'
+import JsonLd from '@/components/JsonLd'
+import { getSiteUrl } from '@/lib/site-url'
+import { breadcrumbJsonLd, pageJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'For Property Managers | Walker Property Services',
-  description: 'Fast, recurring property turnovers for Philadelphia property managers — reliable cleanouts, before/after documentation, and scheduling that works around your tenants.',
+  title: 'Turnover & Cleanout Partner for Property Managers | Walker',
+  description: 'Recurring unit turnovers and cleanouts for Philadelphia property managers — before/after photo documentation and scheduling around your tenants.',
+  alternates: { canonical: '/property-managers' },
 }
 
 const SERVICES = [
@@ -62,6 +66,10 @@ export default function PropertyManagersPage() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#111111' }}>
       <SiteHeader />
+      <JsonLd data={pageJsonLd([
+    breadcrumbJsonLd([{ name: 'Property Managers', path: '/property-managers' }]),
+    { '@type': 'Service', name: 'Unit turnovers and cleanouts for property managers', serviceType: 'Property turnover and cleanout', audience: { '@type': 'BusinessAudience', name: 'Property managers' }, provider: { '@id': `${getSiteUrl()}/#business`, '@type': 'HomeAndConstructionBusiness', name: 'Walker Property Services' }, areaServed: 'Philadelphia and the tri-state area', url: `${getSiteUrl()}/property-managers` },
+  ])} />
 
       <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-16">
 
@@ -69,13 +77,13 @@ export default function PropertyManagersPage() {
         <div className="mb-16 max-w-3xl">
           <div
             className="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase mb-4"
-            style={{ background: 'rgba(107,140,35,0.15)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.3)' }}
+            style={{ background: 'rgba(107,140,35,0.15)', color: '#7a9e28', border: '1px solid rgba(107,140,35,0.3)' }}
           >
             For Property Managers
           </div>
           <h1 className="text-4xl font-bold mb-5 leading-snug" style={{ color: '#f0f0f0' }}>
             Your Recurring Turnover Partner{' '}
-            <span style={{ color: '#6B8C23' }}>in Philadelphia</span>
+            <span style={{ color: '#7a9e28' }}>in Philadelphia</span>
           </h1>
           <p className="text-lg leading-relaxed" style={{ color: '#888888' }}>
             Vacancy costs money. Walker Property Services keeps your units moving — fast cleanouts,
@@ -160,7 +168,7 @@ export default function PropertyManagersPage() {
                 className="rounded-xl p-5 flex flex-col gap-3"
                 style={{ background: '#1c1c1c', border: '1px solid #2e2e2e' }}
               >
-                <span className="text-xs font-bold tracking-widest" style={{ color: '#6B8C23' }}>{step}</span>
+                <span className="text-xs font-bold tracking-widest" style={{ color: '#7a9e28' }}>{step}</span>
                 <h2 className="font-bold text-sm" style={{ color: '#f0f0f0' }}>{heading}</h2>
                 <p className="text-xs leading-relaxed" style={{ color: '#888888' }}>{body}</p>
               </div>
@@ -213,14 +221,14 @@ export default function PropertyManagersPage() {
             <Link
               href="/submit"
               className="px-8 py-4 rounded-lg font-semibold transition-all hover:brightness-110 active:scale-95"
-              style={{ background: '#6B8C23', color: '#ffffff' }}
+              style={{ background: '#5f7d1f', color: '#ffffff' }}
             >
               Submit a Job Request
             </Link>
             <Link
               href="/track"
               className="px-8 py-4 rounded-lg font-semibold border transition-colors hover:bg-white/5"
-              style={{ color: '#6B8C23', borderColor: '#6B8C23' }}
+              style={{ color: '#7a9e28', borderColor: '#6B8C23' }}
             >
               Track an Existing Job
             </Link>

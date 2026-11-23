@@ -33,7 +33,7 @@ export default function LoginForm({ action }: Props) {
       )}
 
       <div>
-        <label className="block text-sm font-medium mb-1.5" style={{ color: '#6B8C23' }}>Email</label>
+        <label className="block text-sm font-medium mb-1.5" style={{ color: '#7a9e28' }}>Email</label>
         <input
           name="email"
           type="email"
@@ -46,7 +46,7 @@ export default function LoginForm({ action }: Props) {
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1.5" style={{ color: '#6B8C23' }}>Password</label>
+        <label className="block text-sm font-medium mb-1.5" style={{ color: '#7a9e28' }}>Password</label>
         <input
           name="password"
           type="password"
@@ -62,7 +62,7 @@ export default function LoginForm({ action }: Props) {
         type="submit"
         disabled={pending}
         className="w-full py-3.5 rounded-lg font-semibold text-base transition-all hover:brightness-110 disabled:opacity-60 disabled:cursor-not-allowed mt-2"
-        style={{ background: '#6B8C23', color: '#ffffff' }}
+        style={{ background: '#5f7d1f', color: '#ffffff' }}
       >
         {pending ? 'Signing in...' : 'Sign In'}
       </button>

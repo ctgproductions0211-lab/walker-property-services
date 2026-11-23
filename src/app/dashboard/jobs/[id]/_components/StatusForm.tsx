@@ -55,7 +55,7 @@ export default function StatusForm({ jobId, currentStatus }: Props) {
         onClick={handleSave}
         disabled={pending || status === currentStatus}
         className="w-full py-2.5 rounded-lg font-semibold text-sm transition-all hover:brightness-110 disabled:opacity-50 disabled:cursor-not-allowed"
-        style={{ background: '#6B8C23', color: '#ffffff' }}
+        style={{ background: '#5f7d1f', color: '#ffffff' }}
       >
         {pending ? 'Saving...' : saved ? 'Saved!' : 'Update Status'}
       </button>

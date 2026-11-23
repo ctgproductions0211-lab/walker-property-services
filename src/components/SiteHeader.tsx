@@ -59,7 +59,7 @@ export default function SiteHeader() {
           <Link
             href="/submit"
             className="text-sm px-4 py-2 rounded-lg font-semibold transition-all hover:brightness-110 whitespace-nowrap"
-            style={{ background: '#6B8C23', color: '#fff' }}
+            style={{ background: '#5f7d1f', color: '#fff' }}
           >
             Free Quote
           </Link>

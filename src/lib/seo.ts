@@ -79,3 +79,17 @@ export function businessJsonLd(areaServed: string[]) {
     },
   }
 }
+
+export function breadcrumbJsonLd(trail: { name: string; path: string }[]) {
+  const url = getSiteUrl()
+  return {
+    '@type': 'BreadcrumbList',
+    itemListElement: [{ name: 'Home', path: '' }, ...trail].map((t, i) => ({
+      '@type': 'ListItem', position: i + 1, name: t.name, item: `${url}${t.path}`,
+    })),
+  }
+}
+
+export function pageJsonLd(nodes: object[]) {
+  return { '@context': 'https://schema.org', '@graph': nodes }
+}

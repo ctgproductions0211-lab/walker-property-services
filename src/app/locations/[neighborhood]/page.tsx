@@ -25,14 +25,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : `Cleanouts, demolition, and property turnovers in ${location.name}, ${location.region}. Fast service for landlords, investors, and homeowners. Free estimates.`
 
   const isNE = location.slug === NORTHEAST_PHILLY.slug
+  const full = `Junk Removal & Cleanouts in ${location.name} | Walker Property Services`
   const title = isNE
-    ? 'Junk Removal, Cleanouts & Demolition in Northeast Philadelphia | Walker Property Services'
-    : `${location.name} Junk Removal, Cleanouts & Demolition | Walker Property Services`
+    ? 'Northeast Philadelphia Junk Removal & Cleanouts | Walker'
+    : full.length <= 62 ? full : `Junk Removal & Cleanouts in ${location.name} | Walker`
 
   return {
     title,
     description: isNE
-      ? 'Junk removal, property cleanouts, estate cleanouts, demolition, and dumpster rentals in Northeast Philadelphia — Mayfair, Frankford, Tacony, Holmesburg, Fox Chase, Bustleton, Somerton, and more. Free estimates.'
+      ? 'Junk removal, cleanouts, demolition & dumpsters in Northeast Philly — Mayfair, Frankford, Tacony, Fox Chase, Bustleton, Somerton & more. Free quotes.'
       : description,
     alternates: { canonical: `/locations/${location.slug}` },
     openGraph: { title, url: `/locations/${location.slug}`, type: 'website' },
@@ -106,7 +107,7 @@ export default async function NeighborhoodPage({ params }: Props) {
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm mb-8" style={{ color: '#888888' }}>
-          <Link href="/locations" className="hover:underline" style={{ color: '#6B8C23' }}>Service Areas</Link>
+          <Link href="/locations" className="hover:underline" style={{ color: '#7a9e28' }}>Service Areas</Link>
           <span>/</span>
           <span>{location.region}</span>
           <span>/</span>
@@ -117,7 +118,7 @@ export default async function NeighborhoodPage({ params }: Props) {
         <div className="mb-12">
           <div
             className="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase mb-4"
-            style={{ background: 'rgba(107,140,35,0.15)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.3)' }}
+            style={{ background: 'rgba(107,140,35,0.15)', color: '#7a9e28', border: '1px solid rgba(107,140,35,0.3)' }}
           >
             {location.region}
           </div>
@@ -143,7 +144,7 @@ export default async function NeighborhoodPage({ params }: Props) {
                 className="flex items-center gap-3 rounded-lg px-4 py-3"
                 style={{ background: '#1c1c1c', border: '1px solid #2e2e2e' }}
               >
-                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#6B8C23' }} />
+                <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: '#5f7d1f' }} />
                 <span className="text-sm" style={{ color: '#f0f0f0' }}>{service}</span>
               </div>
             ))}
@@ -182,7 +183,7 @@ export default async function NeighborhoodPage({ params }: Props) {
             style={{ background: 'rgba(107,140,35,0.08)', border: '1px solid rgba(107,140,35,0.2)' }}
           >
             <p className="text-sm leading-relaxed" style={{ color: '#888888' }}>
-              <span className="font-semibold" style={{ color: '#6B8C23' }}>Service note: </span>
+              <span className="font-semibold" style={{ color: '#7a9e28' }}>Service note: </span>
               {location.distanceNote}
             </p>
           </div>
@@ -219,7 +220,7 @@ export default async function NeighborhoodPage({ params }: Props) {
               <details key={f.q} className="rounded-xl px-5 py-4 group" style={{ background: '#1c1c1c', border: '1px solid #2e2e2e' }}>
                 <summary className="cursor-pointer font-medium text-sm list-none flex justify-between gap-4" style={{ color: '#f0f0f0' }}>
                   {f.q}
-                  <span className="transition-transform group-open:rotate-45" style={{ color: '#6B8C23' }}>+</span>
+                  <span className="transition-transform group-open:rotate-45" style={{ color: '#7a9e28' }}>+</span>
                 </summary>
                 <p className="text-sm leading-relaxed mt-3" style={{ color: '#a0a0a0' }}>{f.a}</p>
               </details>
@@ -242,7 +243,7 @@ export default async function NeighborhoodPage({ params }: Props) {
           <Link
             href="/submit"
             className="inline-block px-8 py-4 rounded-lg font-semibold transition-all hover:brightness-110 active:scale-95"
-            style={{ background: '#6B8C23', color: '#ffffff' }}
+            style={{ background: '#5f7d1f', color: '#ffffff' }}
           >
             Request a Free Estimate
           </Link>

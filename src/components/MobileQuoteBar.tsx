@@ -18,7 +18,7 @@ export default function MobileQuoteBar() {
         <Link
           href="/submit"
           className="flex-1 text-center py-3 rounded-xl font-semibold text-sm"
-          style={{ background: '#6B8C23', color: '#fff' }}
+          style={{ background: '#5f7d1f', color: '#fff' }}
         >
           Get a Free Quote
         </Link>

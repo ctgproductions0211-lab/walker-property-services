@@ -15,16 +15,29 @@ export const metadata: Metadata = {
     type: 'website',
     siteName: 'Walker Property Services',
     locale: 'en_US',
-    images: [{ url: '/logo.jpg', alt: 'Walker Property Services' }],
   },
-  twitter: { card: 'summary' },
+  twitter: { card: 'summary_large_image' },
   robots: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={geist.variable}>
-      <body className="min-h-screen flex flex-col">{children}</body>
+      <body className="min-h-screen flex flex-col">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'Walker Property Services',
+              url: getSiteUrl(),
+              publisher: { '@id': `${getSiteUrl()}/#business` },
+            }),
+          }}
+        />
+        {children}
+      </body>
     </html>
   )
 }

@@ -10,8 +10,8 @@ import { businessJsonLd, NORTHEAST_PHILLY } from '@/lib/seo'
 import { AI_ESTIMATES_ENABLED } from '@/lib/features'
 
 export const metadata: Metadata = {
-  title: 'Walker Property Services | Philadelphia Junk Removal & Property Cleanouts',
-  description: 'Junk removal, property cleanouts, demolition, and dumpster rentals across Philadelphia, Northeast Philadelphia, and the tri-state area. Free estimates — fast response for landlords, investors, and homeowners.',
+  title: 'Philadelphia Junk Removal, Cleanouts & Demolition | Walker',
+  description: 'Junk removal, cleanouts, demolition, and dumpster rentals in Philadelphia, Northeast Philly, and the tri-state area. Free quotes from photos.',
   alternates: { canonical: '/' },
 }
 
@@ -24,7 +24,7 @@ const localBusinessSchema = {
   ]),
 }
 
-const GREEN = '#6B8C23'
+const GREEN = '#5f7d1f'
 const GREEN_LIGHT = '#9cc23a'
 
 const STEPS = [

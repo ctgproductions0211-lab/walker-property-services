@@ -2,10 +2,13 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
 import SiteHeader from '@/components/SiteHeader'
+import JsonLd from '@/components/JsonLd'
+import { breadcrumbJsonLd, pageJsonLd } from '@/lib/seo'
 
 export const metadata: Metadata = {
-  title: 'FAQ | Walker Property Services',
-  description: 'Common questions about property cleanouts, demolition, dumpster rentals, service areas, free estimates, and before/after documentation from Walker Property Services.',
+  title: 'Junk Removal & Cleanout FAQ | Walker Property Services',
+  description: 'Answers about pricing, cleanouts, demolition, dumpster rentals, service areas, free estimates, and before/after photos from Walker Property Services.',
+  alternates: { canonical: '/faq' },
 }
 
 const FAQS = [
@@ -74,6 +77,7 @@ export default function FAQPage() {
 
       <div className="min-h-screen flex flex-col" style={{ background: '#111111' }}>
         <SiteHeader />
+      <JsonLd data={pageJsonLd([breadcrumbJsonLd([{ name: 'FAQ', path: '/faq' }])])} />
 
         <main className="flex-1 max-w-3xl mx-auto w-full px-6 py-16">
 
@@ -81,7 +85,7 @@ export default function FAQPage() {
           <div className="mb-12">
             <div
               className="inline-block px-3 py-1 rounded-full text-xs font-semibold tracking-widest uppercase mb-4"
-              style={{ background: 'rgba(107,140,35,0.15)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.3)' }}
+              style={{ background: 'rgba(107,140,35,0.15)', color: '#7a9e28', border: '1px solid rgba(107,140,35,0.3)' }}
             >
               Common Questions
             </div>
@@ -91,7 +95,7 @@ export default function FAQPage() {
             <p className="text-base leading-relaxed" style={{ color: '#888888' }}>
               Everything you need to know about working with Walker Property Services.
               Don&apos;t see your question here?{' '}
-              <Link href="/submit" className="underline" style={{ color: '#6B8C23' }}>
+              <Link href="/submit" className="underline" style={{ color: '#7a9e28' }}>
                 Submit a request
               </Link>{' '}
               and we&apos;ll get back to you.
@@ -130,7 +134,7 @@ export default function FAQPage() {
             <Link
               href="/submit"
               className="inline-block px-8 py-4 rounded-lg font-semibold transition-all hover:brightness-110 active:scale-95"
-              style={{ background: '#6B8C23', color: '#ffffff' }}
+              style={{ background: '#5f7d1f', color: '#ffffff' }}
             >
               Request a Free Quote
             </Link>

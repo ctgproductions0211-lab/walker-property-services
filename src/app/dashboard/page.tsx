@@ -147,7 +147,7 @@ export default async function DashboardPage({ searchParams }: Props) {
             className="flex-1 min-w-0 rounded-lg px-3.5 py-2.5 text-sm outline-none focus:ring-1 focus:ring-[#6B8C23]"
             style={{ background: '#161616', border: '1px solid #2e2e2e', color: '#f0f0f0' }}
           />
-          <button type="submit" className="px-4 rounded-lg text-sm font-semibold" style={{ background: '#6B8C23', color: '#fff' }}>
+          <button type="submit" className="px-4 rounded-lg text-sm font-semibold" style={{ background: '#5f7d1f', color: '#fff' }}>
             Search
           </button>
         </form>
@@ -161,9 +161,9 @@ export default async function DashboardPage({ searchParams }: Props) {
                 href={filterHref(key)}
                 className="px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition-colors"
                 style={{
-                  background: active ? '#6B8C23' : '#161616',
+                  background: active ? '#5f7d1f' : '#161616',
                   color:      active ? '#ffffff' : '#a0a0a0',
-                  border:     `1px solid ${active ? '#6B8C23' : '#2e2e2e'}`,
+                  border:     `1px solid ${active ? '#5f7d1f' : '#2e2e2e'}`,
                 }}
               >
                 {label} <span className="ml-1 opacity-70">{count}</span>

@@ -75,7 +75,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
               {user.email} is signed in but isn&apos;t on the admin list. Add it to the <code>admin_users</code> table in Supabase.
             </p>
             <form action={logoutStaff}>
-              <button type="submit" className="text-sm px-4 py-2 rounded-lg" style={{ background: '#6B8C23', color: '#fff' }}>Sign out</button>
+              <button type="submit" className="text-sm px-4 py-2 rounded-lg" style={{ background: '#5f7d1f', color: '#fff' }}>Sign out</button>
             </form>
           </div>
         ) : (

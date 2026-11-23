@@ -59,7 +59,7 @@ export default async function JobDetailPage({ params }: Props) {
     <div>
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 text-sm mb-6" style={{ color: '#888888' }}>
-        <Link href="/dashboard" className="hover:underline" style={{ color: '#6B8C23' }}>Jobs</Link>
+        <Link href="/dashboard" className="hover:underline" style={{ color: '#7a9e28' }}>Jobs</Link>
         <span>/</span>
         <span>{job.customer_name}</span>
       </div>
@@ -96,7 +96,7 @@ export default async function JobDetailPage({ params }: Props) {
         <div className="text-left sm:text-right flex flex-col sm:items-end gap-3">
           <div>
             <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: '#888888' }}>Tracking Code</p>
-            <p className="font-bold font-mono text-lg" style={{ color: '#6B8C23' }}>{job.tracking_code}</p>
+            <p className="font-bold font-mono text-lg" style={{ color: '#7a9e28' }}>{job.tracking_code}</p>
           </div>
           <DeleteJobButton jobId={job.id} />
         </div>
@@ -116,7 +116,7 @@ export default async function JobDetailPage({ params }: Props) {
                   <p className="text-xs uppercase tracking-wide mb-0.5" style={{ color: '#888888' }}>Customer Service Selection</p>
                   <span
                     className="inline-block text-xs font-semibold px-2.5 py-1 rounded"
-                    style={{ background: 'rgba(107,140,35,0.12)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.25)' }}
+                    style={{ background: 'rgba(107,140,35,0.12)', color: '#7a9e28', border: '1px solid rgba(107,140,35,0.25)' }}
                   >
                     {SERVICE_SELECTION_LABELS[job.service_selection] ?? job.service_selection}
                   </span>
@@ -140,7 +140,7 @@ export default async function JobDetailPage({ params }: Props) {
                   <p className="text-xs uppercase tracking-wide mb-2" style={{ color: '#888888' }}>Lead Source</p>
                   <div className="flex flex-wrap gap-2">
                     {job.utm_source && (
-                      <span className="text-xs px-2 py-1 rounded font-mono" style={{ background: 'rgba(107,140,35,0.12)', color: '#6B8C23', border: '1px solid rgba(107,140,35,0.25)' }}>
+                      <span className="text-xs px-2 py-1 rounded font-mono" style={{ background: 'rgba(107,140,35,0.12)', color: '#7a9e28', border: '1px solid rgba(107,140,35,0.25)' }}>
                         source: {job.utm_source}
                       </span>
                     )}
@@ -192,7 +192,7 @@ export default async function JobDetailPage({ params }: Props) {
               {/* Quote range */}
               <div className="mb-4">
                 <p className="text-xs uppercase tracking-wide mb-1" style={{ color: '#888888' }}>Estimated Range</p>
-                <p className="text-2xl font-bold" style={{ color: '#6B8C23' }}>
+                <p className="text-2xl font-bold" style={{ color: '#7a9e28' }}>
                   ${job.ai_quote_low.toLocaleString()} – ${job.ai_quote_high.toLocaleString()}
                 </p>
               </div>
@@ -257,7 +257,7 @@ export default async function JobDetailPage({ params }: Props) {
                                                        'rgba(248,113,113,0.15)',
                     color:
                       job.ai_confidence === 'high'   ? '#86efac' :
-                      job.ai_confidence === 'medium' ? '#6B8C23' :
+                      job.ai_confidence === 'medium' ? '#7a9e28' :
                                                        '#f87171',
                   }}
                 >
@@ -283,7 +283,7 @@ export default async function JobDetailPage({ params }: Props) {
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-xs flex-shrink-0 underline"
-                        style={{ color: '#6B8C23' }}
+                        style={{ color: '#7a9e28' }}
                       >
                         View
                       </a>

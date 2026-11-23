@@ -46,13 +46,13 @@ export default async function TrackJobPage({ params }: Props) {
           </div>
           <h1 className="text-2xl font-bold mb-2" style={{ color: '#f0f0f0' }}>Job Not Found</h1>
           <p className="mb-6" style={{ color: '#888888' }}>
-            We couldn&apos;t find a job with tracking code <span style={{ color: '#6B8C23', fontFamily: 'monospace' }}>{code.toUpperCase()}</span>.
+            We couldn&apos;t find a job with tracking code <span style={{ color: '#7a9e28', fontFamily: 'monospace' }}>{code.toUpperCase()}</span>.
             Double-check the code and try again.
           </p>
           <Link
             href="/track"
             className="inline-block px-6 py-3 rounded-lg font-semibold transition-all hover:brightness-110"
-            style={{ background: '#6B8C23', color: '#ffffff' }}
+            style={{ background: '#5f7d1f', color: '#ffffff' }}
           >
             Try Again
           </Link>
@@ -106,7 +106,7 @@ export default async function TrackJobPage({ params }: Props) {
               style={{
                 left: '10%',
                 width: `${(currentStepIndex / (STATUS_STEPS.length - 1)) * 80}%`,
-                background: '#6B8C23',
+                background: '#5f7d1f',
               }}
             />
 
@@ -120,7 +120,7 @@ export default async function TrackJobPage({ params }: Props) {
                     <div
                       className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold z-10 transition-all"
                       style={{
-                        background: isDone ? '#6B8C23' : '#2e2e2e',
+                        background: isDone ? '#5f7d1f' : '#2e2e2e',
                         color:      isDone ? '#ffffff' : '#888888',
                         border:     isCurrent ? '2px solid #7FA027' : '2px solid transparent',
                         boxShadow:  isCurrent ? '0 0 12px rgba(107,140,35,0.4)' : 'none',
@@ -136,7 +136,7 @@ export default async function TrackJobPage({ params }: Props) {
                     </div>
                     <span
                       className="text-xs text-center leading-tight"
-                      style={{ color: isDone ? '#6B8C23' : '#888888', fontWeight: isCurrent ? '600' : '400' }}
+                      style={{ color: isDone ? '#7a9e28' : '#888888', fontWeight: isCurrent ? '600' : '400' }}
                     >
                       {JOB_STATUS_LABELS[step]}
                     </span>
@@ -175,7 +175,7 @@ export default async function TrackJobPage({ params }: Props) {
             <p className="text-xs uppercase tracking-widest font-semibold mb-1" style={{ color: '#888888' }}>
               Your Quote
             </p>
-            <p className="text-4xl font-bold" style={{ color: '#6B8C23' }}>
+            <p className="text-4xl font-bold" style={{ color: '#7a9e28' }}>
               ${job.quote_amount.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             </p>
             <p className="text-sm mt-1" style={{ color: '#888888' }}>Contact us to approve and schedule your job.</p>
@@ -186,7 +186,7 @@ export default async function TrackJobPage({ params }: Props) {
           <Link
             href="/submit"
             className="flex-1 py-3 rounded-lg font-semibold text-center border transition-colors hover:bg-white/5"
-            style={{ color: '#6B8C23', borderColor: '#6B8C23' }}
+            style={{ color: '#7a9e28', borderColor: '#6B8C23' }}
           >
             Submit Another Job
           </Link>
