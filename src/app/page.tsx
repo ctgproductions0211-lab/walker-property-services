@@ -121,49 +121,50 @@ export default function HomePage() {
         </header>
 
         {/* Hero */}
-        <section className="relative px-4 sm:px-6 pt-12 pb-16 sm:pt-20 sm:pb-24 overflow-hidden">
+        <section className="relative px-4 sm:px-6 pt-6 pb-8 lg:py-8 overflow-hidden lg:min-h-[calc(100svh-65px)] lg:flex lg:items-center">
           <div
             aria-hidden="true"
             className="absolute inset-0 pointer-events-none"
             style={{ background: 'radial-gradient(ellipse 60% 60% at 75% 30%, rgba(107,140,35,0.20), transparent 70%)' }}
           />
-          <div className="relative max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-14 items-center">
+          <div className="relative w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-12 items-center">
             <div className="text-center lg:text-left">
               <div
-                className="inline-block px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold tracking-widest uppercase mb-6"
+                className="inline-block px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold tracking-widest uppercase mb-3 lg:mb-5"
                 style={{ background: 'rgba(107,140,35,0.15)', color: GREEN_LIGHT, border: '1px solid rgba(107,140,35,0.35)' }}
               >
                 Philadelphia · Main Line · PA · NJ · DE
               </div>
 
-              <h1 className="text-4xl sm:text-5xl xl:text-6xl font-bold leading-[1.1] tracking-tight mb-5" style={{ color: '#f5f5f5' }}>
+              <h1 className="text-[28px] sm:text-4xl lg:text-[42px] xl:text-5xl font-bold leading-[1.12] tracking-tight mb-3 lg:mb-4" style={{ color: '#f5f5f5' }}>
                 Cleanouts, demolition &amp; property prep —{' '}
                 <span style={{ color: GREEN_LIGHT }}>done right, done fast.</span>
               </h1>
 
-              <p className="text-base sm:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0 mb-9" style={{ color: '#a8a8a8' }}>
-                Walker Property Services clears, guts, and preps properties across Philadelphia and the tri-state area.
+              <p className="text-sm sm:text-base lg:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0 mb-4 lg:mb-6" style={{ color: '#a8a8a8' }}>
+                <span className="hidden sm:inline">Walker Property Services clears, guts, and preps properties across Philadelphia and the tri-state area. </span>
+                <span className="sm:hidden">Philadelphia &amp; tri-state cleanouts, demo, and prep. </span>
                 One call. One invoice. One vendor.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start max-w-md sm:max-w-none mx-auto lg:mx-0">
+              <div className="grid grid-cols-2 sm:flex gap-2.5 sm:gap-3 justify-center lg:justify-start max-w-md sm:max-w-none mx-auto lg:mx-0">
                 <Link
                   href="/submit"
-                  className="px-8 py-4 rounded-xl font-semibold text-base text-center transition-all hover:brightness-110 active:scale-[0.98]"
+                  className="px-4 sm:px-7 py-3 lg:py-3.5 rounded-xl font-semibold text-sm sm:text-base text-center whitespace-nowrap transition-all hover:brightness-110 active:scale-[0.98]"
                   style={{ background: GREEN, color: '#fff', boxShadow: '0 10px 30px -10px rgba(107,140,35,0.6)' }}
                 >
-                  Get a Free Quote →
+                  Get a Free Quote<span className="hidden sm:inline"> →</span>
                 </Link>
                 <Link
                   href="/services"
-                  className="px-8 py-4 rounded-xl font-semibold text-base text-center border transition-colors hover:bg-white/5"
+                  className="px-4 sm:px-7 py-3 lg:py-3.5 rounded-xl font-semibold text-sm sm:text-base text-center whitespace-nowrap border transition-colors hover:bg-white/5"
                   style={{ color: '#f0f0f0', borderColor: '#333' }}
                 >
                   View Services
                 </Link>
               </div>
 
-              <ul className="mt-9 grid grid-cols-2 gap-x-4 gap-y-2 text-sm max-w-md mx-auto lg:mx-0 text-left" style={{ color: '#a0a0a0' }}>
+              <ul className="hidden sm:grid mt-5 lg:mt-6 grid-cols-2 gap-x-4 gap-y-1.5 text-sm max-w-md mx-auto lg:mx-0 text-left" style={{ color: '#a0a0a0' }}>
                 {['Free estimates', 'Instant photo quotes', 'Before & after photos', 'Track your job online'].map((t) => (
                   <li key={t} className="flex items-center gap-2">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={GREEN_LIGHT} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="flex-shrink-0">
@@ -176,11 +177,11 @@ export default function HomePage() {
             </div>
 
             <div
-              className="relative rounded-3xl p-6 sm:p-8 overflow-hidden"
+              className="relative rounded-2xl lg:rounded-3xl p-4 sm:p-6 overflow-hidden"
               style={{ background: 'linear-gradient(180deg, #161616 0%, #121212 100%)', border: '1px solid #2a2a2a', boxShadow: '0 30px 80px -30px rgba(107,140,35,0.35)' }}
             >
-              <div className="flex flex-col items-center text-center">
-                <div className="relative">
+              <div className="flex flex-row lg:flex-col items-center justify-center gap-4 lg:gap-0 text-left lg:text-center">
+                <div className="relative flex-shrink-0">
                   <div aria-hidden="true" className="absolute inset-0 rounded-full blur-2xl" style={{ background: 'rgba(107,140,35,0.25)' }} />
                   <Image
                     src="/logo.jpg"
@@ -188,15 +189,18 @@ export default function HomePage() {
                     width={200}
                     height={200}
                     priority
-                    className="relative w-36 h-36 sm:w-48 sm:h-48"
+                    className="relative w-20 h-20 sm:w-28 sm:h-28 lg:w-36 lg:h-36 xl:w-40 xl:h-40"
                     style={{ objectFit: 'contain', mixBlendMode: 'screen' }}
                   />
                 </div>
-                <p className="mt-3 text-xs uppercase tracking-[0.25em] font-semibold" style={{ color: '#8a8a8a' }}>
-                  Junk out. Space back.
-                </p>
+                <div className="lg:mt-2">
+                  <p className="text-xs uppercase tracking-[0.25em] font-semibold" style={{ color: '#8a8a8a' }}>
+                    Junk out. Space back.
+                  </p>
+                  <p className="lg:hidden text-xs mt-1" style={{ color: '#6f6f6f' }}>Free estimates · Track your job online</p>
+                </div>
               </div>
-              <div className="mt-6 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8">
+              <div className="mt-2 lg:mt-3 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6">
                 <JunkTruckAnimation />
               </div>
             </div>
