@@ -1,7 +1,6 @@
 import Link from 'next/link'
-import { createClient } from '@/lib/supabase-server'
 import type { Metadata } from 'next'
-import type { Job } from '@/types'
+import { getPublicJob } from '@/lib/public-job'
 import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
@@ -11,11 +10,11 @@ export const metadata: Metadata = {
 }
 
 interface Props {
-  searchParams: Promise<{ code?: string }>
+  searchParams: Promise<{ code?: string; queued?: string }>
 }
 
 export default async function ConfirmationPage({ searchParams }: Props) {
-  const { code } = await searchParams
+  const { code, queued } = await searchParams
 
   if (!code) {
     return (
@@ -28,11 +27,7 @@ export default async function ConfirmationPage({ searchParams }: Props) {
     )
   }
 
-  // Fetch the job to get AI quote data
-  const supabase = await createClient()
-  const { data } = await supabase.from('jobs').select('*').eq('tracking_code', code).single()
-  const job = data as Job | null
-
+  const job = queued ? null : await getPublicJob(code)
   const hasAIQuote = job?.ai_quote_low && job?.ai_quote_high
 
   return (
@@ -101,13 +96,15 @@ export default async function ConfirmationPage({ searchParams }: Props) {
         )}
 
         <div className="flex flex-col gap-3">
-          <Link
-            href={`/track/${code}`}
-            className="w-full py-3 rounded-lg font-semibold text-center transition-all hover:brightness-110"
-            style={{ background: '#6B8C23', color: '#ffffff' }}
-          >
-            Track This Job
-          </Link>
+          {!queued && (
+            <Link
+              href={`/track/${code}`}
+              className="w-full py-3 rounded-lg font-semibold text-center transition-all hover:brightness-110"
+              style={{ background: '#6B8C23', color: '#ffffff' }}
+            >
+              Track This Job
+            </Link>
+          )}
           <Link
             href="/"
             className="w-full py-3 rounded-lg font-semibold text-center border transition-colors hover:bg-white/5"

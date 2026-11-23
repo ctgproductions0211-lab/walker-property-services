@@ -4,6 +4,27 @@ import { useActionState, useRef, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { submitJob } from '@/lib/actions'
 
+const MAX_PHOTOS = 5
+// Vercel rejects request bodies over ~4.5 MB, so phone photos are shrunk before upload.
+const MAX_TOTAL_BYTES = 4 * 1024 * 1024
+
+async function compressImage(file: File): Promise<File> {
+  if (!file.type.startsWith('image/') || file.size < 300_000) return file
+  try {
+    const bitmap = await createImageBitmap(file)
+    const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height))
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.round(bitmap.width * scale)
+    canvas.height = Math.round(bitmap.height * scale)
+    canvas.getContext('2d')?.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/jpeg', 0.8))
+    if (!blob || blob.size >= file.size) return file
+    return new File([blob], file.name.replace(/\.[^.]+$/, '') + '.jpg', { type: 'image/jpeg' })
+  } catch {
+    return file
+  }
+}
+
 const inputStyle = {
   background: '#1c1c1c',
   border: '1px solid #2e2e2e',
@@ -38,8 +59,12 @@ const TRUCK_OPTIONS = [
 ]
 
 export default function SubmitForm() {
-  const [state, action, pending] = useActionState(submitJob, null)
+  const [state, dispatch, pending] = useActionState(submitJob, null)
   const fileRef = useRef<HTMLInputElement>(null)
+  const [photos, setPhotos] = useState<File[]>([])
+  const [photoNote, setPhotoNote] = useState<string | null>(null)
+  const [processing, setProcessing] = useState(false)
+  const fields = state?.fields ?? {}
   const searchParams = useSearchParams()
   const [servicePath, setServicePath] = useState<ServicePath>(null)
   const [serviceDetail, setServiceDetail] = useState<string | null>(null)
@@ -55,8 +80,33 @@ export default function SubmitForm() {
 
   const serviceSelectionValue = servicePath && serviceDetail ? `${servicePath}_${serviceDetail}` : ''
 
+  async function handlePhotos(fileList: FileList | null) {
+    if (!fileList?.length) return
+    setProcessing(true)
+    const picked = [...photos, ...Array.from(fileList)].slice(0, MAX_PHOTOS)
+    const compressed = await Promise.all(picked.map(compressImage))
+    const kept: File[] = []
+    let total = 0
+    for (const f of compressed) {
+      if (total + f.size > MAX_TOTAL_BYTES) continue
+      kept.push(f)
+      total += f.size
+    }
+    const dropped = Array.from(fileList).length + photos.length - kept.length
+    setPhotos(kept)
+    setPhotoNote(dropped > 0 ? `Up to ${MAX_PHOTOS} photos fit in one request — ${dropped} not added.` : null)
+    setProcessing(false)
+    if (fileRef.current) fileRef.current.value = ''
+  }
+
+  function formAction(formData: FormData) {
+    formData.delete('photos')
+    photos.forEach((p) => formData.append('photos', p))
+    return dispatch(formData)
+  }
+
   return (
-    <form action={action} className="flex flex-col gap-5">
+    <form action={formAction} className="flex flex-col gap-5">
       <input type="hidden" name="utm_source"   value={utmSource} />
       <input type="hidden" name="utm_medium"   value={utmMedium} />
       <input type="hidden" name="utm_campaign" value={utmCampaign} />
@@ -74,6 +124,8 @@ export default function SubmitForm() {
           <input
             name="customer_name"
             required
+            autoComplete="name"
+            defaultValue={fields.customer_name}
             placeholder="Jane Smith"
             style={inputStyle}
             onFocus={e => (e.target.style.borderColor = '#6B8C23')}
@@ -85,6 +137,8 @@ export default function SubmitForm() {
           <input
             name="customer_email"
             type="email"
+            autoComplete="email"
+            defaultValue={fields.customer_email}
             placeholder="jane@example.com"
             style={inputStyle}
             onFocus={e => (e.target.style.borderColor = '#6B8C23')}
@@ -95,10 +149,15 @@ export default function SubmitForm() {
 
       {/* Phone */}
       <div>
-        <label style={labelStyle}>Phone Number</label>
+        <label style={labelStyle}>
+          Phone Number
+          <span style={{ color: '#888888', fontWeight: 400, marginLeft: '6px' }}>(phone or email required)</span>
+        </label>
         <input
           name="customer_phone"
           type="tel"
+          autoComplete="tel"
+          defaultValue={fields.customer_phone}
           placeholder="(215) 555-1234"
           style={inputStyle}
           onFocus={e => (e.target.style.borderColor = '#6B8C23')}
@@ -112,6 +171,8 @@ export default function SubmitForm() {
         <input
           name="property_address"
           required
+          autoComplete="street-address"
+          defaultValue={fields.property_address}
           placeholder="1234 Main St, Philadelphia, PA 19103"
           style={inputStyle}
           onFocus={e => (e.target.style.borderColor = '#6B8C23')}
@@ -125,6 +186,8 @@ export default function SubmitForm() {
         <select
           name="job_type"
           required
+          key={fields.job_type ?? 'job_type'}
+          defaultValue={fields.job_type ?? ''}
           style={{ ...inputStyle, cursor: 'pointer' }}
           onFocus={e => (e.target.style.borderColor = '#6B8C23')}
           onBlur={e => (e.target.style.borderColor = '#2e2e2e')}
@@ -221,6 +284,7 @@ export default function SubmitForm() {
         <textarea
           name="customer_notes"
           rows={4}
+          defaultValue={fields.customer_notes}
           placeholder="What needs to be removed or done? How many rooms? Any stairs, large appliances, or heavy debris? The more detail you give, the more accurate your estimate."
           style={{ ...inputStyle, resize: 'vertical' }}
           onFocus={e => (e.target.style.borderColor = '#6B8C23')}
@@ -244,33 +308,43 @@ export default function SubmitForm() {
           <span style={{ color: '#888888', fontWeight: 400, marginLeft: '6px' }}>(optional)</span>
         </label>
         <div
-          className="rounded-lg p-6 text-center cursor-pointer transition-colors"
+          role="button"
+          tabIndex={0}
+          className="rounded-lg p-6 text-center cursor-pointer transition-colors hover:border-[#6B8C23]"
           style={{ background: '#1c1c1c', border: '2px dashed #2e2e2e' }}
           onClick={() => fileRef.current?.click()}
+          onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') fileRef.current?.click() }}
         >
           <div className="text-3xl mb-2">📷</div>
-          <p className="text-sm mb-1" style={{ color: '#f0f0f0' }}>Click to upload photos</p>
-          <p className="text-xs" style={{ color: '#888888' }}>JPG, PNG, HEIC — up to 5 photos (10 MB each)</p>
+          <p className="text-sm mb-1" style={{ color: '#f0f0f0' }}>
+            {processing ? 'Preparing photos…' : photos.length ? `${photos.length} photo${photos.length > 1 ? 's' : ''} ready — tap to add more` : 'Tap to upload photos'}
+          </p>
+          <p className="text-xs" style={{ color: '#888888' }}>Up to {MAX_PHOTOS} photos — we shrink them automatically</p>
           <input
             ref={fileRef}
-            name="photos"
             type="file"
             multiple
             accept="image/*"
             className="hidden"
-            onChange={e => {
-              const label = e.target.closest('div')?.querySelector('p')
-              if (label && e.target.files?.length) {
-                label.textContent = `${e.target.files.length} photo${e.target.files.length > 1 ? 's' : ''} selected`
-              }
-            }}
+            onChange={e => handlePhotos(e.target.files)}
           />
         </div>
+        {photos.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-3">
+            {photos.map((p, i) => (
+              <span key={`${p.name}-${i}`} className="flex items-center gap-2 text-xs px-2.5 py-1 rounded-full" style={{ background: '#1c1c1c', border: '1px solid #2e2e2e', color: '#888888' }}>
+                <span className="max-w-[140px] truncate">{p.name}</span>
+                <button type="button" aria-label={`Remove ${p.name}`} onClick={() => setPhotos(photos.filter((_, j) => j !== i))} style={{ color: '#fca5a5' }}>✕</button>
+              </span>
+            ))}
+          </div>
+        )}
+        {photoNote && <p className="text-xs mt-2" style={{ color: '#fdba74' }}>{photoNote}</p>}
       </div>
 
       <button
         type="submit"
-        disabled={pending}
+        disabled={pending || processing}
         className="w-full py-4 rounded-lg font-semibold text-base transition-all hover:brightness-110 active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
         style={{ background: '#6B8C23', color: '#ffffff' }}
       >

@@ -18,150 +18,175 @@ function generateTrackingCode(): string {
 
 // ── Customer: Submit a new job request ────────────────────────────────────────
 
-export async function submitJob(prevState: { error?: string } | null, formData: FormData) {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim()) {
-    console.error('[submitJob] Missing Supabase environment variables')
-    return { error: 'Server configuration error — missing environment variables. Please contact support.' }
+export type SubmitJobState = {
+  error?: string
+  fields?: Record<string, string>
+} | null
+
+const SUBMIT_FIELDS = [
+  'customer_name', 'customer_email', 'customer_phone', 'property_address',
+  'job_type', 'customer_notes', 'service_selection',
+] as const
+
+const MAX_PHOTOS = 5
+
+function describeError(err: unknown): string {
+  if (!err) return 'unknown error'
+  if (err instanceof Error) {
+    const cause = err.cause as { code?: string; message?: string } | undefined
+    return cause ? `${err.message} (cause: ${cause.code ?? cause.message})` : err.message
   }
+  const e = err as { message?: string; code?: string; details?: string; hint?: string }
+  return [e.message, e.code && `code ${e.code}`, e.hint].filter(Boolean).join(' | ')
+}
 
-  const supabase = await createClient().catch((clientErr: unknown) => {
-    const cause = clientErr instanceof Error ? (clientErr as NodeJS.ErrnoException).cause : undefined
-    console.error('[submitJob] Supabase client init failed:', clientErr instanceof Error ? clientErr.message : clientErr, cause ? `(cause: ${String(cause)})` : '')
-    return null
-  })
-  if (!supabase) {
-    return { error: 'Unable to connect to the database. Please try again or contact us directly.' }
-  }
+export async function submitJob(prevState: SubmitJobState, formData: FormData): Promise<SubmitJobState> {
+  const fields = Object.fromEntries(
+    SUBMIT_FIELDS.map((name) => [name, ((formData.get(name) as string | null) ?? '').trim()])
+  ) as Record<(typeof SUBMIT_FIELDS)[number], string>
 
-  const _urlDebug = (process.env.NEXT_PUBLIC_SUPABASE_URL ?? '').trim()
-  console.log('[submitJob] Supabase URL:', _urlDebug.slice(0, 50), '| raw len:', process.env.NEXT_PUBLIC_SUPABASE_URL?.length, '| trimmed len:', _urlDebug.length)
-
-  const customerName    = formData.get('customer_name') as string
-  const customerEmail   = formData.get('customer_email') as string
-  const customerPhone   = formData.get('customer_phone') as string
-  const propertyAddress = formData.get('property_address') as string
-  const jobType         = formData.get('job_type') as string
-  const customerNotes   = formData.get('customer_notes') as string
-  const photos          = formData.getAll('photos') as File[]
-  const utmSource         = (formData.get('utm_source')        as string) || null
-  const utmMedium         = (formData.get('utm_medium')        as string) || null
-  const utmCampaign       = (formData.get('utm_campaign')      as string) || null
-  const serviceSelection  = (formData.get('service_selection') as string) || null
+  const customerName     = fields.customer_name
+  const customerEmail    = fields.customer_email || null
+  const customerPhone    = fields.customer_phone || null
+  const propertyAddress  = fields.property_address
+  const jobType          = fields.job_type
+  const customerNotes    = fields.customer_notes || null
+  const serviceSelection = fields.service_selection || null
+  const utmSource   = (formData.get('utm_source')   as string) || null
+  const utmMedium   = (formData.get('utm_medium')   as string) || null
+  const utmCampaign = (formData.get('utm_campaign') as string) || null
 
   if (!customerName || !propertyAddress || !jobType) {
-    return { error: 'Please fill in all required fields.' }
+    return { error: 'Please fill in your name, property address, and job type.', fields }
+  }
+  if (!customerEmail && !customerPhone) {
+    return { error: 'Please add a phone number or email so we can send your quote.', fields }
   }
 
+  const jobId        = crypto.randomUUID()
   const trackingCode = generateTrackingCode()
 
-  // Read photos into memory as base64 (needed for AI analysis and later storage upload)
-  const validPhotos = photos.filter((p) => p.size > 0)
-  const photoData: { data: string; mediaType: string }[] = []
-  for (const photo of validPhotos.slice(0, 5)) {
-    const buffer = await photo.arrayBuffer()
-    photoData.push({
-      data:      Buffer.from(buffer).toString('base64'),
-      mediaType: photo.type || 'image/jpeg',
-    })
-  }
+  const validPhotos = (formData.getAll('photos') as File[]).filter((p) => p.size > 0).slice(0, MAX_PHOTOS)
+  const photoBuffers = await Promise.all(validPhotos.map(async (p) => Buffer.from(await p.arrayBuffer())))
 
-  // Run AI analysis — never block the submission if it fails
+  // AI estimate is optional — never block the submission on it
   let aiResult: { analysis: AIAnalysis; quoteLow: number; quoteHigh: number } | null = null
   try {
     aiResult = await generateAIQuote({
       jobType,
-      customerNotes: customerNotes || null,
-      photos:        photoData,
+      customerNotes,
+      photos: photoBuffers.map((buf, i) => ({
+        data: buf.toString('base64'),
+        mediaType: validPhotos[i].type || 'image/jpeg',
+      })),
     })
   } catch (aiErr) {
-    console.error('[submitJob] AI quote generation failed (non-fatal):', aiErr)
+    console.error('[submitJob] AI quote failed (non-fatal):', describeError(aiErr))
   }
 
-  const { data: job, error: insertError } = await supabase
-    .from('jobs')
-    .insert({
-      customer_name:    customerName,
-      customer_email:   customerEmail || null,
-      customer_phone:   customerPhone || null,
-      property_address: propertyAddress,
-      job_type:         jobType,
-      customer_notes:   customerNotes || null,
-      tracking_code:    trackingCode,
-      status:           'received',
-      ai_quote_low:     aiResult?.quoteLow   ?? null,
-      ai_quote_high:    aiResult?.quoteHigh  ?? null,
-      ai_analysis:      aiResult?.analysis   ?? null,
-      ai_confidence:    aiResult?.analysis?.confidence ?? null,
-      utm_source:         utmSource,
-      utm_medium:         utmMedium,
-      utm_campaign:       utmCampaign,
-      service_selection:  serviceSelection,
-    })
-    .select()
-    .single()
-
-  if (insertError || !job) {
-    console.error('[submitJob] Insert failed — message:', insertError?.message, '| code:', insertError?.code, '| details:', insertError?.details, '| hint:', (insertError as any)?.hint)
-    return { error: `Something went wrong submitting your request. Please try again. (${insertError?.message ?? 'no job returned'})` }
+  const baseInsert = {
+    id:               jobId,
+    customer_name:    customerName,
+    customer_email:   customerEmail,
+    customer_phone:   customerPhone,
+    property_address: propertyAddress,
+    job_type:         jobType,
+    customer_notes:   customerNotes,
+    tracking_code:    trackingCode,
+    status:           'received',
+    ai_quote_low:     aiResult?.quoteLow ?? null,
+    ai_quote_high:    aiResult?.quoteHigh ?? null,
+    ai_analysis:      aiResult?.analysis ?? null,
+    ai_confidence:    aiResult?.analysis?.confidence ?? null,
+    utm_source:       utmSource,
+    utm_medium:       utmMedium,
+    utm_campaign:     utmCampaign,
   }
 
-  // Upload any photos the customer attached — non-fatal; don't block confirmed submission
-  const uploadedFiles: { name: string; path: string }[] = []
+  // Insert without .select(): visitors may insert jobs but are not allowed to read them back.
+  let supabase: Awaited<ReturnType<typeof createClient>> | null = null
+  let dbError: string | null = null
+  let photosLinkable = true
   try {
-    for (const photo of validPhotos) {
-      const ext = photo.name.split('.').pop()
-      const filePath = `${job.id}/submission/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-      const { error: uploadError } = await supabase.storage
-        .from('job-files')
-        .upload(filePath, photo)
+    supabase = await createClient()
+    let { error } = await supabase.from('jobs').insert({ ...baseInsert, service_selection: serviceSelection })
+    if (error && (error.code === '42703' || error.code === 'PGRST204' || error.message?.includes('service_selection'))) {
+      ({ error } = await supabase.from('jobs').insert(baseInsert))
+    }
+    // Older schemas use a numeric id; let the database assign it and skip photo records.
+    if (error && (error.code === '22P02' || error.code === '428C9')) {
+      const { id: _id, ...withoutId } = baseInsert
+      void _id
+      ;({ error } = await supabase.from('jobs').insert(withoutId))
+      if (!error) photosLinkable = false
+    }
+    if (error) dbError = describeError(error)
+  } catch (err) {
+    dbError = describeError(err)
+  }
 
-      if (!uploadError) {
+  const uploadedPaths: string[] = []
+  if (!dbError && supabase && photosLinkable) {
+    for (const [i, photo] of validPhotos.entries()) {
+      try {
+        const ext = (photo.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '')
+        const filePath = `${jobId}/submission/${Date.now()}-${i}.${ext}`
+        const { error: uploadError } = await supabase.storage
+          .from('job-files')
+          .upload(filePath, photoBuffers[i], { contentType: photo.type || 'image/jpeg' })
+        if (uploadError) {
+          console.error('[submitJob] Photo upload failed (non-fatal):', uploadError.message)
+          continue
+        }
         await supabase.from('job_files').insert({
-          job_id:    job.id,
+          job_id:    jobId,
           file_path: filePath,
           file_name: photo.name,
           file_type: 'submission_photo',
         })
-        uploadedFiles.push({ name: photo.name, path: filePath })
+        uploadedPaths.push(filePath)
+      } catch (uploadErr) {
+        console.error('[submitJob] Photo upload failed (non-fatal):', describeError(uploadErr))
       }
     }
-  } catch (uploadErr) {
-    console.error('[submitJob] Photo upload failed (non-fatal):', uploadErr)
   }
 
-  // Generate 7-day signed URLs for the email — non-fatal
-  const photoLinks: { name: string; url: string }[] = []
-  try {
-    for (const file of uploadedFiles) {
-      const { data } = await supabase.storage
-        .from('job-files')
-        .createSignedUrl(file.path, 60 * 60 * 24 * 7)
-      if (data) photoLinks.push({ name: file.name, url: data.signedUrl })
-    }
-  } catch (signErr) {
-    console.error('[submitJob] Signed URL generation failed (non-fatal):', signErr)
+  if (dbError) {
+    console.error('[submitJob] Database insert failed:', dbError, '— check /api/health')
   }
 
-  // Send notification email — don't let a failure block the submission
+  let emailSent = false
   try {
     await sendJobNotificationEmail({
       customerName,
-      customerEmail:   customerEmail || null,
-      customerPhone:   customerPhone || null,
+      customerEmail,
+      customerPhone,
       propertyAddress,
-      jobType:         jobType as JobType,
-      customerNotes:   customerNotes || null,
-      trackingCode:    job.tracking_code,
-      photoLinks,
-      aiQuoteLow:      aiResult?.quoteLow   ?? null,
-      aiQuoteHigh:     aiResult?.quoteHigh  ?? null,
-      aiAnalysis:      aiResult?.analysis   ?? null,
+      jobType:          jobType as JobType,
+      customerNotes,
+      trackingCode,
+      photoLinks:       [],
+      aiQuoteLow:       aiResult?.quoteLow ?? null,
+      aiQuoteHigh:      aiResult?.quoteHigh ?? null,
+      aiAnalysis:       aiResult?.analysis ?? null,
+      serviceSelection,
+      savedToDashboard: !dbError,
+      attachments:      validPhotos.map((p, i) => ({ filename: p.name || `photo-${i + 1}.jpg`, content: photoBuffers[i] })),
     })
+    emailSent = true
   } catch (emailErr) {
-    console.error('[submitJob] Email notification failed:', emailErr)
+    console.error('[submitJob] Email notification failed:', describeError(emailErr))
   }
 
-  redirect(`/confirmation?code=${trackingCode}`)
+  if (dbError && !emailSent) {
+    return {
+      error: "We couldn't submit your request right now. Please try again in a few minutes, or email us at Edward@walkerpropservices.com.",
+      fields,
+    }
+  }
+
+  revalidatePath('/dashboard')
+  redirect(`/confirmation?code=${trackingCode}${dbError ? '&queued=1' : ''}`)
 }
 
 // ── Staff: Login ──────────────────────────────────────────────────────────────
@@ -171,9 +196,13 @@ export async function loginStaff(prevState: { error?: string } | null, formData:
   const email    = formData.get('email') as string
   const password = formData.get('password') as string
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password })
+  const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password })
   if (error) {
-    return { error: 'Invalid email or password. Please try again.' }
+    if (error.status === 400 || error.status === 401) {
+      return { error: 'Invalid email or password. Please try again.' }
+    }
+    console.error('[loginStaff] Sign-in failed:', describeError(error))
+    return { error: "Can't reach the login service right now. Please try again in a minute." }
   }
 
   redirect('/dashboard')

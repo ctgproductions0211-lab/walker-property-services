@@ -59,14 +59,15 @@ export async function generateAIQuote(params: {
     return null
   }
 
-  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY.trim() })
   const { jobType, customerNotes, photos } = params
 
   // Build the message content: images first, then the text prompt
   const content: Anthropic.ContentBlockParam[] = []
 
   // Attach up to 5 photos (API limit / cost control)
-  for (const photo of photos.slice(0, 5)) {
+  const supported = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+  for (const photo of photos.filter((p) => supported.includes(p.mediaType)).slice(0, 5)) {
     const mt = photo.mediaType as 'image/jpeg' | 'image/png' | 'image/gif' | 'image/webp'
     content.push({
       type: 'image',
@@ -119,7 +120,8 @@ Classification guidelines:
   })
 
   const rawText = message.content.find((b) => b.type === 'text')?.text ?? ''
-  const analysis = JSON.parse(rawText) as AIAnalysis
+  const json = rawText.slice(rawText.indexOf('{'), rawText.lastIndexOf('}') + 1)
+  const analysis = JSON.parse(json) as AIAnalysis
 
   const { low, high } = calculateQuote(analysis)
   return { analysis, quoteLow: low, quoteHigh: high }

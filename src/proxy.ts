@@ -1,12 +1,23 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
+import { getSupabaseUrl, getSupabaseAnonKey } from '@/lib/supabase-env'
 
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request })
+  const isLoginPage = request.nextUrl.pathname === '/dashboard/login'
+
+  const url = getSupabaseUrl()
+  const key = getSupabaseAnonKey()
+  if (!url || !key) {
+    if (isLoginPage) return response
+    const loginUrl = request.nextUrl.clone()
+    loginUrl.pathname = '/dashboard/login'
+    return NextResponse.redirect(loginUrl)
+  }
 
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    url,
+    key,
     {
       cookies: {
         getAll() {
@@ -23,9 +34,8 @@ export async function proxy(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { user } } = await supabase.auth.getUser().catch(() => ({ data: { user: null } }))
 
-  const isLoginPage = request.nextUrl.pathname === '/dashboard/login'
 
   // If not logged in and trying to access dashboard, send to login
   if (!user && !isLoginPage) {

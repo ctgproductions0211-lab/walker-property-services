@@ -43,7 +43,7 @@ export default async function JobDetailPage({ params }: Props) {
   if (!job) notFound()
 
   const jobFiles = files ?? []
-  const colors = STATUS_COLORS[job.status]
+  const colors = STATUS_COLORS[job.status] ?? { bg: 'rgba(136,136,136,0.15)', text: '#c8c8c8' }
 
   // Generate signed URLs for all files
   const signedUrls: Record<string, string> = {}
@@ -75,7 +75,22 @@ export default async function JobDetailPage({ params }: Props) {
               {JOB_STATUS_LABELS[job.status]}
             </span>
           </div>
-          <p style={{ color: '#888888' }}>{job.property_address}</p>
+          <a
+            href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(job.property_address)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+            style={{ color: '#888888' }}
+          >
+            {job.property_address} ↗
+          </a>
+          {(job.customer_phone || job.customer_email) && (
+            <div className="flex flex-wrap gap-2 mt-3">
+              {job.customer_phone && <a href={`tel:${job.customer_phone}`} className="text-sm px-3 py-1.5 rounded-lg font-medium" style={{ background: 'rgba(107,140,35,0.15)', color: '#9cc23a' }}>Call</a>}
+              {job.customer_phone && <a href={`sms:${job.customer_phone}`} className="text-sm px-3 py-1.5 rounded-lg font-medium" style={{ background: '#1f1f1f', color: '#c8c8c8' }}>Text</a>}
+              {job.customer_email && <a href={`mailto:${job.customer_email}?subject=${encodeURIComponent(`Your quote from Walker Property Services (${job.tracking_code})`)}`} className="text-sm px-3 py-1.5 rounded-lg font-medium" style={{ background: '#1f1f1f', color: '#c8c8c8' }}>Email</a>}
+            </div>
+          )}
         </div>
         <div className="text-right">
           <p className="text-xs uppercase tracking-wider mb-0.5" style={{ color: '#888888' }}>Tracking Code</p>
@@ -90,7 +105,7 @@ export default async function JobDetailPage({ params }: Props) {
           {/* Job info */}
           <Card title="Job Information">
             <div className="grid grid-cols-2 gap-4">
-              <Detail label="Service Type" value={JOB_TYPE_LABELS[job.job_type]} />
+              <Detail label="Service Type" value={JOB_TYPE_LABELS[job.job_type] ?? job.job_type} />
               <Detail label="Submitted" value={new Date(job.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} />
               {job.service_selection && (
                 <div className="col-span-2">
@@ -103,8 +118,8 @@ export default async function JobDetailPage({ params }: Props) {
                   </span>
                 </div>
               )}
-              {job.customer_email && <Detail label="Email" value={job.customer_email} />}
-              {job.customer_phone && <Detail label="Phone" value={job.customer_phone} />}
+              {job.customer_email && <Detail label="Email" value={job.customer_email} href={`mailto:${job.customer_email}`} />}
+              {job.customer_phone && <Detail label="Phone" value={job.customer_phone} href={`tel:${job.customer_phone}`} />}
               <div className="col-span-2">
                 <Detail label="Property Address" value={job.property_address} />
               </div>
@@ -289,11 +304,15 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
   )
 }
 
-function Detail({ label, value }: { label: string; value: string }) {
+function Detail({ label, value, href }: { label: string; value: string; href?: string }) {
   return (
-    <div>
+    <div className="min-w-0">
       <p className="text-xs uppercase tracking-wide mb-0.5" style={{ color: '#888888' }}>{label}</p>
-      <p className="text-sm font-medium" style={{ color: '#f0f0f0' }}>{value}</p>
+      {href ? (
+        <a href={href} className="text-sm font-medium hover:underline break-all" style={{ color: '#9cc23a' }}>{value}</a>
+      ) : (
+        <p className="text-sm font-medium break-words" style={{ color: '#f0f0f0' }}>{value}</p>
+      )}
     </div>
   )
 }

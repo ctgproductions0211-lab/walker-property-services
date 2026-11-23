@@ -1,6 +1,16 @@
 import { Resend } from 'resend'
 import { JOB_TYPE_LABELS } from '@/types'
+import { SERVICE_SELECTION_LABELS } from '@/types'
 import type { JobType, AIAnalysis } from '@/types'
+
+function esc(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
 
 const NOTIFY_EMAIL = 'ctgproductions0211@gmail.com'
 const FROM_EMAIL   = 'Walker Property Services <onboarding@resend.dev>'
@@ -17,27 +27,34 @@ interface JobNotificationParams {
   aiQuoteLow:      number | null
   aiQuoteHigh:     number | null
   aiAnalysis:      AIAnalysis | null
+  serviceSelection?: string | null
+  savedToDashboard?: boolean
+  attachments?:    { filename: string; content: Buffer }[]
 }
 
 export async function sendJobNotificationEmail(params: JobNotificationParams) {
-  const resend = new Resend(process.env.RESEND_API_KEY)
-  const {
-    customerName,
-    customerEmail,
-    customerPhone,
-    propertyAddress,
-    jobType,
-    customerNotes,
-    trackingCode,
-    photoLinks,
-    aiQuoteLow,
-    aiQuoteHigh,
-    aiAnalysis,
-  } = params
+  const resend = new Resend(process.env.RESEND_API_KEY?.trim())
+  const { jobType, trackingCode, photoLinks, aiQuoteLow, aiQuoteHigh, aiAnalysis } = params
+  const customerName    = esc(params.customerName)
+  const customerEmail   = params.customerEmail ? esc(params.customerEmail) : null
+  const customerPhone   = params.customerPhone ? esc(params.customerPhone) : null
+  const propertyAddress = esc(params.propertyAddress)
+  const customerNotes   = params.customerNotes ? esc(params.customerNotes).replace(/\n/g, '<br/>') : null
+  const attachments     = params.attachments ?? []
+  const savedToDashboard = params.savedToDashboard ?? true
+  const serviceLabel    = params.serviceSelection
+    ? esc(SERVICE_SELECTION_LABELS[params.serviceSelection] ?? params.serviceSelection)
+    : null
 
-  const jobTypeLabel = JOB_TYPE_LABELS[jobType]
+  const jobTypeLabel = JOB_TYPE_LABELS[jobType] ?? esc(jobType)
 
-  const photosSection = photoLinks.length > 0
+  const photosSection = attachments.length > 0 && photoLinks.length === 0
+    ? `
+      <div style="background:#1a2f4a;border-radius:12px;padding:24px;margin-bottom:16px;">
+        <h2 style="color:#c9a558;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 8px;">Photos</h2>
+        <p style="color:#f5f7fa;font-size:13px;margin:0;">${attachments.length} photo${attachments.length > 1 ? 's' : ''} attached to this email.</p>
+      </div>`
+    : photoLinks.length > 0
     ? `
       <div style="background:#1a2f4a;border-radius:12px;padding:24px;margin-bottom:16px;">
         <h2 style="color:#c9a558;font-size:12px;text-transform:uppercase;letter-spacing:0.1em;margin:0 0 12px;">
@@ -46,7 +63,7 @@ export async function sendJobNotificationEmail(params: JobNotificationParams) {
         ${photoLinks.map((p, i) => `
           <div style="margin-bottom:8px;">
             <a href="${p.url}" style="color:#c9a558;font-size:14px;text-decoration:underline;">
-              📷 Photo ${i + 1} — ${p.name}
+              📷 Photo ${i + 1} — ${esc(p.name)}
             </a>
             <span style="color:#8a9bb0;font-size:11px;margin-left:8px;">(link valid 7 days)</span>
           </div>
@@ -117,7 +134,7 @@ export async function sendJobNotificationEmail(params: JobNotificationParams) {
           ${aiAnalysis.add_ons.heavy_debris ? `<tr><td style="color:#8a9bb0;font-size:12px;padding:4px 0;">Heavy Debris</td><td style="color:#f5f7fa;font-size:12px;padding:4px 0;">Yes (+$150–$300)</td></tr>` : ''}
         </table>
         <p style="color:#8a9bb0;font-size:12px;margin:8px 0 4px;">AI Reasoning</p>
-        <p style="color:#f5f7fa;font-size:12px;line-height:1.5;margin:0 0 12px;">${aiAnalysis.reasoning}</p>
+        <p style="color:#f5f7fa;font-size:12px;line-height:1.5;margin:0 0 12px;">${esc(aiAnalysis.reasoning)}</p>
         <p style="margin:0;">
           <span style="font-size:11px;color:#8a9bb0;">Confidence: </span>
           <span style="font-size:11px;font-weight:600;color:${CONFIDENCE_COLORS[aiAnalysis.confidence] ?? '#8a9bb0'};">
@@ -143,6 +160,11 @@ export async function sendJobNotificationEmail(params: JobNotificationParams) {
       <h1 style="color:#f5f7fa;margin:12px 0 4px;font-size:22px;">New Job Request</h1>
       <p style="color:#8a9bb0;margin:0;font-size:14px;">Walker Property Services</p>
     </div>
+
+    ${savedToDashboard ? '' : `
+    <div style="background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.4);border-radius:8px;padding:14px 20px;margin-bottom:20px;">
+      <span style="color:#fca5a5;font-weight:600;font-size:14px;">⚠️ This request could not be saved to your dashboard (database error). Follow up from this email.</span>
+    </div>`}
 
     <!-- Alert strip -->
     <div style="background:rgba(201,165,88,0.15);border:1px solid rgba(201,165,88,0.35);border-radius:8px;padding:14px 20px;text-align:center;margin-bottom:20px;">
@@ -179,6 +201,11 @@ export async function sendJobNotificationEmail(params: JobNotificationParams) {
           <td style="color:#8a9bb0;font-size:13px;padding:5px 0;">Service</td>
           <td style="color:#f5f7fa;font-size:13px;padding:5px 0;">${jobTypeLabel}</td>
         </tr>
+        ${serviceLabel ? `
+        <tr>
+          <td style="color:#8a9bb0;font-size:13px;padding:5px 0;">Size Requested</td>
+          <td style="color:#f5f7fa;font-size:13px;padding:5px 0;">${serviceLabel}</td>
+        </tr>` : ''}
         <tr>
           <td style="color:#8a9bb0;font-size:13px;padding:5px 0;">Tracking Code</td>
           <td style="color:#c9a558;font-size:15px;padding:5px 0;font-family:monospace;font-weight:bold;">${trackingCode}</td>
@@ -202,8 +229,9 @@ export async function sendJobNotificationEmail(params: JobNotificationParams) {
   const { error } = await resend.emails.send({
     from:    FROM_EMAIL,
     to:      NOTIFY_EMAIL,
-    subject: `New Job Request — ${customerName} — ${jobTypeLabel}`,
+    subject: `New Job Request — ${params.customerName} — ${JOB_TYPE_LABELS[jobType] ?? jobType}`,
     html,
+    attachments: attachments.length > 0 ? attachments : undefined,
   })
 
   if (error) throw new Error(`Resend error: ${error.message}`)

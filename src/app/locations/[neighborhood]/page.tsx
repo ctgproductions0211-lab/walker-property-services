@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
 import { ALL_LOCATIONS, getLocationBySlug, getNearbyLocations } from '@/lib/locations'
+import { BUSINESS, NORTHEAST_PHILLY, businessJsonLd, locationFaqs } from '@/lib/seo'
+import { getSiteUrl } from '@/lib/site-url'
 
 interface Props {
   params: Promise<{ neighborhood: string }>
@@ -22,9 +24,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `Walker Property Services covers ${location.name} for larger projects — full cleanouts, demolition, and dumpster rentals. Contact us to confirm scope and availability.`
     : `Cleanouts, demolition, and property turnovers in ${location.name}, ${location.region}. Fast service for landlords, investors, and homeowners. Free estimates.`
 
+  const isNE = location.slug === NORTHEAST_PHILLY.slug
+  const title = isNE
+    ? 'Junk Removal, Cleanouts & Demolition in Northeast Philadelphia | Walker Property Services'
+    : `${location.name} Junk Removal, Cleanouts & Demolition | Walker Property Services`
+
   return {
-    title: `${location.name} Property Cleanouts & Demolition | Walker Property Services`,
-    description,
+    title,
+    description: isNE
+      ? 'Junk removal, property cleanouts, estate cleanouts, demolition, and dumpster rentals in Northeast Philadelphia — Mayfair, Frankford, Tacony, Holmesburg, Fox Chase, Bustleton, Somerton, and more. Free estimates.'
+      : description,
+    alternates: { canonical: `/locations/${location.slug}` },
+    openGraph: { title, url: `/locations/${location.slug}`, type: 'website' },
   }
 }
 
@@ -54,9 +65,42 @@ export default async function NeighborhoodPage({ params }: Props) {
 
   const nearby = getNearbyLocations(location)
   const intro = REGION_INTRO[location.region] ?? 'properties in'
+  const isNE = location.slug === NORTHEAST_PHILLY.slug
+  const faqs = locationFaqs(location.name)
+  const siteUrl = getSiteUrl()
+  const pageUrl = `${siteUrl}/locations/${location.slug}`
+  const areas = isNE ? [location.name, ...NORTHEAST_PHILLY.neighborhoods] : [location.name, location.region]
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      businessJsonLd(areas),
+      {
+        '@type': 'Service',
+        name: `Junk removal, cleanouts & demolition in ${location.name}`,
+        serviceType: BUSINESS.services,
+        provider: { '@id': `${siteUrl}/#business` },
+        areaServed: areas.map((name) => ({ '@type': 'Place', name })),
+        url: pageUrl,
+      },
+      {
+        '@type': 'FAQPage',
+        mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: siteUrl },
+          { '@type': 'ListItem', position: 2, name: 'Service Areas', item: `${siteUrl}/locations` },
+          { '@type': 'ListItem', position: 3, name: location.name, item: pageUrl },
+        ],
+      },
+    ],
+  }
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#111111' }}>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <header className="border-b border-white/10 px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
@@ -76,7 +120,7 @@ export default async function NeighborhoodPage({ params }: Props) {
         </div>
       </header>
 
-      <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-12">
+      <main className="flex-1 max-w-5xl mx-auto w-full px-4 sm:px-6 py-12">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-sm mb-8" style={{ color: '#888888' }}>
           <Link href="/locations" className="hover:underline" style={{ color: '#6B8C23' }}>Service Areas</Link>
@@ -94,8 +138,8 @@ export default async function NeighborhoodPage({ params }: Props) {
           >
             {location.region}
           </div>
-          <h1 className="text-4xl font-bold mb-5 leading-snug" style={{ color: '#f0f0f0' }}>
-            {location.name} Property Cleanouts &amp; Demolition
+          <h1 className="text-3xl sm:text-4xl font-bold mb-5 leading-snug" style={{ color: '#f0f0f0' }}>
+            Junk Removal, Cleanouts &amp; Demolition in {location.name}
           </h1>
           <p className="text-lg leading-relaxed max-w-2xl" style={{ color: '#888888' }}>
             Walker Property Services handles cleanouts, demolition, and property turnovers across{' '}
@@ -122,6 +166,31 @@ export default async function NeighborhoodPage({ params }: Props) {
             ))}
           </div>
         </div>
+
+        {isNE && (
+          <div className="mb-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="rounded-xl p-6" style={{ background: '#1c1c1c', border: '1px solid #2e2e2e' }}>
+              <h2 className="text-xl font-bold mb-3" style={{ color: '#f0f0f0' }}>Northeast Philly&apos;s cleanout and demo crew</h2>
+              <p className="text-sm leading-relaxed mb-3" style={{ color: '#a0a0a0' }}>
+                From Mayfair twins and Frankford rowhomes to Somerton and Bustleton single-family homes, we clear
+                basements, garages, and whole houses; handle estate and eviction cleanouts; turn over rental units
+                between tenants; and tear out kitchens, bathrooms, drywall, and flooring for renovations.
+              </p>
+              <p className="text-sm leading-relaxed" style={{ color: '#a0a0a0' }}>
+                Need it gone without lifting a finger? Our crew loads and hauls it. Doing it yourself? Rent a
+                10, 15, 20, or 30 yard dumpster delivered to your Northeast Philadelphia property.
+              </p>
+            </div>
+            <div className="rounded-xl p-6" style={{ background: '#1c1c1c', border: '1px solid #2e2e2e' }}>
+              <h2 className="text-xl font-bold mb-3" style={{ color: '#f0f0f0' }}>Neighborhoods we serve</h2>
+              <p className="text-sm leading-relaxed mb-4" style={{ color: '#a0a0a0' }}>
+                {NORTHEAST_PHILLY.neighborhoods.join(' · ')}
+              </p>
+              <h3 className="text-xs uppercase tracking-widest font-semibold mb-2" style={{ color: '#888888' }}>ZIP codes</h3>
+              <p className="text-sm font-mono" style={{ color: '#a0a0a0' }}>{NORTHEAST_PHILLY.zipCodes.join(', ')}</p>
+            </div>
+          </div>
+        )}
 
         {/* Distance note */}
         {location.distanceNote && (
@@ -156,6 +225,24 @@ export default async function NeighborhoodPage({ params }: Props) {
             </div>
           </div>
         )}
+
+        {/* FAQ */}
+        <div className="mb-12">
+          <h2 className="text-xl font-bold mb-5" style={{ color: '#f0f0f0' }}>
+            {`${location.name} Cleanout & Demolition FAQ`}
+          </h2>
+          <div className="flex flex-col gap-3">
+            {faqs.map((f) => (
+              <details key={f.q} className="rounded-xl px-5 py-4 group" style={{ background: '#1c1c1c', border: '1px solid #2e2e2e' }}>
+                <summary className="cursor-pointer font-medium text-sm list-none flex justify-between gap-4" style={{ color: '#f0f0f0' }}>
+                  {f.q}
+                  <span className="transition-transform group-open:rotate-45" style={{ color: '#6B8C23' }}>+</span>
+                </summary>
+                <p className="text-sm leading-relaxed mt-3" style={{ color: '#a0a0a0' }}>{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
 
         {/* CTA */}
         <div

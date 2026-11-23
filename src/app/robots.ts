@@ -1,14 +1,19 @@
 import type { MetadataRoute } from 'next'
+import { getSiteUrl } from '@/lib/site-url'
 
-const BASE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000').replace(/\/$/, '')
+const BASE_URL = getSiteUrl()
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-      disallow: ['/dashboard/', '/api/'],
-    },
+    rules: [
+      { userAgent: '*', allow: '/', disallow: ['/dashboard', '/api/', '/confirmation', '/track/'] },
+      // Explicitly welcome AI search and assistant crawlers so the business can be cited in AI answers.
+      {
+        userAgent: ['OAI-SearchBot', 'ChatGPT-User', 'GPTBot', 'PerplexityBot', 'Perplexity-User', 'ClaudeBot', 'Claude-SearchBot', 'Claude-User', 'Google-Extended', 'Applebot-Extended', 'Bingbot'],
+        allow: '/',
+        disallow: ['/dashboard', '/api/'],
+      },
+    ],
     sitemap: `${BASE_URL}/sitemap.xml`,
   }
 }

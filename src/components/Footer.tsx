@@ -48,7 +48,7 @@ export default function Footer() {
         </p>
 
         <p className="text-xs" style={{ color: '#888888' }}>
-          © {new Date().getFullYear()} Walker Property Services · Philadelphia &amp; Tri-State Area
+          {`© ${new Date().getFullYear()} Walker Property Services · Philadelphia & Tri-State Area`}
         </p>
       </div>
     </footer>

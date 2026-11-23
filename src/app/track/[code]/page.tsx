@@ -1,9 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
-import { createClient } from '@/lib/supabase-server'
+import { getPublicJob } from '@/lib/public-job'
 import { JOB_TYPE_LABELS, JOB_STATUS_LABELS } from '@/types'
-import type { Job } from '@/types'
 import Footer from '@/components/Footer'
 
 interface Props {
@@ -31,14 +30,7 @@ const STATUS_COLORS: Record<string, { bg: string; text: string; border: string }
 
 export default async function TrackJobPage({ params }: Props) {
   const { code } = await params
-  const supabase = await createClient()
-
-  const { data: rawJob } = await supabase
-    .from('jobs')
-    .select('*')
-    .eq('tracking_code', code.toUpperCase())
-    .single()
-  const job = rawJob as Job | null
+  const job = await getPublicJob(code)
 
   if (!job) {
     return (
