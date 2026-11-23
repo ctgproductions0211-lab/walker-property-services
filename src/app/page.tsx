@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import type { Metadata } from 'next'
 import Footer from '@/components/Footer'
+import JunkTruckAnimation from '@/components/JunkTruckAnimation'
 import { SERVICE_CATEGORIES } from '@/lib/services'
 import { LOCATION_REGIONS } from '@/lib/locations'
 import { businessJsonLd, NORTHEAST_PHILLY } from '@/lib/seo'
@@ -120,66 +121,85 @@ export default function HomePage() {
         </header>
 
         {/* Hero */}
-        <section className="relative px-4 sm:px-6 pt-16 pb-20 sm:pt-24 sm:pb-28">
+        <section className="relative px-4 sm:px-6 pt-12 pb-16 sm:pt-20 sm:pb-24 overflow-hidden">
           <div
             aria-hidden="true"
             className="absolute inset-0 pointer-events-none"
-            style={{ background: `radial-gradient(ellipse 70% 55% at 50% 0%, rgba(107,140,35,0.22), transparent 70%)` }}
+            style={{ background: 'radial-gradient(ellipse 60% 60% at 75% 30%, rgba(107,140,35,0.20), transparent 70%)' }}
           />
-          <div className="relative max-w-4xl mx-auto text-center">
-            <Image
-              src="/logo.jpg"
-              alt="Walker Property Services"
-              width={120}
-              height={120}
-              priority
-              className="mx-auto mb-6 w-24 h-24 sm:w-[120px] sm:h-[120px]"
-              style={{ objectFit: 'contain', mixBlendMode: 'screen' }}
-            />
+          <div className="relative max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-14 items-center">
+            <div className="text-center lg:text-left">
+              <div
+                className="inline-block px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold tracking-widest uppercase mb-6"
+                style={{ background: 'rgba(107,140,35,0.15)', color: GREEN_LIGHT, border: '1px solid rgba(107,140,35,0.35)' }}
+              >
+                Philadelphia · Main Line · PA · NJ · DE
+              </div>
+
+              <h1 className="text-4xl sm:text-5xl xl:text-6xl font-bold leading-[1.1] tracking-tight mb-5" style={{ color: '#f5f5f5' }}>
+                Cleanouts, demolition &amp; property prep —{' '}
+                <span style={{ color: GREEN_LIGHT }}>done right, done fast.</span>
+              </h1>
+
+              <p className="text-base sm:text-lg leading-relaxed max-w-xl mx-auto lg:mx-0 mb-9" style={{ color: '#a8a8a8' }}>
+                Walker Property Services clears, guts, and preps properties across Philadelphia and the tri-state area.
+                One call. One invoice. One vendor.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start max-w-md sm:max-w-none mx-auto lg:mx-0">
+                <Link
+                  href="/submit"
+                  className="px-8 py-4 rounded-xl font-semibold text-base text-center transition-all hover:brightness-110 active:scale-[0.98]"
+                  style={{ background: GREEN, color: '#fff', boxShadow: '0 10px 30px -10px rgba(107,140,35,0.6)' }}
+                >
+                  Get a Free Quote →
+                </Link>
+                <Link
+                  href="/services"
+                  className="px-8 py-4 rounded-xl font-semibold text-base text-center border transition-colors hover:bg-white/5"
+                  style={{ color: '#f0f0f0', borderColor: '#333' }}
+                >
+                  View Services
+                </Link>
+              </div>
+
+              <ul className="mt-9 grid grid-cols-2 gap-x-4 gap-y-2 text-sm max-w-md mx-auto lg:mx-0 text-left" style={{ color: '#a0a0a0' }}>
+                {['Free estimates', 'Instant photo quotes', 'Before & after photos', 'Track your job online'].map((t) => (
+                  <li key={t} className="flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={GREEN_LIGHT} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="flex-shrink-0">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             <div
-              className="inline-block px-3 py-1 rounded-full text-[11px] sm:text-xs font-semibold tracking-widest uppercase mb-6"
-              style={{ background: 'rgba(107,140,35,0.15)', color: GREEN_LIGHT, border: '1px solid rgba(107,140,35,0.35)' }}
+              className="relative rounded-3xl p-6 sm:p-8 overflow-hidden"
+              style={{ background: 'linear-gradient(180deg, #161616 0%, #121212 100%)', border: '1px solid #2a2a2a', boxShadow: '0 30px 80px -30px rgba(107,140,35,0.35)' }}
             >
-              Philadelphia · Main Line · PA · NJ · DE
+              <div className="flex flex-col items-center text-center">
+                <div className="relative">
+                  <div aria-hidden="true" className="absolute inset-0 rounded-full blur-2xl" style={{ background: 'rgba(107,140,35,0.25)' }} />
+                  <Image
+                    src="/logo.jpg"
+                    alt="Walker Property Services logo"
+                    width={200}
+                    height={200}
+                    priority
+                    className="relative w-36 h-36 sm:w-48 sm:h-48"
+                    style={{ objectFit: 'contain', mixBlendMode: 'screen' }}
+                  />
+                </div>
+                <p className="mt-3 text-xs uppercase tracking-[0.25em] font-semibold" style={{ color: '#8a8a8a' }}>
+                  Junk out. Space back.
+                </p>
+              </div>
+              <div className="mt-6 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8">
+                <JunkTruckAnimation />
+              </div>
             </div>
-
-            <h1 className="text-4xl sm:text-6xl font-bold leading-[1.1] tracking-tight mb-5" style={{ color: '#f5f5f5' }}>
-              Cleanouts, demolition &amp; property prep —{' '}
-              <span style={{ color: GREEN_LIGHT }}>done right, done fast.</span>
-            </h1>
-
-            <p className="text-base sm:text-xl leading-relaxed max-w-2xl mx-auto mb-10" style={{ color: '#a8a8a8' }}>
-              Walker Property Services clears, guts, and preps properties across Philadelphia and the tri-state area.
-              One call. One invoice. One vendor.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-3 justify-center max-w-md sm:max-w-none mx-auto">
-              <Link
-                href="/submit"
-                className="px-8 py-4 rounded-xl font-semibold text-base transition-all hover:brightness-110 active:scale-[0.98] shadow-lg"
-                style={{ background: GREEN, color: '#fff', boxShadow: '0 10px 30px -10px rgba(107,140,35,0.6)' }}
-              >
-                Get a Free Quote →
-              </Link>
-              <Link
-                href="/services"
-                className="px-8 py-4 rounded-xl font-semibold text-base border transition-colors hover:bg-white/5"
-                style={{ color: '#f0f0f0', borderColor: '#333' }}
-              >
-                View Services
-              </Link>
-            </div>
-
-            <ul className="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm" style={{ color: '#a0a0a0' }}>
-              {['Free estimates', 'Instant photo-based quotes', 'Before & after photos', 'Track your job online'].map((t) => (
-                <li key={t} className="flex items-center gap-2">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={GREEN_LIGHT} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <polyline points="20 6 9 17 4 12" />
-                  </svg>
-                  {t}
-                </li>
-              ))}
-            </ul>
           </div>
         </section>
 
